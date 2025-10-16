@@ -6,11 +6,11 @@ import prettierConfig from 'eslint-config-prettier'
 import eslint from '@eslint/js'
 
 export default [
-  { ignores: ['dist/', 'node_modules/', '.DS_Store', '*.log'] },
+  { ignores: ['dist/', 'node_modules/', '.DS_Store', '*.log', 'packages/*/dist', 'packages/*/node_modules'] },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['packages/registry/**/*.{ts,tsx}', 'packages/template/**/*.{ts,tsx}'],
     plugins: {
       react: reactPlugin,
     },

@@ -13,8 +13,15 @@
     "dev": "npm run dev --workspaces",
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces",
-    "lint-fix": "npm run lint:fix --workspaces",
+    "lint:core": "eslint packages/core --ext .ts,.tsx",
+    "lint:registry": "eslint packages/registry --ext .ts,.tsx",
+    "lint:template": "eslint packages/template --ext .ts,.tsx",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "lint:fix:core": "eslint packages/core --ext .ts,.tsx --fix",
+    "lint:fix:registry": "eslint packages/registry --ext .ts,.tsx --fix",
+    "lint:fix:template": "eslint packages/template --ext .ts,.tsx --fix",
     "install-all": "npm install --workspaces",
+    "install-dev-all": "npm install --workspaces --only=dev",
     "format": "npm run format --workspaces"
   },
   "devDependencies": {
