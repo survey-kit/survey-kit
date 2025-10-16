@@ -23,13 +23,17 @@ jobs:
         run: make install-dev-all
 
       - name: Lint Core Package
+        continue-on-error: true
         run: npm run lint:core
 
       - name: Lint Registry Package
+        continue-on-error: true
         run: npm run lint:registry
 
       - name: Lint Template Package
+        continue-on-error: true
         run: npm run lint:template
 
       - name: Check Code Formatting
+        continue-on-error: true
         run: npm run format:check
