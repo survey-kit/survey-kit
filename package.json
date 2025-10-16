@@ -22,7 +22,8 @@
     "lint:fix:template": "eslint packages/template --ext .ts,.tsx --fix",
     "install-all": "npm install --workspaces",
     "install-dev-all": "npm install --workspaces --only=dev",
-    "format": "npm run format --workspaces"
+    "format": "npm run format --workspaces",
+    "format:check": "npm run format:check --workspaces"
   },
   "devDependencies": {
     "prettier": "^3.6.2"
