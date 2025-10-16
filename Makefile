@@ -2,16 +2,20 @@
 
 help:
 	@echo "Survey-Kit Makefile commands"
-	@echo "  make install-all - Install dependencies for all packages"
-	@echo "  make lint        - Run ESLint on all packages"
-	@echo "  make lint-fix    - Fix ESLint issues on all packages"
-	@echo "  make format      - Format code with Prettier"
-	@echo "  make build       - Build all packages"
-	@echo "  make dev         - Run dev servers for all packages"
-	@echo "  make clean       - Remove node_modules and build artifacts"
+	@echo "  make install-all     - Install dependencies for all packages"
+	@echo "  make install-dev-all - Install dev dependencies only for all packages"
+	@echo "  make lint            - Run ESLint on all packages"
+	@echo "  make lint-fix        - Fix ESLint issues on all packages"
+	@echo "  make format          - Format code with Prettier"
+	@echo "  make build           - Build all packages"
+	@echo "  make dev             - Run dev servers for all packages"
+	@echo "  make clean           - Remove node_modules and build artifacts"
 
 install-all:
 	npm install --workspaces
+
+install-dev-all:
+	npm install --workspaces --only=dev
 
 lint:
 	npm run lint --workspaces
