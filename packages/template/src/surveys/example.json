@@ -1,0 +1,96 @@
+{
+  "id": "customer-feedback-survey",
+  "title": "Customer Feedback Survey",
+  "description": "Help us improve by sharing your feedback",
+  "progressBar": true,
+  "showQuestionNumbers": true,
+  "pages": [
+    {
+      "id": "page-1",
+      "title": "Your Experience",
+      "description": "Tell us about your recent experience",
+      "questions": [
+        {
+          "id": "name",
+          "type": "text",
+          "label": "What is your name?",
+          "placeholder": "Enter your full name",
+          "required": true,
+          "validation": [
+            {
+              "type": "min",
+              "value": 2,
+              "message": "Name must be at least 2 characters"
+            }
+          ]
+        },
+        {
+          "id": "email",
+          "type": "email",
+          "label": "Your email address",
+          "placeholder": "you@example.com",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "page-2",
+      "title": "Rate Your Experience",
+      "description": "How would you rate your recent interaction?",
+      "questions": [
+        {
+          "id": "satisfaction",
+          "type": "radio",
+          "label": "How satisfied were you?",
+          "required": true,
+          "options": [
+            { "label": "Very Satisfied", "value": "very_satisfied" },
+            { "label": "Satisfied", "value": "satisfied" },
+            { "label": "Neutral", "value": "neutral" },
+            { "label": "Dissatisfied", "value": "dissatisfied" },
+            { "label": "Very Dissatisfied", "value": "very_dissatisfied" }
+          ]
+        },
+        {
+          "id": "improvements",
+          "type": "textarea",
+          "label": "What could we improve?",
+          "placeholder": "Share your suggestions here...",
+          "description": "Optional - help us understand areas for improvement"
+        }
+      ]
+    },
+    {
+      "id": "page-3",
+      "title": "Additional Information",
+      "description": "Final questions to help us serve you better",
+      "questions": [
+        {
+          "id": "features",
+          "type": "checkbox",
+          "label": "Which features did you find most useful?",
+          "options": [
+            { "label": "User Interface", "value": "ui" },
+            { "label": "Performance", "value": "performance" },
+            { "label": "Documentation", "value": "docs" },
+            { "label": "Support", "value": "support" },
+            { "label": "Pricing", "value": "pricing" }
+          ]
+        },
+        {
+          "id": "department",
+          "type": "select",
+          "label": "Which department are you from?",
+          "required": true,
+          "options": [
+            { "label": "Sales", "value": "sales" },
+            { "label": "Marketing", "value": "marketing" },
+            { "label": "Engineering", "value": "engineering" },
+            { "label": "HR", "value": "hr" },
+            { "label": "Other", "value": "other" }
+          ]
+        }
+      ]
+    }
+  ]
+}
