@@ -1,0 +1,35 @@
+name: Code Quality (Lint & Format)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: make install-dev-all
+
+      - name: Lint Core Package
+        run: npm run lint:core
+
+      - name: Lint Registry Package
+        run: npm run lint:registry
+
+      - name: Lint Template Package
+        run: npm run lint:template
+
+      - name: Check Code Formatting
+        run: npm run format:check
