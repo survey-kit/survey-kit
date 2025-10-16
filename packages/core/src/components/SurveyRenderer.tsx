@@ -18,7 +18,13 @@ interface SurveyRendererProps {
   }
   onSubmit?: (answers: Record<string, unknown>) => Promise<void> | void
   layout?: 'default' | 'custom'
-  children?: React.ReactNode | ((props: { survey: ReturnType<typeof useSurvey>; renderQuestion: (question: SurveyQuestion) => React.JSX.Element; pageContent: React.JSX.Element }) => React.JSX.Element)
+  children?:
+    | React.ReactNode
+    | ((props: {
+        survey: ReturnType<typeof useSurvey>
+        renderQuestion: (question: SurveyQuestion) => React.JSX.Element
+        pageContent: React.JSX.Element
+      }) => React.JSX.Element)
 }
 
 /**
