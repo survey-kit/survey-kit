@@ -1,0 +1,23 @@
+{
+  "name": "survey-kit",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Mobile-first bite-sized survey framework",
+  "private": true,
+  "workspaces": [
+    "packages/registry",
+    "packages/core",
+    "packages/template"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "lint-fix": "npm run lint:fix --workspaces",
+    "install-all": "npm install --workspaces",
+    "format": "npm run format --workspaces"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
