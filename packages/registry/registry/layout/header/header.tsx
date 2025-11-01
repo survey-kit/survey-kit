@@ -13,7 +13,7 @@ const headerVariants = cva('flex items-center justify-between w-full', {
     variant: {
       default: 'bg-background border-b',
       transparent: 'bg-transparent',
-      primary: 'bg-primary text-primary-foreground',
+      primary: 'bg-ocean-blue text-white',
       secondary: 'bg-secondary text-secondary-foreground',
     },
   },

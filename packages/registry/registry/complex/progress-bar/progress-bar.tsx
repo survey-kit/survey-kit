@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../../lib/utils'
 
 const progressBarVariants = cva(
-  'relative h-4 w-full overflow-hidden rounded-full bg-secondary',
+  'relative h-4 w-full overflow-hidden bg-secondary',
   {
     variants: {
       size: {
@@ -28,13 +28,13 @@ const progressBarVariants = cva(
 )
 
 const progressBarFillVariants = cva(
-  'h-full w-full flex-1 bg-primary transition-all duration-300 ease-in-out',
+  'h-full transition-all duration-300 ease-in-out',
   {
     variants: {
       variant: {
-        default: 'bg-primary',
-        primary: 'bg-primary',
-        success: 'bg-green-500',
+        default: 'bg-ocean-blue',
+        primary: 'bg-ocean-blue',
+        success: 'bg-spring-green',
         warning: 'bg-yellow-500',
         destructive: 'bg-red-500',
       },

@@ -14,7 +14,7 @@ const LayoutWrapper = React.forwardRef<HTMLDivElement, LayoutWrapperProps>(
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('bg-white flex flex-col', className)}
+      className={cn('min-h-screen bg-white flex flex-col', className)}
       {...props}
     >
       {children}
