@@ -28,7 +28,13 @@ export default {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          dark: 'hsl(var(--primary-dark))',
         },
+        'night-blue': 'hsl(199 100% 17%)', // #003c57
+        'spring-green': 'hsl(70 53% 48%)', // #a8bd3a
+        'aqua-teal': 'hsl(181 100% 33%)', // #00a3a6
+        'ocean-blue': 'hsl(207 65% 35%)', // #206095
+        'sky-blue': 'hsl(196 68% 48%)', // #27a0cc
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',

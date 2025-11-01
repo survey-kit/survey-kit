@@ -6,6 +6,14 @@
 @source "../../core/src/**/*.{js,ts,jsx,tsx}";
 @source "./**/*.{js,ts,jsx,tsx}";
 
+@theme {
+  --color-night-blue: hsl(199 100% 17%);
+  --color-spring-green: hsl(70 53% 48%);
+  --color-aqua-teal: hsl(181 100% 33%);
+  --color-ocean-blue: hsl(207 65% 35%);
+  --color-sky-blue: hsl(196 68% 48%);
+}
+
 @layer base {
   :root {
     /* Background colors - WCAG AAA compliant (7:1 contrast) */
@@ -20,36 +28,46 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Primary colors - ONS blue for header */
-    --primary: 217 91% 60%; /* ONS blue */
+    /* Brand Colors */
+    /* Night blue - #003c57 - Dark primary/dark variant */
+    /* Spring green - #a8bd3a - Success/accent */
+    /* Aqua teal - #00a3a6 - Accent */
+    /* Ocean blue - #206095 - Primary brand color */
+    /* Sky blue - #27a0cc - Secondary/light variant */
+    
+    /* Primary colors - Ocean blue */
+    --primary: 207 65% 35%; /* Ocean blue #206095 */
     --primary-foreground: 0 0% 100%;
-
-    /* Success/Continue button - Green */
-    --success: 142 71% 45%; /* Green for continue button */
+    
+    /* Primary dark variant - Night blue */
+    --primary-dark: 199 100% 17%; /* Night blue #003c57 */
+    
+    /* Secondary colors - Sky blue */
+    --secondary: 196 68% 48%; /* Sky blue #27a0cc */
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Success/Continue button - Spring green */
+    --success: 70 53% 48%; /* Spring green #a8bd3a */
     --success-foreground: 0 0% 100%;
-
-    /* Secondary colors */
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-
+    
+    /* Accent colors - Aqua teal */
+    --accent: 181 100% 33%; /* Aqua teal #00a3a6 */
+    --accent-foreground: 0 0% 100%;
+    
     /* Muted colors */
     --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
-    /* Accent colors */
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-
+    
     /* Destructive colors - WCAG AA compliant */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-
+    
     /* Border and input colors */
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-
-    /* Focus ring - accessible high contrast */
-    --ring: 221.2 83.2% 53.3%;
+    
+    /* Focus ring - Ocean blue for accessibility */
+    --ring: 207 65% 35%; /* Ocean blue */
 
     /* Border radius */
     --radius: 0.5rem;
@@ -62,19 +80,22 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
+    /* Primary - Sky blue for dark mode (lighter for contrast) */
+    --primary: 196 68% 48%; /* Sky blue #27a0cc */
     --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
+    --primary-dark: 199 100% 17%; /* Night blue - stays dark */
+    /* Secondary - Aqua teal for dark mode */
+    --secondary: 181 100% 33%; /* Aqua teal #00a3a6 */
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 181 100% 33%; /* Aqua teal */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
+    --ring: 196 68% 48%; /* Sky blue for dark mode */
   }
 }
 
