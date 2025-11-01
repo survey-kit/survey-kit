@@ -23,7 +23,7 @@ jobs:
 
             - name: Add GitLab remote
               run: |
-                  git remote add gitlab https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@campus.cs.le.ac.uk/gitlab/ug_project/25-26/${{ github.GITLAB_USERNAME }}.git
+                  git remote add gitlab https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@campus.cs.le.ac.uk/gitlab/ug_project/25-26/${{ secrets.GITLAB_USERNAME }}.git
 
             - name: Mirror to GitLab
               run: |
