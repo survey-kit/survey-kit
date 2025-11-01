@@ -57,15 +57,15 @@ export function LayoutRenderer({
             layoutConfig.header.organization || layoutConfig.header.title ? (
               <div className="flex flex-col">
                 {layoutConfig.header.organization && (
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-green-500 rounded" />
-                    <span className="text-black text-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 bg-spring-green rounded" />
+                    <span className="text-white text-sm">
                       {layoutConfig.header.organization}
                     </span>
                   </div>
                 )}
                 {layoutConfig.header.title && Heading && (
-                  <Heading level="h1" className="text-black text-3xl font-bold">
+                  <Heading level="h1" className="text-white text-3xl font-bold">
                     {layoutConfig.header.title}
                   </Heading>
                 )}
@@ -81,7 +81,7 @@ export function LayoutRenderer({
                   <Button
                     key={index}
                     variant="outline"
-                    className="bg-white border-white text-primary hover:bg-gray-100"
+                    className="bg-white border-white text-night-blue hover:bg-gray-100"
                     onClick={() => onAction?.(action.onClick)}
                   >
                     {action.label}
