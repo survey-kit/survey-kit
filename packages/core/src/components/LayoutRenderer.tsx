@@ -11,6 +11,7 @@ interface LayoutRendererProps {
     Header?: React.ComponentType<any>
     Sidebar?: React.ComponentType<any>
     Footer?: React.ComponentType<any>
+    MainContent?: React.ComponentType<any>
     Button?: React.ComponentType<any>
     Heading?: React.ComponentType<any>
     [key: string]: React.ComponentType<any> | undefined
@@ -31,11 +32,19 @@ export function LayoutRenderer({
   children,
   onAction,
 }: LayoutRendererProps): React.JSX.Element {
-  const { Header, Button, Heading, Sidebar, LayoutWrapper } = components
+  const { Header, Button, Heading, Sidebar, LayoutWrapper, MainContent, Footer } = components
 
   const WrapperComponent =
     LayoutWrapper ||
     (({ children }: { children?: React.ReactNode }) => <div>{children}</div>)
+  
+  const MainContentComponent =
+    MainContent ||
+    (({ children }: { children?: React.ReactNode }) => <div>{children}</div>)
+  
+  const FooterComponent =
+    Footer ||
+    (({ children }: { children?: React.ReactNode }) => <footer>{children}</footer>)
 
   return (
     <WrapperComponent>
@@ -86,7 +95,7 @@ export function LayoutRenderer({
 
       {/* Main Content */}
       {layoutConfig.main?.enabled && (
-        <div className="bg-white px-8 py-8 max-w-4xl mx-auto box-border">
+        <MainContentComponent>
           {layoutConfig.main.sidebar?.enabled && Sidebar ? (
             <div className="flex gap-8 mt-8">
               <Sidebar />
@@ -95,23 +104,21 @@ export function LayoutRenderer({
           ) : (
             children
           )}
-        </div>
+        </MainContentComponent>
       )}
 
       {/* Footer */}
-      {layoutConfig.footer?.enabled && (
-        <div className="border-t border-gray-200">
-          <div className="flex items-center justify-between w-full h-20 px-8 bg-primary text-primary-foreground">
-            {layoutConfig.footer.organization && (
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-green-500 rounded" />
-                <span className="text-sm text-foreground">
-                  {layoutConfig.footer.organization}
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
+      {layoutConfig.footer?.enabled && FooterComponent && (
+        <FooterComponent>
+          {layoutConfig.footer.organization && (
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-spring-green rounded" />
+              <span className="text-sm text-foreground">
+                {layoutConfig.footer.organization}
+              </span>
+            </div>
+          )}
+        </FooterComponent>
       )}
     </WrapperComponent>
   )

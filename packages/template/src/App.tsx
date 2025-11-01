@@ -10,6 +10,8 @@ import {
   Header,
   Sidebar,
   LayoutWrapper,
+  MainContent,
+  Footer,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -34,6 +36,8 @@ function App() {
       Header,
       Sidebar,
       LayoutWrapper,
+      MainContent,
+      Footer,
     }),
     []
   )
