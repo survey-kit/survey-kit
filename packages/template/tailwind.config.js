@@ -8,6 +8,15 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Open Sans', 'system-ui', 'sans-serif'],
+      },
+      fontWeight: {
+        light: '300',
+        normal: '400',
+        semibold: '600',
+        bold: '800',
+      },
       colors: {
         // CSS variables are read at runtime - change values in index.css
         // These work with Tailwind CSS v4 - simply change --primary in index.css to update colors
