@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '../../../lib/utils'
 
-const wrapperVariants = cva('min-h-screen w-full', {
+const wrapperVariants = cva('w-full', {
   variants: {
     layout: {
       default: 'flex flex-col',
