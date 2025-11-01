@@ -7,6 +7,7 @@ export * from '../registry/layout/header/header'
 export * from '../registry/layout/wrapper/wrapper'
 export * from '../registry/layout/sidebar/sidebar'
 export * from '../registry/layout/dropdown/dropdown'
+export * from '../registry/layout/layout-wrapper/layout-wrapper'
 export * from '../registry/complex/progress-bar/progress-bar'
 export * from '../registry/complex/score-card/score-card'
 

@@ -9,9 +9,16 @@ import {
   Wrapper,
   Header,
   Sidebar,
+  LayoutWrapper,
 } from '@survey-kit/registry'
-import { SurveyRenderer, type SurveyConfig } from '@survey-kit/core'
+import {
+  SurveyRenderer,
+  LayoutRenderer,
+  type SurveyConfig,
+  type LayoutConfig,
+} from '@survey-kit/core'
 import surveyConfig from './surveys/example.json'
+import layoutConfig from './layouts/layout.config.json'
 
 function App() {
   // Map registry components for the SurveyRenderer
@@ -26,6 +33,7 @@ function App() {
       Wrapper,
       Header,
       Sidebar,
+      LayoutWrapper,
     }),
     []
   )
@@ -39,14 +47,29 @@ function App() {
     )
   }
 
+  const handleLayoutAction = (actionId: string) => {
+    console.log('Layout action triggered:', actionId)
+    // Handle layout actions like "Save and sign out"
+    if (actionId === 'handleSave') {
+      // Implement save logic here
+      alert('Save functionality would be implemented here')
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <LayoutRenderer
+      layoutConfig={layoutConfig as LayoutConfig}
+      surveyConfig={surveyConfig as SurveyConfig}
+      components={components}
+      onAction={handleLayoutAction}
+    >
       <SurveyRenderer
         config={surveyConfig as SurveyConfig}
         components={components}
         onSubmit={handleSurveySubmit}
+        layout="default"
       />
-    </div>
+    </LayoutRenderer>
   )
 }
 

@@ -1,0 +1,22 @@
+{
+  "header": {
+    "enabled": true,
+    "organization": "Office for National Statistics",
+    "actions": [
+      {
+        "label": "Save and sign out",
+        "onClick": "handleSave"
+      }
+    ]
+  },
+  "main": {
+    "enabled": true,
+    "sidebar": {
+      "enabled": false
+    }
+  },
+  "footer": {
+    "enabled": true,
+    "organization": "Office for National Statistics"
+  }
+}
