@@ -8,6 +8,7 @@
     {
       "id": "page-1",
       "title": "Your Experience",
+      "icon": "User",
       "description": "Tell us about your recent experience",
       "questions": [
         {
@@ -36,6 +37,7 @@
     {
       "id": "page-2",
       "title": "Rate Your Experience",
+      "icon": "Star",
       "description": "How would you rate your recent interaction?",
       "questions": [
         {
@@ -63,6 +65,7 @@
     {
       "id": "page-3",
       "title": "Additional Information",
+      "icon": "FileText",
       "description": "Final questions to help us serve you better",
       "questions": [
         {

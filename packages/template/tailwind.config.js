@@ -35,6 +35,7 @@ export default {
         'aqua-teal': 'hsl(181 100% 33%)', // #00a3a6
         'ocean-blue': 'hsl(207 65% 35%)', // #206095
         'sky-blue': 'hsl(196 68% 48%)', // #27a0cc
+        'leaf-green': 'hsl(147 79.30% 28.40%)', // #0f8243
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',

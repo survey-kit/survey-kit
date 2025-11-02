@@ -55,6 +55,7 @@ export interface SurveyPage {
   id: string
   title?: string
   description?: string
+  icon?: string
   questions: SurveyQuestion[]
 }
 

@@ -54,8 +54,13 @@
     "vite": "^7.1.10"
   },
   "peerDependencies": {
+    "@survey-kit/registry": "*",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "@survey-kit/registry": "*"
+    "react-dom": "^19.2.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.545.0",
+    "tailwind-merge": "^3.3.1"
   }
 }

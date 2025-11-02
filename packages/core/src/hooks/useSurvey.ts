@@ -1,10 +1,12 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import type {
   SurveyConfig,
   SurveyState,
   ValidationRule,
   SurveyQuestion,
 } from '../types/survey'
+
+const STORAGE_KEY_PREFIX = 'survey-kit-'
 
 interface UseSurveyOptions {
   config: SurveyConfig
@@ -33,12 +35,91 @@ export function useSurvey({
   config,
   onSubmit,
 }: UseSurveyOptions): UseSurveyReturn {
-  const [state, setState] = useState<SurveyState>({
-    currentPageIndex: 0,
-    answers: {},
-    isSubmitted: false,
-    errors: {},
-  })
+  // Initialise state from localStorage and URL
+  const getInitialState = useCallback((): SurveyState => {
+    if (typeof window === 'undefined') {
+      return {
+        currentPageIndex: 0,
+        answers: {},
+        isSubmitted: false,
+        errors: {},
+      }
+    }
+
+    const storageKey = `${STORAGE_KEY_PREFIX}${config.id}`
+    const savedData = localStorage.getItem(storageKey)
+
+    // Try to get page from URL first
+    const getPageIndexFromUrl = (): number => {
+      const hash = window.location.hash.replace('#', '')
+      if (hash) {
+        const pageIndex = config.pages.findIndex((p) => p.id === hash)
+        if (pageIndex >= 0) return pageIndex
+      }
+      const params = new URLSearchParams(window.location.search)
+      const pageId = params.get('page')
+      if (pageId) {
+        const pageIndex = config.pages.findIndex((p) => p.id === pageId)
+        if (pageIndex >= 0) return pageIndex
+      }
+      return -1
+    }
+
+    const urlPageIndex = getPageIndexFromUrl()
+
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData)
+        // Use URL page if available, otherwise use saved page
+        const pageIndex =
+          urlPageIndex >= 0 ? urlPageIndex : parsed.currentPageIndex || 0
+        return {
+          currentPageIndex: Math.min(pageIndex, config.pages.length - 1),
+          answers: parsed.answers || {},
+          isSubmitted: parsed.isSubmitted || false,
+          errors: {},
+        }
+      } catch {
+        // If parsing fails, start fresh
+      }
+    }
+
+    // Default to URL page or first page
+    const pageIndex = urlPageIndex >= 0 ? urlPageIndex : 0
+    return {
+      currentPageIndex: Math.min(pageIndex, config.pages.length - 1),
+      answers: {},
+      isSubmitted: false,
+      errors: {},
+    }
+  }, [config])
+
+  const [state, setState] = useState<SurveyState>(getInitialState)
+
+  // Save to localStorage and update URL whenever state changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const storageKey = `${STORAGE_KEY_PREFIX}${config.id}`
+    const currentPage = config.pages[state.currentPageIndex]
+
+    // Save to localStorage
+    localStorage.setItem(
+      storageKey,
+      JSON.stringify({
+        currentPageIndex: state.currentPageIndex,
+        answers: state.answers,
+        isSubmitted: state.isSubmitted,
+      })
+    )
+
+    // Update URL without page reload
+    const newUrl = new URL(window.location.href)
+    newUrl.hash = currentPage?.id || ''
+    // Also set as query param for better compatibility
+    newUrl.searchParams.set('page', currentPage?.id || '')
+    window.history.replaceState({}, '', newUrl.toString())
+  }, [state, config])
 
   const currentPage = useMemo(
     () => config.pages[state.currentPageIndex],
@@ -116,19 +197,37 @@ export function useSurvey({
   /**
    * Set answer for a question
    */
-  const setAnswer = useCallback((questionId: string, value: unknown) => {
-    setState((prev) => ({
-      ...prev,
-      answers: {
-        ...prev.answers,
-        [questionId]: {
-          questionId,
-          value,
-          isValid: true,
-        },
-      },
-    }))
-  }, [])
+  const setAnswer = useCallback(
+    (questionId: string, value: unknown) => {
+      setState((prev) => {
+        const newAnswers = {
+          ...prev.answers,
+          [questionId]: {
+            questionId,
+            value,
+            isValid: true,
+          },
+        }
+        // Save to localStorage immediately
+        if (typeof window !== 'undefined') {
+          const storageKey = `${STORAGE_KEY_PREFIX}${config.id}`
+          localStorage.setItem(
+            storageKey,
+            JSON.stringify({
+              currentPageIndex: prev.currentPageIndex,
+              answers: newAnswers,
+              isSubmitted: prev.isSubmitted,
+            })
+          )
+        }
+        return {
+          ...prev,
+          answers: newAnswers,
+        }
+      })
+    },
+    [config.id]
+  )
 
   /**
    * Move to next page

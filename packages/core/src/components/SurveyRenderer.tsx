@@ -234,6 +234,7 @@ export function SurveyRenderer({
             )}
             {Button && (
               <Button
+                variant="default"
                 onClick={
                   survey.isLastPage ? survey.submitSurvey : survey.nextPage
                 }
