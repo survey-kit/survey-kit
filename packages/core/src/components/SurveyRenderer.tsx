@@ -14,6 +14,7 @@ interface SurveyRendererProps {
     Heading?: React.ComponentType<any>
     ProgressBar?: React.ComponentType<any>
     Dropdown?: React.ComponentType<any>
+    Checkbox?: React.ComponentType<any>
     [key: string]: React.ComponentType<any> | undefined
   }
   onSubmit?: (answers: Record<string, unknown>) => Promise<void> | void

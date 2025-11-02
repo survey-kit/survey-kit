@@ -12,6 +12,7 @@ import {
   LayoutWrapper,
   MainContent,
   Footer,
+  Checkbox,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -38,6 +39,7 @@ function App() {
       LayoutWrapper,
       MainContent,
       Footer,
+      Checkbox,
     }),
     []
   )
