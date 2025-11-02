@@ -1,8 +1,135 @@
 import React, { useState, useEffect } from 'react'
 import * as LucideIcons from 'lucide-react'
+import { Check, MoreHorizontal } from 'lucide-react'
 import { cn } from '../lib/utils'
+import { validateQuestion, isValidForNavigation } from '../lib/validation'
 import type { LayoutConfig } from '../types/layout'
-import type { SurveyConfig } from '../types/survey'
+import type { SurveyConfig, PageCompletionStatus } from '../types/survey'
+
+const STORAGE_KEY_PREFIX = 'survey-kit-'
+
+// Helper function to get survey answers from localStorage
+const getSurveyAnswers = (
+  surveyId: string
+): Record<string, { value: unknown }> => {
+  if (typeof window === 'undefined') return {}
+  const storageKey = `${STORAGE_KEY_PREFIX}${surveyId}`
+  const savedData = localStorage.getItem(storageKey)
+  if (savedData) {
+    try {
+      const parsed = JSON.parse(savedData)
+      return parsed.answers || {}
+    } catch {
+      return {}
+    }
+  }
+  return {}
+}
+
+// Helper function to check if page is complete (all requiredToNavigate questions are valid)
+const isPageComplete = (
+  pageIndex: number,
+  config: SurveyConfig,
+  answers: Record<string, { value: unknown }>
+): boolean => {
+  const page = config.pages[pageIndex]
+  if (!page) return false
+
+  for (const question of page.questions) {
+    if (question.requiredToNavigate) {
+      const answer = answers[question.id]?.value
+      if (!isValidForNavigation(question, answer)) {
+        return false
+      }
+    }
+  }
+
+  return true
+}
+
+// Helper function to get page completion status
+const getPageCompletionStatus = (
+  pageIndex: number,
+  config: SurveyConfig,
+  answers: Record<string, { value: unknown }>
+): PageCompletionStatus => {
+  const page = config.pages[pageIndex]
+  if (!page) return 'empty'
+
+  let hasAnyAnswer = false
+  let hasAllAnswers = true
+  let hasAllRequiredAnswers = true
+
+  for (const question of page.questions) {
+    const answer = answers[question.id]?.value
+    const hasAnswer =
+      answer !== null &&
+      answer !== '' &&
+      answer !== undefined &&
+      !(Array.isArray(answer) && answer.length === 0)
+
+    // Check if answer is valid (not just exists, but passes validation)
+    const isValid = hasAnswer && validateQuestion(question, answer).length === 0
+
+    if (hasAnswer) {
+      hasAnyAnswer = true
+    } else {
+      hasAllAnswers = false
+    }
+
+    // For requiredToNavigate questions, check if they're valid
+    if (question.requiredToNavigate && !isValid) {
+      hasAllRequiredAnswers = false
+    }
+  }
+
+  // If page has requiredToNavigate questions, use stricter criteria
+  const hasRequiredToNavigate = page.questions.some((q) => q.requiredToNavigate)
+  if (hasRequiredToNavigate) {
+    // Only mark as complete if all requiredToNavigate questions are valid
+    return hasAllRequiredAnswers
+      ? 'complete'
+      : hasAnyAnswer
+        ? 'partial'
+        : 'empty'
+  }
+
+  // For pages without requiredToNavigate, use original logic
+  if (hasAllAnswers) return 'complete'
+  if (hasAnyAnswer) return 'partial'
+  return 'empty'
+}
+
+// Helper function to get latest accessible page index
+// A page is accessible if all pages BEFORE it are complete
+const getLatestAccessiblePageIndex = (
+  config: SurveyConfig,
+  answers: Record<string, { value: unknown }>
+): number => {
+  // First page (index 0) is always accessible
+  if (config.pages.length === 0) return 0
+
+  let latestAccessible = 0
+
+  for (let i = 1; i < config.pages.length; i++) {
+    // Check if all pages BEFORE this one (i) are complete
+    let allPreviousComplete = true
+    for (let j = 0; j < i; j++) {
+      if (!isPageComplete(j, config, answers)) {
+        allPreviousComplete = false
+        break
+      }
+    }
+
+    if (allPreviousComplete) {
+      latestAccessible = i
+    } else {
+      break
+    }
+  }
+
+  return latestAccessible
+}
 
 interface LayoutRendererProps {
   layoutConfig: LayoutConfig
@@ -107,11 +234,17 @@ export function LayoutRenderer({
     // Listen to hashchange events (for direct URL navigation)
     window.addEventListener('hashchange', updateActivePage)
     // Listen to custom event from useSurvey (for programmatic navigation)
-    window.addEventListener('survey-page-change', handlePageChange as EventListener)
+    window.addEventListener(
+      'survey-page-change',
+      handlePageChange as EventListener
+    )
 
     return () => {
       window.removeEventListener('hashchange', updateActivePage)
-      window.removeEventListener('survey-page-change', handlePageChange as EventListener)
+      window.removeEventListener(
+        'survey-page-change',
+        handlePageChange as EventListener
+      )
     }
   }, [currentPageId, surveyConfig])
 
@@ -130,17 +263,93 @@ export function LayoutRenderer({
     ))
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [surveyAnswers, setSurveyAnswers] = useState<
+    Record<string, { value: unknown }>
+  >(() => getSurveyAnswers(surveyConfig?.id || ''))
+
+  // Listen for answer changes via localStorage events or polling
+  useEffect(() => {
+    const updateAnswers = () => {
+      const answers = getSurveyAnswers(surveyConfig?.id || '')
+      setSurveyAnswers(answers)
+    }
+
+    // Initial load
+    updateAnswers()
+
+    // Listen for storage events (from other tabs/windows)
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key?.startsWith(STORAGE_KEY_PREFIX + surveyConfig?.id)) {
+        updateAnswers()
+      }
+    }
+
+    // Poll for changes (since same-tab changes don't trigger storage events)
+    // Also listen for custom events from useSurvey
+    const handleAnswerChange = () => {
+      updateAnswers()
+    }
+
+    const interval = setInterval(updateAnswers, 100)
+    window.addEventListener('survey-answer-change', handleAnswerChange)
+
+    window.addEventListener('storage', handleStorage)
+    return () => {
+      window.removeEventListener('storage', handleStorage)
+      window.removeEventListener('survey-answer-change', handleAnswerChange)
+      clearInterval(interval)
+    }
+  }, [surveyConfig?.id])
+
+  // Calculate latest accessible page
+  const latestAccessiblePageIndex = getLatestAccessiblePageIndex(
+    surveyConfig || { id: '', title: '', pages: [] },
+    surveyAnswers
+  )
 
   // Generate sidebar items from survey pages
   const sidebarItems =
-    surveyConfig?.pages?.map((page, index) => ({
-      id: page.id,
-      label: page.title || `Page ${index + 1}`,
-      icon: page.icon,
-      active: activePageId === page.id,
-    })) || []
+    surveyConfig?.pages?.map((page, index) => {
+      const completionStatus = getPageCompletionStatus(
+        index,
+        surveyConfig,
+        surveyAnswers
+      )
+      const disabled = index > latestAccessiblePageIndex
+      const tooltip = disabled
+        ? 'Please complete all required questions on previous pages before accessing this page'
+        : undefined
 
-  const handleSidebarItemClick = (pageId: string) => {
+      return {
+        id: page.id,
+        label: page.title || `Page ${index + 1}`,
+        icon: page.icon,
+        active: activePageId === page.id,
+        completionStatus,
+        disabled,
+        tooltip,
+      }
+    }) || []
+
+  const handleSidebarItemClick = (pageId: string, disabled?: boolean) => {
+    // Prevent navigation if page is disabled
+    if (disabled) return
+
+    // Check if page is accessible
+    const pageIndex =
+      surveyConfig?.pages?.findIndex((p) => p.id === pageId) ?? -1
+    if (pageIndex > latestAccessiblePageIndex) {
+      // Redirect to latest accessible page
+      const latestPage = surveyConfig?.pages?.[latestAccessiblePageIndex]
+      if (latestPage) {
+        const url = new URL(window.location.href)
+        url.hash = latestPage.id
+        url.searchParams.set('page', latestPage.id)
+        window.location.href = url.toString()
+      }
+      return
+    }
+
     if (onPageChange) {
       onPageChange(pageId)
     } else if (typeof window !== 'undefined') {
@@ -151,6 +360,9 @@ export function LayoutRenderer({
       window.location.href = newUrl.toString()
     }
   }
+
+  // Note: We don't auto-redirect here - let SurveyRenderer show BlockedPage instead
+  // This allows users to see the blocked page and use the redirect button
 
   return (
     <WrapperComponent>
@@ -304,21 +516,40 @@ export function LayoutRenderer({
                     return (
                       <div
                         key={item.id}
-                        onClick={() => handleSidebarItemClick(item.id)}
+                        onClick={() =>
+                          handleSidebarItemClick(item.id, item.disabled)
+                        }
                         className={cn(
-                          'flex items-center gap-2 rounded cursor-pointer transition-colors',
+                          'flex items-center gap-2 rounded transition-colors',
                           sidebarCollapsed ? 'justify-center p-2' : 'p-2',
+                          item.disabled
+                            ? 'cursor-not-allowed opacity-50'
+                            : 'cursor-pointer',
                           item.active
-                            ? 'bg-ocean-blue text-white'
-                            : 'hover:bg-muted'
+                            ? item.disabled
+                              ? 'bg-ocean-blue/30 text-ocean-blue border-2 border-ocean-blue'
+                              : 'bg-ocean-blue text-white'
+                            : !item.disabled && 'hover:bg-muted'
                         )}
-                        title={sidebarCollapsed ? item.label : undefined}
+                        title={
+                          sidebarCollapsed
+                            ? item.label
+                            : item.tooltip || item.label
+                        }
                       >
                         {IconComponent && (
                           <IconComponent className="w-4 h-4 flex-shrink-0" />
                         )}
                         {!sidebarCollapsed && (
-                          <span className="text-sm">{item.label}</span>
+                          <>
+                            <span className="text-sm flex-1">{item.label}</span>
+                            {item.completionStatus === 'complete' && (
+                              <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                            )}
+                            {item.completionStatus === 'partial' && (
+                              <MoreHorizontal className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                            )}
+                          </>
                         )}
                       </div>
                     )
@@ -367,20 +598,34 @@ export function LayoutRenderer({
                         <div
                           key={item.id}
                           onClick={() => {
-                            handleSidebarItemClick(item.id)
-                            setSidebarOpen(false)
+                            if (!item.disabled) {
+                              handleSidebarItemClick(item.id, item.disabled)
+                              setSidebarOpen(false)
+                            }
                           }}
                           className={cn(
-                            'flex items-center gap-2 p-2 rounded cursor-pointer transition-colors',
+                            'flex items-center gap-2 p-2 rounded transition-colors',
+                            item.disabled
+                              ? 'cursor-not-allowed opacity-50'
+                              : 'cursor-pointer',
                             item.active
-                              ? 'bg-ocean-blue text-white'
-                              : 'hover:bg-muted'
+                              ? item.disabled
+                                ? 'bg-ocean-blue/30 text-ocean-blue border-2 border-ocean-blue'
+                                : 'bg-ocean-blue text-white'
+                              : !item.disabled && 'hover:bg-muted'
                           )}
+                          title={item.tooltip || item.label}
                         >
                           {IconComponent && (
                             <IconComponent className="w-4 h-4" />
                           )}
-                          <span className="text-sm">{item.label}</span>
+                          <span className="text-sm flex-1">{item.label}</span>
+                          {item.completionStatus === 'complete' && (
+                            <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                          )}
+                          {item.completionStatus === 'partial' && (
+                            <MoreHorizontal className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          )}
                         </div>
                       )
                     })}

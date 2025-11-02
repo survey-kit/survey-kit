@@ -13,6 +13,7 @@ export * from '../registry/layout/main-content/main-content'
 export * from '../registry/layout/footer/footer'
 export * from '../registry/complex/progress-bar/progress-bar'
 export * from '../registry/complex/score-card/score-card'
+export * from '../registry/complex/blocked-page/blocked-page'
 
 // Create a Dropdown alias for convenience
 export {

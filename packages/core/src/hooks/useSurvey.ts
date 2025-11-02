@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { validateQuestion as validateQuestionUtil } from '../lib/validation'
 import type {
   SurveyConfig,
   SurveyState,
-  ValidationRule,
   SurveyQuestion,
+  PageCompletionStatus,
 } from '../types/survey'
 
 const STORAGE_KEY_PREFIX = 'survey-kit-'
@@ -26,6 +27,9 @@ interface UseSurveyReturn {
   submitSurvey: () => Promise<void>
   validateQuestion: (question: SurveyQuestion) => string[]
   getAnswerValue: (questionId: string) => unknown
+  isPageComplete: (pageIndex: number) => boolean
+  getPageCompletionStatus: (pageIndex: number) => PageCompletionStatus
+  getLatestAccessiblePageIndex: () => number
 }
 
 /**
@@ -119,7 +123,7 @@ export function useSurvey({
     // Also set as query param for better compatibility
     newUrl.searchParams.set('page', currentPage?.id || '')
     window.history.replaceState({}, '', newUrl.toString())
-    
+
     // Dispatch custom event for LayoutRenderer to listen to
     // This is more efficient than polling
     if (currentPage?.id) {
@@ -150,56 +154,8 @@ export function useSurvey({
    */
   const validateQuestion = useCallback(
     (question: SurveyQuestion): string[] => {
-      const errors: string[] = []
       const answer = state.answers[question.id]?.value
-
-      if (question.required && (!answer || answer === '')) {
-        errors.push(question.label + ' is required')
-      }
-
-      if (question.validation) {
-        question.validation.forEach((rule: ValidationRule) => {
-          switch (rule.type) {
-            case 'required':
-              if (!answer || answer === '') {
-                errors.push(rule.message || 'This field is required')
-              }
-              break
-            case 'min':
-              if (
-                typeof answer === 'string' &&
-                answer.length < (rule.value as number)
-              ) {
-                errors.push(
-                  rule.message || `Minimum ${rule.value} characters required`
-                )
-              }
-              break
-            case 'max':
-              if (
-                typeof answer === 'string' &&
-                answer.length > (rule.value as number)
-              ) {
-                errors.push(
-                  rule.message || `Maximum ${rule.value} characters allowed`
-                )
-              }
-              break
-            case 'pattern':
-              if (
-                answer &&
-                !new RegExp(rule.value as string).test(String(answer))
-              ) {
-                errors.push(rule.message || 'Invalid format')
-              }
-              break
-            default:
-              break
-          }
-        })
-      }
-
-      return errors
+      return validateQuestionUtil(question, answer)
     },
     [state.answers]
   )
@@ -218,6 +174,10 @@ export function useSurvey({
             isValid: true,
           },
         }
+        // Clear errors for this question when user provides an answer
+        const newErrors = { ...prev.errors }
+        delete newErrors[questionId]
+
         // Save to localStorage immediately
         if (typeof window !== 'undefined') {
           const storageKey = `${STORAGE_KEY_PREFIX}${config.id}`
@@ -229,10 +189,17 @@ export function useSurvey({
               isSubmitted: prev.isSubmitted,
             })
           )
+          // Dispatch custom event for LayoutRenderer to listen to
+          window.dispatchEvent(
+            new CustomEvent('survey-answer-change', {
+              detail: { questionId, surveyId: config.id },
+            })
+          )
         }
         return {
           ...prev,
           answers: newAnswers,
+          errors: newErrors,
         }
       })
     },
@@ -240,16 +207,72 @@ export function useSurvey({
   )
 
   /**
-   * Move to next page
+   * Move to next page (validates current page first)
    */
   const nextPage = useCallback(() => {
-    if (!isLastPage) {
-      setState((prev) => ({
+    if (isLastPage) return
+
+    // Validate current page - check all requiredToNavigate questions
+    const currentPageErrors: Record<string, string[]> = {}
+    let canNavigate = true
+
+    currentPage.questions.forEach((question) => {
+      if (question.requiredToNavigate) {
+        const errors = validateQuestion(question)
+        if (errors.length > 0) {
+          currentPageErrors[question.id] = errors
+          canNavigate = false
+        }
+      }
+    })
+
+    if (!canNavigate) {
+      // Update state with errors to show them - replace all errors for current page
+      setState((prev) => {
+        // Clear previous errors for current page questions, then add new ones
+        const newErrors: Record<string, string[]> = {}
+        currentPage.questions.forEach((q) => {
+          // Keep errors from other pages
+          if (prev.errors[q.id] && !currentPageErrors[q.id]) {
+            // Only keep if it's not a current page error
+            const pageIndex = config.pages.findIndex((p) =>
+              p.questions.some((pq) => pq.id === q.id)
+            )
+            if (pageIndex !== prev.currentPageIndex) {
+              newErrors[q.id] = prev.errors[q.id]
+            }
+          }
+        })
+        // Add new current page errors
+        Object.assign(newErrors, currentPageErrors)
+        return {
+          ...prev,
+          errors: newErrors,
+        }
+      })
+      return
+    }
+
+    // Clear errors and navigate
+    setState((prev) => {
+      // Clear errors for current page only
+      const newErrors: Record<string, string[]> = {}
+      Object.keys(prev.errors).forEach((questionId) => {
+        const pageIndex = config.pages.findIndex((p) =>
+          p.questions.some((q) => q.id === questionId)
+        )
+        // Keep errors from other pages
+        if (pageIndex !== prev.currentPageIndex) {
+          newErrors[questionId] = prev.errors[questionId]
+        }
+      })
+      return {
         ...prev,
         currentPageIndex: prev.currentPageIndex + 1,
-      }))
-    }
-  }, [isLastPage])
+        errors: newErrors,
+      }
+    })
+  }, [isLastPage, currentPage, validateQuestion, config.pages])
 
   /**
    * Move to previous page
@@ -272,6 +295,101 @@ export function useSurvey({
     },
     [state.answers]
   )
+
+  /**
+   * Check if a page is complete (all requiredToNavigate questions answered and valid)
+   */
+  const isPageComplete = useCallback(
+    (pageIndex: number): boolean => {
+      const page = config.pages[pageIndex]
+      if (!page) return false
+
+      // Check all questions that require navigation
+      for (const question of page.questions) {
+        if (question.requiredToNavigate) {
+          const answer = state.answers[question.id]?.value
+          const errors = validateQuestion(question)
+
+          // Must have an answer and be valid
+          if (
+            !answer ||
+            answer === '' ||
+            (Array.isArray(answer) && answer.length === 0) ||
+            errors.length > 0
+          ) {
+            return false
+          }
+        }
+      }
+
+      return true
+    },
+    [config.pages, state.answers, validateQuestion]
+  )
+
+  /**
+   * Get page completion status
+   */
+  const getPageCompletionStatus = useCallback(
+    (pageIndex: number): PageCompletionStatus => {
+      const page = config.pages[pageIndex]
+      if (!page) return 'empty'
+
+      let hasAnyAnswer = false
+      let hasAllAnswers = true
+
+      for (const question of page.questions) {
+        const answer = state.answers[question.id]?.value
+        const hasAnswer =
+          answer !== null &&
+          answer !== '' &&
+          answer !== undefined &&
+          !(Array.isArray(answer) && answer.length === 0)
+
+        if (hasAnswer) {
+          hasAnyAnswer = true
+        } else {
+          hasAllAnswers = false
+        }
+      }
+
+      if (hasAllAnswers) return 'complete'
+      if (hasAnyAnswer) return 'partial'
+      return 'empty'
+    },
+    [config.pages, state.answers]
+  )
+
+  /**
+   * Get latest accessible page index
+   * Returns the highest page index where all previous pages are complete
+   * A page is accessible if all pages BEFORE it are complete
+   */
+  const getLatestAccessiblePageIndex = useCallback((): number => {
+    // First page (index 0) is always accessible
+    if (config.pages.length === 0) return 0
+
+    let latestAccessible = 0
+
+    for (let i = 1; i < config.pages.length; i++) {
+      // Check if all pages BEFORE this one (i) are complete
+      let allPreviousComplete = true
+      for (let j = 0; j < i; j++) {
+        if (!isPageComplete(j)) {
+          allPreviousComplete = false
+          break
+        }
+      }
+
+      if (allPreviousComplete) {
+        latestAccessible = i
+      } else {
+        break
+      }
+    }
+
+    return latestAccessible
+  }, [config.pages.length, isPageComplete])
 
   /**
    * Submit survey
@@ -323,5 +441,8 @@ export function useSurvey({
     submitSurvey,
     validateQuestion,
     getAnswerValue,
+    isPageComplete,
+    getPageCompletionStatus,
+    getLatestAccessiblePageIndex,
   }
 }

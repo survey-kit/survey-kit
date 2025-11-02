@@ -13,6 +13,7 @@ import {
   MainContent,
   Footer,
   Checkbox,
+  BlockedPage,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -40,6 +41,7 @@ function App() {
       MainContent,
       Footer,
       Checkbox,
+      BlockedPage,
     }),
     []
   )

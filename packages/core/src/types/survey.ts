@@ -30,6 +30,11 @@ export interface QuestionOption {
 }
 
 /**
+ * Page completion status
+ */
+export type PageCompletionStatus = 'complete' | 'partial' | 'empty'
+
+/**
  * A single question in the survey
  */
 export interface SurveyQuestion {
@@ -39,6 +44,7 @@ export interface SurveyQuestion {
   description?: string
   placeholder?: string
   required?: boolean
+  requiredToNavigate?: boolean
   validation?: ValidationRule[]
   options?: QuestionOption[]
   defaultValue?: string | number | boolean

@@ -9,6 +9,7 @@ export type {
   QuestionType,
   ValidationRule,
   QuestionOption,
+  PageCompletionStatus,
 } from './types/survey'
 
 export type {
