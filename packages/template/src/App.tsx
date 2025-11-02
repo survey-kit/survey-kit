@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import {
   Button,
   Card,
-  Dropdown,
+  SimpleDropdown as Dropdown,
   Heading,
   Input,
   ProgressBar,

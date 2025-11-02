@@ -24,5 +24,8 @@ export {
   SelectValue as DropdownValue,
 } from '../registry/layout/dropdown/dropdown'
 
+// Export SimpleDropdown for SurveyRenderer (with simple API: value, onChange, options)
+export { SimpleDropdown } from '../registry/layout/dropdown/simple-dropdown'
+
 // Export utilities
 export { cn } from '../lib/utils'
