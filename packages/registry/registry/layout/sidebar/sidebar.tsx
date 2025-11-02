@@ -113,13 +113,23 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {...props}
         >
           {header && (
-            <div className={cn('border-b flex-shrink-0 bg-white', collapsed ? 'p-2' : 'p-4')}>
+            <div
+              className={cn(
+                'border-b flex-shrink-0 bg-white',
+                collapsed ? 'p-2' : 'p-4'
+              )}
+            >
               {header}
             </div>
           )}
           <div className={cn(sidebarContentVariants())}>{children}</div>
           {footer && (
-            <div className={cn('border-t flex-shrink-0 bg-white', collapsed ? 'p-2' : 'p-4')}>
+            <div
+              className={cn(
+                'border-t flex-shrink-0 bg-white',
+                collapsed ? 'p-2' : 'p-4'
+              )}
+            >
               {footer}
             </div>
           )}

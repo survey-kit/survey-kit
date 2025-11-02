@@ -110,9 +110,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             />
           )}
         </div>
-        <span className="text-[var(--ons-color-black)] text-base">
-          {label}
-        </span>
+        <span className="text-[var(--ons-color-black)] text-base">{label}</span>
       </label>
     )
   }
@@ -120,4 +118,3 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
 Checkbox.displayName = 'Checkbox'
 
 export { Checkbox, checkboxVariants, checkboxIconVariants }
-
