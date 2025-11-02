@@ -131,6 +131,63 @@ export function SurveyRenderer({
 
       case 'checkbox':
       case 'radio':
+        const { Checkbox } = components
+        const isMultiple = question.type === 'checkbox'
+
+        if (!Checkbox) {
+          // Fallback to native inputs if Checkbox component not provided
+          return (
+            <div key={question.id} className="space-y-2">
+              <label className="block text-sm font-medium">
+                {question.label}
+                {question.required && <span className="text-red-500">*</span>}
+              </label>
+              {question.description && (
+                <p className="text-sm text-gray-500">{question.description}</p>
+              )}
+              <div className="space-y-2">
+                {question.options?.map((option) => (
+                  <label
+                    key={option.value}
+                    className="flex items-center space-x-2"
+                  >
+                    <input
+                      type={question.type}
+                      value={option.value}
+                      checked={
+                        isMultiple
+                          ? (value as string[])?.includes(option.value)
+                          : value === option.value
+                      }
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (isMultiple) {
+                          const arr = (value as string[]) || []
+                          if (e.target.checked) {
+                            survey.setAnswer(question.id, [...arr, option.value])
+                          } else {
+                            survey.setAnswer(
+                              question.id,
+                              arr.filter((v) => v !== option.value)
+                            )
+                          }
+                        } else {
+                          survey.setAnswer(question.id, option.value)
+                        }
+                      }}
+                    />
+                    <span>{option.label}</span>
+                  </label>
+                ))}
+              </div>
+              {survey.state.errors[question.id] && (
+                <div className="text-sm text-red-500">
+                  {survey.state.errors[question.id].join(', ')}
+                </div>
+              )}
+            </div>
+          )
+        }
+
         return (
           <div key={question.id} className="space-y-2">
             <label className="block text-sm font-medium">
@@ -141,21 +198,21 @@ export function SurveyRenderer({
               <p className="text-sm text-gray-500">{question.description}</p>
             )}
             <div className="space-y-2">
-              {question.options?.map((option) => (
-                <label
-                  key={option.value}
-                  className="flex items-center space-x-2"
-                >
-                  <input
-                    type={question.type}
+              {question.options?.map((option) => {
+                const isChecked = isMultiple
+                  ? (value as string[])?.includes(option.value)
+                  : value === option.value
+
+                return (
+                  <Checkbox
+                    key={option.value}
+                    variant={isMultiple ? 'multiple' : 'singular'}
+                    label={option.label}
+                    checked={isChecked}
+                    name={question.id}
                     value={option.value}
-                    checked={
-                      question.type === 'checkbox'
-                        ? (value as string[])?.includes(option.value)
-                        : value === option.value
-                    }
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      if (question.type === 'checkbox') {
+                      if (isMultiple) {
                         const arr = (value as string[]) || []
                         if (e.target.checked) {
                           survey.setAnswer(question.id, [...arr, option.value])
@@ -170,9 +227,8 @@ export function SurveyRenderer({
                       }
                     }}
                   />
-                  <span>{option.label}</span>
-                </label>
-              ))}
+                )
+              })}
             </div>
             {survey.state.errors[question.id] && (
               <div className="text-sm text-red-500">
@@ -228,7 +284,7 @@ export function SurveyRenderer({
           {pageContent}
           <div className="flex justify-between gap-4 mt-8">
             {!survey.isFirstPage && Button && (
-              <Button variant="outline" onClick={survey.prevPage}>
+              <Button variant="secondary" onClick={survey.prevPage}>
                 Previous
               </Button>
             )}
