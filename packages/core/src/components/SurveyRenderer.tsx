@@ -14,6 +14,8 @@ interface SurveyRendererProps {
     Heading?: React.ComponentType<any>
     ProgressBar?: React.ComponentType<any>
     Dropdown?: React.ComponentType<any>
+    Checkbox?: React.ComponentType<any>
+    BlockedPage?: React.ComponentType<any>
     [key: string]: React.ComponentType<any> | undefined
   }
   onSubmit?: (answers: Record<string, unknown>) => Promise<void> | void
@@ -40,6 +42,24 @@ export function SurveyRenderer({
 }: SurveyRendererProps): React.JSX.Element {
   const survey = useSurvey({ config, onSubmit })
 
+  // Check if current page should be accessible
+  const latestAccessiblePageIndex = survey.getLatestAccessiblePageIndex()
+  const currentPageIndex = config.pages.findIndex(
+    (p) => p.id === survey.currentPage.id
+  )
+  const isPageAccessible = currentPageIndex <= latestAccessiblePageIndex
+
+  // Get redirect URL for blocked page (latest accessible page)
+  const getRedirectUrl = () => {
+    if (typeof window === 'undefined') return ''
+    const latestPage = config.pages[latestAccessiblePageIndex]
+    if (!latestPage) return window.location.href
+    const url = new URL(window.location.href)
+    url.hash = latestPage.id
+    url.searchParams.set('page', latestPage.id)
+    return url.toString()
+  }
+
   // Render a single question based on its type
   const renderQuestion = (question: SurveyQuestion): React.JSX.Element => {
     const { Input, Dropdown } = components
@@ -54,7 +74,9 @@ export function SurveyRenderer({
           <div key={question.id} className="space-y-2">
             <label className="block text-sm font-medium">
               {question.label}
-              {question.required && <span className="text-red-500">*</span>}
+              {(question.required || question.requiredToNavigate) && (
+                <span className="text-red-500">*</span>
+              )}
             </label>
             {question.description && (
               <p className="text-sm text-gray-500">{question.description}</p>
@@ -82,7 +104,9 @@ export function SurveyRenderer({
           <div key={question.id} className="space-y-2">
             <label className="block text-sm font-medium">
               {question.label}
-              {question.required && <span className="text-red-500">*</span>}
+              {(question.required || question.requiredToNavigate) && (
+                <span className="text-red-500">*</span>
+              )}
             </label>
             {question.description && (
               <p className="text-sm text-gray-500">{question.description}</p>
@@ -109,7 +133,9 @@ export function SurveyRenderer({
           <div key={question.id} className="space-y-2">
             <label className="block text-sm font-medium">
               {question.label}
-              {question.required && <span className="text-red-500">*</span>}
+              {(question.required || question.requiredToNavigate) && (
+                <span className="text-red-500">*</span>
+              )}
             </label>
             {question.description && (
               <p className="text-sm text-gray-500">{question.description}</p>
@@ -130,32 +156,94 @@ export function SurveyRenderer({
         )
 
       case 'checkbox':
-      case 'radio':
+      case 'radio': {
+        const { Checkbox } = components
+        const isMultiple = question.type === 'checkbox'
+
+        if (!Checkbox) {
+          // Fallback to native inputs if Checkbox component not provided
+          return (
+            <div key={question.id} className="space-y-2">
+              <label className="block text-sm font-medium">
+                {question.label}
+                {question.required && <span className="text-red-500">*</span>}
+              </label>
+              {question.description && (
+                <p className="text-sm text-gray-500">{question.description}</p>
+              )}
+              <div className="space-y-2">
+                {question.options?.map((option) => (
+                  <label
+                    key={option.value}
+                    className="flex items-center space-x-2"
+                  >
+                    <input
+                      type={question.type}
+                      value={option.value}
+                      checked={
+                        isMultiple
+                          ? (value as string[])?.includes(option.value)
+                          : value === option.value
+                      }
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (isMultiple) {
+                          const arr = (value as string[]) || []
+                          if (e.target.checked) {
+                            survey.setAnswer(question.id, [
+                              ...arr,
+                              option.value,
+                            ])
+                          } else {
+                            survey.setAnswer(
+                              question.id,
+                              arr.filter((v) => v !== option.value)
+                            )
+                          }
+                        } else {
+                          survey.setAnswer(question.id, option.value)
+                        }
+                      }}
+                    />
+                    <span>{option.label}</span>
+                  </label>
+                ))}
+              </div>
+              {survey.state.errors[question.id] && (
+                <div className="text-sm text-red-500">
+                  {survey.state.errors[question.id].join(', ')}
+                </div>
+              )}
+            </div>
+          )
+        }
+
         return (
           <div key={question.id} className="space-y-2">
             <label className="block text-sm font-medium">
               {question.label}
-              {question.required && <span className="text-red-500">*</span>}
+              {(question.required || question.requiredToNavigate) && (
+                <span className="text-red-500">*</span>
+              )}
             </label>
             {question.description && (
               <p className="text-sm text-gray-500">{question.description}</p>
             )}
             <div className="space-y-2">
-              {question.options?.map((option) => (
-                <label
-                  key={option.value}
-                  className="flex items-center space-x-2"
-                >
-                  <input
-                    type={question.type}
+              {question.options?.map((option) => {
+                const isChecked = isMultiple
+                  ? (value as string[])?.includes(option.value)
+                  : value === option.value
+
+                return (
+                  <Checkbox
+                    key={option.value}
+                    variant={isMultiple ? 'multiple' : 'singular'}
+                    label={option.label}
+                    checked={isChecked}
+                    name={question.id}
                     value={option.value}
-                    checked={
-                      question.type === 'checkbox'
-                        ? (value as string[])?.includes(option.value)
-                        : value === option.value
-                    }
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      if (question.type === 'checkbox') {
+                      if (isMultiple) {
                         const arr = (value as string[]) || []
                         if (e.target.checked) {
                           survey.setAnswer(question.id, [...arr, option.value])
@@ -170,9 +258,8 @@ export function SurveyRenderer({
                       }
                     }}
                   />
-                  <span>{option.label}</span>
-                </label>
-              ))}
+                )
+              })}
             </div>
             {survey.state.errors[question.id] && (
               <div className="text-sm text-red-500">
@@ -181,6 +268,7 @@ export function SurveyRenderer({
             )}
           </div>
         )
+      }
 
       default:
         return (
@@ -208,16 +296,31 @@ export function SurveyRenderer({
         </div>
       </div>
     )
-  }, [survey.currentPage])
+  }, [survey.currentPage, survey.state.answers, survey.state.errors])
 
   // Default layout
   if (layout === 'default' && !children) {
-    const { Wrapper, ProgressBar, Button, Card } = components
+    const {
+      Wrapper,
+      ProgressBar,
+      Button,
+      Card,
+      BlockedPage: BlockedPageComponent,
+    } = components
 
     const WrapperComponent =
       Wrapper || (({ children }: { children?: React.ReactNode }) => children)
     const CardComponent =
       Card || (({ children }: { children?: React.ReactNode }) => children)
+
+    // Show blocked page if current page is not accessible
+    if (!isPageAccessible && BlockedPageComponent) {
+      return (
+        <WrapperComponent>
+          <BlockedPageComponent redirectUrl={getRedirectUrl()} />
+        </WrapperComponent>
+      )
+    }
 
     return (
       <WrapperComponent>
@@ -228,12 +331,13 @@ export function SurveyRenderer({
           {pageContent}
           <div className="flex justify-between gap-4 mt-8">
             {!survey.isFirstPage && Button && (
-              <Button variant="outline" onClick={survey.prevPage}>
+              <Button variant="secondary" onClick={survey.prevPage}>
                 Previous
               </Button>
             )}
             {Button && (
               <Button
+                variant="default"
                 onClick={
                   survey.isLastPage ? survey.submitSurvey : survey.nextPage
                 }

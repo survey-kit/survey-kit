@@ -1,4 +1,4 @@
-.PHONY: lint lint-fix format build dev clean help
+.PHONY: lint lint-fix format build dev dev-all clean help
 
 help:
 	@echo "Survey-Kit Makefile commands"
@@ -8,7 +8,8 @@ help:
 	@echo "  make lint-fix        - Fix ESLint issues on all packages"
 	@echo "  make format          - Format code with Prettier"
 	@echo "  make build           - Build all packages"
-	@echo "  make dev             - Run dev servers for all packages"
+	@echo "  make dev             - Run dev server for template package"
+	@echo "  make dev-all         - Run dev servers for all packages"
 	@echo "  make clean           - Remove node_modules and build artifacts"
 
 install-all:
@@ -30,6 +31,9 @@ build:
 	npm run build --workspaces
 
 dev:
+	npm run dev --workspace=packages/template
+
+dev-all:
 	npm run dev --workspaces
 
 clean:

@@ -8,6 +8,7 @@
     {
       "id": "page-1",
       "title": "Your Experience",
+      "icon": "User",
       "description": "Tell us about your recent experience",
       "questions": [
         {
@@ -16,6 +17,7 @@
           "label": "What is your name?",
           "placeholder": "Enter your full name",
           "required": true,
+          "requiredToNavigate": true,
           "validation": [
             {
               "type": "min",
@@ -29,13 +31,15 @@
           "type": "email",
           "label": "Your email address",
           "placeholder": "you@example.com",
-          "required": true
+          "required": true,
+          "requiredToNavigate": true
         }
       ]
     },
     {
       "id": "page-2",
       "title": "Rate Your Experience",
+      "icon": "Star",
       "description": "How would you rate your recent interaction?",
       "questions": [
         {
@@ -43,6 +47,7 @@
           "type": "radio",
           "label": "How satisfied were you?",
           "required": true,
+          "requiredToNavigate": true,
           "options": [
             { "label": "Very Satisfied", "value": "very_satisfied" },
             { "label": "Satisfied", "value": "satisfied" },
@@ -63,6 +68,7 @@
     {
       "id": "page-3",
       "title": "Additional Information",
+      "icon": "FileText",
       "description": "Final questions to help us serve you better",
       "questions": [
         {
@@ -82,6 +88,7 @@
           "type": "select",
           "label": "Which department are you from?",
           "required": true,
+          "requiredToNavigate": true,
           "options": [
             { "label": "Sales", "value": "sales" },
             { "label": "Marketing", "value": "marketing" },

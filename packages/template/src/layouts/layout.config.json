@@ -1,0 +1,30 @@
+{
+  "favicon": "/branding_kit/Favicon/ONS-symbol_digital.svg",
+  "header": {
+    "enabled": true,
+    "organization": "Office for National Statistics",
+    "logo": {
+      "small": "/branding_kit/Favicon/ONS-symbol_digital.svg",
+      "large": "/branding_kit/SVG/Landscape/English/ONS_Logo_Digital_White_Landscape_English_RGB.svg"
+    },
+    "actions": [
+      {
+        "label": "Save and sign out",
+        "onClick": "handleSave"
+      }
+    ]
+  },
+  "main": {
+    "enabled": true,
+    "sidebar": {
+      "enabled": true
+    }
+  },
+  "footer": {
+    "enabled": true,
+    "logo": {
+      "small": "/branding_kit/Favicon/ONS-symbol_digital.svg",
+      "large": "/branding_kit/SVG/Landscape/English/ONS_Logo_Digital_Black_Landscape_English_RGB.svg"
+    }
+  }
+}
