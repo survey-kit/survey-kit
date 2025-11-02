@@ -7,95 +7,211 @@
 @source "./**/*.{js,ts,jsx,tsx}";
 
 @theme {
-  --color-night-blue: hsl(199 100% 17%);
-  --color-spring-green: hsl(70 53% 48%);
-  --color-aqua-teal: hsl(181 100% 33%);
-  --color-ocean-blue: hsl(207 65% 35%);
-  --color-sky-blue: hsl(196 68% 48%);
+  --color-night-blue: #003c57;
+  --color-spring-green: #a8bd3a;
+  --color-aqua-teal: #00a3a6;
+  --color-ocean-blue: #206095;
+  --color-sky-blue: #27a0cc;
+  --color-leaf-green: #0f8243;
+  --color-navy-blue: #194766;
+  --color-ruby-red: #d0021b;
+  --color-jaffa-orange: #fa6401;
+  --color-sun-yellow: #fbc900;
+  --color-neon-yellow: #f0f762;
+  --color-gov-teal: #00847d;
+  --color-gov-red: #b10e1e;
+  --color-gov-black: #0b0c0c;
 }
 
 @layer base {
   :root {
-    /* Background colors - WCAG AAA compliant (7:1 contrast) */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* ONS Base Colors */
+    --ons-color-black: #222;
+    --ons-color-grey-100: #414042;
+    --ons-color-grey-75: #707071;
+    --ons-color-grey-35: #bcbcbd;
+    --ons-color-grey-25: #d5d5d6;
+    --ons-color-grey-15: #e2e2e3;
+    --ons-color-grey-10: #efeff0;
+    --ons-color-grey-5: #f5f5f6;
+    --ons-color-white: #fff;
+    --ons-color-night-blue: #003c57;
+    --ons-color-spring-green: #a8bd3a;
+    --ons-color-ocean-blue: #206095;
+    --ons-color-sky-blue: #27a0cc;
+    --ons-color-aqua-teal: #00a3a6;
+    --ons-color-navy-blue: #194766;
+    --ons-color-pale-blue: #e7eff4;
+    --ons-color-soft-blue-grey: #dee7ee;
+    --ons-color-light-blue-grey: #e9eff4;
+    --ons-color-leaf-green: #0f8243;
+    --ons-color-ruby-red: #d0021b;
+    --ons-color-jaffa-orange: #fa6401;
+    --ons-color-sun-yellow: #fbc900;
+    --ons-color-neon-yellow: #f0f762;
+    --ons-color-light-orange: #e8bb9b;
+    --ons-color-gov-teal: #00847d;
+    --ons-color-gov-red: #b10e1e;
+    --ons-color-gov-black: #0b0c0c;
+    --ons-color-ocean-blue-tint: #e9eff4;
+    --ons-color-ocean-blue-vibrant: #1f8fd8;
+    --ons-color-spring-green-tint: #c3c5b8;
+    --ons-color-leaf-green-tint: #e7f3ec;
+    --ons-color-leaf-green-vibrant: #10ca64;
+    --ons-color-leaf-green-dark-10: #073d20;
+    --ons-color-leaf-green-dark-5: #0c6b37;
+    --ons-color-ruby-red-tint: #fae6e8;
+    --ons-color-ruby-red-vibrant: #fd112d;
+    --ons-color-jaffa-orange-tint: #fff0e6;
+    --ons-color-jaffa-orange-vibrant: #ff7b24;
+    --ons-color-sun-yellow-dark: #e2b500;
+    --ons-color-navy-blue-light: #153b55;
+
+    /* ONS Semantic Colors */
+    --ons-color-branded: var(--ons-color-ocean-blue);
+    --ons-color-branded-text: var(--ons-color-ocean-blue);
+    --ons-color-branded-tint: var(--ons-color-ocean-blue-tint);
+    --ons-color-branded-secondary: var(--ons-color-night-blue);
+    --ons-color-branded-tertiary: var(--ons-color-aqua-teal);
+    --ons-color-branded-supporting: var(--ons-color-spring-green);
+    --ons-color-branded-supporting-tint: var(--ons-color-branded-supporting);
+    --ons-color-header: var(--ons-color-branded);
+    --ons-color-header-neutral: var(--ons-color-grey-75);
+    --ons-color-header-masthead: var(--ons-color-white);
+    --ons-color-header-masthead-internal: var(--ons-color-branded-secondary);
+    --ons-color-header-masthead-neutral: var(--ons-color-black);
+    --ons-color-header-title: var(--ons-color-text);
+    --ons-color-header-navigation-links: var(--ons-color-text);
+    --ons-color-service-links: var(--ons-color-white);
+    --ons-color-cta-bg: var(--ons-color-branded-tint);
+    --ons-color-banner-bg: var(--ons-color-grey-5);
+    --ons-color-banner-bg-dark: var(--ons-color-grey-15);
+    --ons-color-page-light: var(--ons-color-white);
+    --ons-color-banner-browser-bg: var(--ons-color-black);
+    --ons-color-hero-bg: var(--ons-color-branded-tint);
+    --ons-color-hero-bg-dark: var(--ons-color-branded);
+    --ons-color-text: var(--ons-color-black);
+    --ons-color-text-light: var(--ons-color-grey-75);
+    --ons-color-text-inverse: var(--ons-color-white);
+    --ons-color-text-banner: var(--ons-color-black);
+    --ons-color-text-link: var(--ons-color-ocean-blue);
+    --ons-color-text-link-hover: var(--ons-color-night-blue);
+    --ons-color-text-link-active: var(--ons-color-night-blue);
+    --ons-color-text-link-focus: var(--ons-color-black);
+    --ons-color-text-inverse-link: var(--ons-color-white);
+    --ons-color-text-inverse-link-hover: var(--ons-color-grey-5);
+    --ons-color-text-banner-link: var(--ons-color-grey-100);
+    --ons-color-text-banner-link-hover: var(--ons-color-black);
+    --ons-color-text-metadata: var(--ons-color-black);
+    --ons-color-focus: var(--ons-color-sun-yellow);
+    --ons-color-focus-dark: var(--ons-color-sun-yellow-dark);
+    --ons-color-highlight: var(--ons-color-neon-yellow);
+    --ons-color-borders: var(--ons-color-grey-75);
+    --ons-color-borders-indent: var(--ons-color-grey-35);
+    --ons-color-borders-light: var(--ons-color-grey-35);
+    --ons-color-borders-document-image: var(--ons-color-grey-15);
+    --ons-color-borders-document-image-focus: var(--ons-color-black);
+    --ons-color-placeholder: var(--ons-color-grey-75);
+    --ons-color-button: var(--ons-color-leaf-green);
+    --ons-color-button-secondary: var(--ons-color-grey-15);
+    --ons-color-button-shadow: var(--ons-color-leaf-green-dark-10);
+    --ons-color-button-hover: var(--ons-color-leaf-green-dark-5);
+    --ons-color-button-secondary-shadow: var(--ons-color-grey-75);
+    --ons-color-button-secondary-hover: var(--ons-color-grey-25);
+    --ons-color-input-border: var(--ons-color-black);
+    --ons-color-input-bg: var(--ons-color-white);
+    --ons-color-info: var(--ons-color-ocean-blue);
+    --ons-color-info-tint: var(--ons-color-ocean-blue-tint);
+    --ons-color-info-vibrant: var(--ons-color-ocean-blue-vibrant);
+    --ons-color-success: var(--ons-color-leaf-green);
+    --ons-color-success-tint: var(--ons-color-leaf-green-tint);
+    --ons-color-success-vibrant: var(--ons-color-leaf-green-vibrant);
+    --ons-color-errors: var(--ons-color-ruby-red);
+    --ons-color-errors-tint: var(--ons-color-ruby-red-tint);
+    --ons-color-errors-vibrant: var(--ons-color-ruby-red-vibrant);
+    --ons-color-pending: var(--ons-color-jaffa-orange);
+    --ons-color-pending-tint: var(--ons-color-jaffa-orange-tint);
+    --ons-color-pending-vibrant: var(--ons-color-jaffa-orange-vibrant);
+    --ons-color-dead: var(--ons-color-grey-75);
+    --ons-color-instruction: var(--ons-color-jaffa-orange);
+    --ons-color-instruction-tint: var(--ons-color-jaffa-orange-tint);
+    --ons-color-text-disabled: var(--ons-color-grey-35);
+    --ons-color-border-disabled: var(--ons-color-grey-35);
+
+    /* Map semantic colors to ONS colors (for compatibility with existing components) */
+    /* Using HSL values for components that expect hsl(var(--variable)) format */
+    --background: 0 0% 100%; /* --ons-color-white */
+    --foreground: 0 0% 13.3%; /* --ons-color-black #222 */
 
     /* Card colors */
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%; /* --ons-color-white */
+    --card-foreground: 0 0% 13.3%; /* --ons-color-black */
 
     /* Popover colors */
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%; /* --ons-color-white */
+    --popover-foreground: 0 0% 13.3%; /* --ons-color-black */
 
-    /* Brand Colors */
-    /* Night blue - #003c57 - Dark primary/dark variant */
-    /* Spring green - #a8bd3a - Success/accent */
-    /* Aqua teal - #00a3a6 - Accent */
-    /* Ocean blue - #206095 - Primary brand color */
-    /* Sky blue - #27a0cc - Secondary/light variant */
-    
     /* Primary colors - Ocean blue */
-    --primary: 207 65% 35%; /* Ocean blue #206095 */
-    --primary-foreground: 0 0% 100%;
+    --primary: 207 65% 35%; /* --ons-color-ocean-blue #206095 */
+    --primary-foreground: 0 0% 100%; /* --ons-color-white */
     
     /* Primary dark variant - Night blue */
-    --primary-dark: 199 100% 17%; /* Night blue #003c57 */
+    --primary-dark: 199 100% 17%; /* --ons-color-night-blue #003c57 */
     
     /* Secondary colors - Sky blue */
-    --secondary: 196 68% 48%; /* Sky blue #27a0cc */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 196 68% 48%; /* --ons-color-sky-blue #27a0cc */
+    --secondary-foreground: 0 0% 100%; /* --ons-color-white */
     
-    /* Success/Continue button - Spring green */
-    --success: 70 53% 48%; /* Spring green #a8bd3a */
-    --success-foreground: 0 0% 100%;
+    /* Success - Leaf green */
+    --success: 147 79.30% 28.40%; /* --ons-color-leaf-green #0f8243 */
+    --success-foreground: 0 0% 100%; /* --ons-color-white */
     
     /* Accent colors - Aqua teal */
-    --accent: 181 100% 33%; /* Aqua teal #00a3a6 */
-    --accent-foreground: 0 0% 100%;
+    --accent: 181 100% 33%; /* --ons-color-aqua-teal #00a3a6 */
+    --accent-foreground: 0 0% 100%; /* --ons-color-white */
     
     /* Muted colors */
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 88.6%; /* --ons-color-grey-10 #efeff0 */
+    --muted-foreground: 0 0% 44.1%; /* --ons-color-grey-75 #707071 */
     
-    /* Destructive colors - WCAG AA compliant */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    /* Destructive colors - Ruby red */
+    --destructive: 351 97% 41%; /* --ons-color-ruby-red #d0021b */
+    --destructive-foreground: 0 0% 100%; /* --ons-color-white */
     
     /* Border and input colors */
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 0 0% 44.1%; /* --ons-color-grey-75 #707071 */
+    --input: 0 0% 13.3%; /* --ons-color-black #222 */
     
-    /* Focus ring - Ocean blue for accessibility */
-    --ring: 207 65% 35%; /* Ocean blue */
+    /* Focus ring - Sun yellow for accessibility */
+    --ring: 48 100% 49%; /* --ons-color-sun-yellow #fbc900 */
 
     /* Border radius */
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --background: 0 0% 13.3%; /* --ons-color-black */
+    --foreground: 0 0% 100%; /* --ons-color-white */
+    --card: 0 0% 13.3%; /* --ons-color-black */
+    --card-foreground: 0 0% 100%; /* --ons-color-white */
+    --popover: 0 0% 13.3%; /* --ons-color-black */
+    --popover-foreground: 0 0% 100%; /* --ons-color-white */
     /* Primary - Sky blue for dark mode (lighter for contrast) */
-    --primary: 196 68% 48%; /* Sky blue #27a0cc */
-    --primary-foreground: 222.2 84% 4.9%;
-    --primary-dark: 199 100% 17%; /* Night blue - stays dark */
+    --primary: 196 68% 48%; /* --ons-color-sky-blue #27a0cc */
+    --primary-foreground: 0 0% 13.3%; /* --ons-color-black */
+    --primary-dark: 199 100% 17%; /* --ons-color-night-blue #003c57 */
     /* Secondary - Aqua teal for dark mode */
-    --secondary: 181 100% 33%; /* Aqua teal #00a3a6 */
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 181 100% 33%; /* Aqua teal */
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 196 68% 48%; /* Sky blue for dark mode */
+    --secondary: 181 100% 33%; /* --ons-color-aqua-teal #00a3a6 */
+    --secondary-foreground: 0 0% 100%; /* --ons-color-white */
+    --muted: 0 0% 22%; /* --ons-color-grey-15 #e2e2e3 */
+    --muted-foreground: 0 0% 65%; /* --ons-color-grey-35 #bcbcbd */
+    --accent: 181 100% 33%; /* --ons-color-aqua-teal */
+    --accent-foreground: 0 0% 100%; /* --ons-color-white */
+    --destructive: 351 70% 45%; /* --ons-color-ruby-red darker */
+    --destructive-foreground: 0 0% 100%; /* --ons-color-white */
+    --border: 0 0% 44.1%; /* --ons-color-grey-75 */
+    --input: 0 0% 22%; /* --ons-color-grey-15 */
+    --ring: 196 68% 48%; /* --ons-color-sky-blue for dark mode */
   }
 }
 
