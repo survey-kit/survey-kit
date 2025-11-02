@@ -27,11 +27,55 @@ export interface HeaderProps
   extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof headerVariants> {
   logo?: React.ReactNode
+  logoSmall?: string // Path to small logo image
+  logoLarge?: string // Path to large logo image
   actions?: React.ReactNode
 }
 
 const Header = React.forwardRef<HTMLElement, HeaderProps>(
-  ({ className, size, variant, logo, actions, children, ...props }, ref) => {
+  (
+    {
+      className,
+      size,
+      variant,
+      logo,
+      logoSmall,
+      logoLarge,
+      actions,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const renderLogo = () => {
+      if (logo) return logo
+
+      if (logoSmall || logoLarge) {
+        return (
+          <div className="flex items-center gap-2">
+            {logoSmall && (
+              <img
+                src={logoSmall}
+                alt=""
+                className="h-8 w-8 sm:hidden"
+                aria-hidden="true"
+              />
+            )}
+            {logoLarge && (
+              <img
+                src={logoLarge}
+                alt=""
+                className="h-8 w-auto hidden sm:block"
+                aria-hidden="true"
+              />
+            )}
+          </div>
+        )
+      }
+
+      return null
+    }
+
     return (
       <header
         ref={ref}
@@ -39,7 +83,7 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
         {...props}
       >
         <div className="flex items-center space-x-4">
-          {logo}
+          {renderLogo()}
           {children}
         </div>
         {actions && (

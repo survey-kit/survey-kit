@@ -165,6 +165,18 @@ export function LayoutRenderer({
   onPageChange,
   currentPageId,
 }: LayoutRendererProps): React.JSX.Element {
+  // Set favicon if configured
+  useEffect(() => {
+    if (layoutConfig.favicon && typeof document !== 'undefined') {
+      let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement
+      if (!link) {
+        link = document.createElement('link')
+        link.rel = 'icon'
+        document.getElementsByTagName('head')[0].appendChild(link)
+      }
+      link.href = layoutConfig.favicon
+    }
+  }, [layoutConfig.favicon])
   const {
     Header,
     Button,
@@ -371,12 +383,17 @@ export function LayoutRenderer({
         <Header
           variant="primary"
           size="lg"
+          logoSmall={layoutConfig.header.logo?.small}
+          logoLarge={layoutConfig.header.logo?.large}
           logo={
-            layoutConfig.header.organization || layoutConfig.header.title ? (
+            !layoutConfig.header.logo &&
+            (layoutConfig.header.organization || layoutConfig.header.title) ? (
               <div className="flex flex-col">
                 {layoutConfig.header.organization && (
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-spring-green rounded" />
+                    {!layoutConfig.header.logo && (
+                      <div className="w-8 h-8 bg-spring-green rounded" />
+                    )}
                     <span className="sm:block hidden text-white text-sm">
                       {layoutConfig.header.organization}
                     </span>
@@ -642,10 +659,15 @@ export function LayoutRenderer({
 
       {/* Footer */}
       {layoutConfig.footer?.enabled && FooterComponent && (
-        <FooterComponent>
+        <FooterComponent
+          logoSmall={layoutConfig.footer.logo?.small}
+          logoLarge={layoutConfig.footer.logo?.large}
+        >
           {layoutConfig.footer.organization && (
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-spring-green rounded" />
+              {!layoutConfig.footer.logo && (
+                <div className="w-6 h-6 bg-spring-green rounded" />
+              )}
               <span className="text-sm text-foreground">
                 {layoutConfig.footer.organization}
               </span>
