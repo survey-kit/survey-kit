@@ -154,34 +154,34 @@
     /* Primary colors - Ocean blue */
     --primary: 207 65% 35%; /* --ons-color-ocean-blue #206095 */
     --primary-foreground: 0 0% 100%; /* --ons-color-white */
-    
+
     /* Primary dark variant - Night blue */
     --primary-dark: 199 100% 17%; /* --ons-color-night-blue #003c57 */
-    
+
     /* Secondary colors - Sky blue */
     --secondary: 196 68% 48%; /* --ons-color-sky-blue #27a0cc */
     --secondary-foreground: 0 0% 100%; /* --ons-color-white */
-    
+
     /* Success - Leaf green */
-    --success: 147 79.30% 28.40%; /* --ons-color-leaf-green #0f8243 */
+    --success: 147 79.3% 28.4%; /* --ons-color-leaf-green #0f8243 */
     --success-foreground: 0 0% 100%; /* --ons-color-white */
-    
+
     /* Accent colors - Aqua teal */
     --accent: 181 100% 33%; /* --ons-color-aqua-teal #00a3a6 */
     --accent-foreground: 0 0% 100%; /* --ons-color-white */
-    
+
     /* Muted colors */
     --muted: 0 0% 88.6%; /* --ons-color-grey-10 #efeff0 */
     --muted-foreground: 0 0% 44.1%; /* --ons-color-grey-75 #707071 */
-    
+
     /* Destructive colors - Ruby red */
     --destructive: 351 97% 41%; /* --ons-color-ruby-red #d0021b */
     --destructive-foreground: 0 0% 100%; /* --ons-color-white */
-    
+
     /* Border and input colors */
     --border: 0 0% 44.1%; /* --ons-color-grey-75 #707071 */
     --input: 0 0% 13.3%; /* --ons-color-black #222 */
-    
+
     /* Focus ring - Sun yellow for accessibility */
     --ring: 48 100% 49%; /* --ons-color-sun-yellow #fbc900 */
 
@@ -219,7 +219,7 @@
   * {
     border-color: hsl(var(--border));
   }
-  
+
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
