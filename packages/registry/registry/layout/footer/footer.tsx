@@ -13,19 +13,13 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
   ({ className, children, ...props }, ref) => (
     <footer
       ref={ref}
-      className={cn(
-        'border-t border-gray-200 mt-8 bg-gray-100',
-        className
-      )}
+      className={cn('border-t border-gray-200 bg-gray-100 mt-auto', className)}
       {...props}
     >
-      <div className="max-w-4xl mx-auto px-8 py-4">
-        {children}
-      </div>
+      <div className="max-w-4xl mx-auto px-8 py-4">{children}</div>
     </footer>
   )
 )
 Footer.displayName = 'Footer'
 
 export { Footer }
-
