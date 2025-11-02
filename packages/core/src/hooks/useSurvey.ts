@@ -119,6 +119,16 @@ export function useSurvey({
     // Also set as query param for better compatibility
     newUrl.searchParams.set('page', currentPage?.id || '')
     window.history.replaceState({}, '', newUrl.toString())
+    
+    // Dispatch custom event for LayoutRenderer to listen to
+    // This is more efficient than polling
+    if (currentPage?.id) {
+      window.dispatchEvent(
+        new CustomEvent('survey-page-change', {
+          detail: { pageId: currentPage.id },
+        })
+      )
+    }
   }, [state, config])
 
   const currentPage = useMemo(

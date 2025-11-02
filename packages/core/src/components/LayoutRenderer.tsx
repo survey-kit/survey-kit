@@ -49,6 +49,17 @@ export function LayoutRenderer({
   } = components
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [activePageId, setActivePageId] = useState<string>(() => {
+    // Get current page from props, URL, or default to first page
+    if (currentPageId) return currentPageId
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '')
+      if (hash) return hash
+      const params = new URLSearchParams(window.location.search)
+      return params.get('page') || surveyConfig?.pages?.[0]?.id || ''
+    }
+    return surveyConfig?.pages?.[0]?.id || ''
+  })
 
   useEffect(() => {
     const checkMobile = () => {
@@ -58,6 +69,51 @@ export function LayoutRenderer({
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  // Watch for URL changes to update active page
+  useEffect(() => {
+    if (currentPageId) {
+      setActivePageId(currentPageId)
+      return
+    }
+
+    const updateActivePage = () => {
+      if (typeof window === 'undefined') return
+      const hash = window.location.hash.replace('#', '')
+      if (hash) {
+        setActivePageId(hash)
+        return
+      }
+      const params = new URLSearchParams(window.location.search)
+      const pageId = params.get('page')
+      if (pageId) {
+        setActivePageId(pageId)
+      } else {
+        setActivePageId(surveyConfig?.pages?.[0]?.id || '')
+      }
+    }
+
+    // Initial check
+    updateActivePage()
+
+    // Listen to custom event from useSurvey hook
+    const handlePageChange = (event: Event) => {
+      const customEvent = event as CustomEvent<{ pageId: string }>
+      if (customEvent.detail?.pageId) {
+        setActivePageId(customEvent.detail.pageId)
+      }
+    }
+
+    // Listen to hashchange events (for direct URL navigation)
+    window.addEventListener('hashchange', updateActivePage)
+    // Listen to custom event from useSurvey (for programmatic navigation)
+    window.addEventListener('survey-page-change', handlePageChange as EventListener)
+
+    return () => {
+      window.removeEventListener('hashchange', updateActivePage)
+      window.removeEventListener('survey-page-change', handlePageChange as EventListener)
+    }
+  }, [currentPageId, surveyConfig])
 
   const WrapperComponent =
     LayoutWrapper ||
@@ -72,22 +128,6 @@ export function LayoutRenderer({
     (({ children }: { children?: React.ReactNode }) => (
       <footer>{children}</footer>
     ))
-
-  // Get current page from props, URL, or default to first page
-  const getCurrentPageId = () => {
-    if (currentPageId) return currentPageId
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash.replace('#', '')
-      if (hash) {
-        return hash
-      }
-      const params = new URLSearchParams(window.location.search)
-      return params.get('page') || ''
-    }
-    return surveyConfig?.pages?.[0]?.id || ''
-  }
-
-  const activePageId = getCurrentPageId()
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
@@ -167,7 +207,9 @@ export function LayoutRenderer({
                     </svg>
                   </Button>
                 )}
-              {layoutConfig.header.actions &&
+              {/* Desktop: Show header actions in header */}
+              {!isMobile &&
+                layoutConfig.header.actions &&
                 layoutConfig.header.actions.length > 0 &&
                 Button &&
                 layoutConfig.header.actions.map((action, index) => (
@@ -249,6 +291,7 @@ export function LayoutRenderer({
                       </div>
                     )
                   }
+                  footer={undefined}
                 >
                   {sidebarItems.map((item) => {
                     // Get icon from lucide-react
@@ -290,6 +333,27 @@ export function LayoutRenderer({
                     mobile={true}
                     mobileOpen={sidebarOpen}
                     onClick={() => setSidebarOpen(false)}
+                    footer={
+                      layoutConfig.header?.actions &&
+                      layoutConfig.header.actions.length > 0 &&
+                      Button ? (
+                        <div className="space-y-2">
+                          {layoutConfig.header.actions.map((action, index) => (
+                            <Button
+                              key={index}
+                              variant="default"
+                              className="w-full"
+                              onClick={() => {
+                                onAction?.(action.onClick)
+                                setSidebarOpen(false)
+                              }}
+                            >
+                              {action.label}
+                            </Button>
+                          ))}
+                        </div>
+                      ) : undefined
+                    }
                   >
                     {sidebarItems.map((item) => {
                       const IconComponent = item.icon
