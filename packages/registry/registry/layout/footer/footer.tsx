@@ -48,7 +48,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
         )}
         {...props}
       >
-        <div className="max-w-4xl mx-auto px-8 py-4 flex items-center gap-2">
+        <div className="max-w-4xl px-8 py-4 flex items-center gap-2">
           {renderLogo()}
           {children}
         </div>

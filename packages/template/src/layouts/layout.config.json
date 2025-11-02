@@ -23,7 +23,7 @@
   "footer": {
     "enabled": true,
     "logo": {
-      "small": "/branding_kit/SVG/Stacked/English/ONS_Logo_Digital_Black_English_RGB.svg",
+      "small": "/branding_kit/Favicon/ONS-symbol_digital.svg",
       "large": "/branding_kit/SVG/Landscape/English/ONS_Logo_Digital_Black_Landscape_English_RGB.svg"
     }
   }
