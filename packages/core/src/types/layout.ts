@@ -23,6 +23,7 @@ export interface MainContentConfig {
   enabled: boolean
   sidebar?: {
     enabled: boolean
+    size?: 'sm' | 'md' | 'lg' // Sidebar width: sm (192px), md (256px), lg (320px)
   }
 }
 

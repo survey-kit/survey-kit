@@ -17,7 +17,8 @@
   "main": {
     "enabled": true,
     "sidebar": {
-      "enabled": true
+      "enabled": true,
+      "size": "lg"
     }
   },
   "footer": {
