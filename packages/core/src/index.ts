@@ -3,6 +3,8 @@ export type {
   SurveyConfig,
   SurveyPage,
   SurveyQuestion,
+  SurveyStage,
+  SurveyGroup,
   SurveySubmission,
   SurveyState,
   QuestionAnswer,
@@ -14,6 +16,8 @@ export type {
   ConditionalLogic,
   ComparisonOperator,
   LogicOperator,
+  NavigationConfig,
+  ProgressConfig,
 } from './types/survey'
 
 export type {
@@ -36,4 +40,14 @@ export {
   evaluateConditions,
   shouldShowQuestion,
   shouldShowPage,
+  shouldShowGroup,
+  shouldShowStage,
 } from './lib/conditional'
+
+// Export helper utilities
+export {
+  normaliseSurveyConfig,
+  getAllPages,
+  findPageById,
+  getPageLocation,
+} from './lib/migration'

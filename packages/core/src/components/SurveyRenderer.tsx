@@ -41,18 +41,30 @@ export function SurveyRenderer({
   children,
 }: SurveyRendererProps): React.JSX.Element {
   const survey = useSurvey({ config, onSubmit })
+  const { ProgressBar: ProgressBarComponent } = components
+
+  // Get progress configuration
+  const progressConfig = config.progress || {}
+  const showProgress = {
+    overall: progressConfig.showOverall ?? config.progressBar ?? false,
+    perStage: progressConfig.showPerStage ?? false,
+    perGroup: progressConfig.showPerGroup ?? false,
+    perPage: progressConfig.showPerPage ?? false,
+  }
+  const progressLocations = progressConfig.location || ['page']
 
   // Check if current page should be accessible
   const latestAccessiblePageIndex = survey.getLatestAccessiblePageIndex()
-  const currentPageIndex = config.pages.findIndex(
-    (p) => p.id === survey.currentPage.id
+  const allPages = survey.getVisiblePages()
+  const currentPageIndex = allPages.findIndex(
+    (p) => p.id === survey.currentPage?.id
   )
   const isPageAccessible = currentPageIndex <= latestAccessiblePageIndex
 
   // Get redirect URL for blocked page (latest accessible page)
   const getRedirectUrl = () => {
     if (typeof window === 'undefined') return ''
-    const latestPage = config.pages[latestAccessiblePageIndex]
+    const latestPage = allPages[latestAccessiblePageIndex]
     if (!latestPage) return window.location.href
     const url = new URL(window.location.href)
     url.hash = latestPage.id
@@ -279,9 +291,45 @@ export function SurveyRenderer({
 
   // Render page questions (only visible questions)
   const pageContent = useMemo(() => {
+    if (!survey.currentPage) {
+      return <div className="text-center text-gray-500">No page available.</div>
+    }
     const visibleQuestions = survey.getVisibleQuestions(survey.currentPage)
     return (
       <div className="space-y-6">
+        {/* Progress bars based on config */}
+        {progressLocations.includes('page') && ProgressBarComponent && (
+          <div className="space-y-2">
+            {showProgress.overall && (
+              <ProgressBarComponent
+                value={survey.overallProgress}
+                showLabel
+                label="Overall Progress"
+              />
+            )}
+            {showProgress.perStage && survey.currentStage && (
+              <ProgressBarComponent
+                value={survey.stageProgress}
+                showLabel
+                label={`${survey.currentStage.title} Progress`}
+              />
+            )}
+            {showProgress.perGroup && survey.currentGroup && (
+              <ProgressBarComponent
+                value={survey.groupProgress}
+                showLabel
+                label={`${survey.currentGroup.title} Progress`}
+              />
+            )}
+            {showProgress.perPage && (
+              <ProgressBarComponent
+                value={survey.progress}
+                showLabel
+                label="Page Progress"
+              />
+            )}
+          </div>
+        )}
         {survey.currentPage.title && (
           <div>
             <h2 className="text-2xl font-bold">{survey.currentPage.title}</h2>
@@ -305,9 +353,18 @@ export function SurveyRenderer({
     )
   }, [
     survey.currentPage,
+    survey.currentStage,
+    survey.currentGroup,
     survey.state.answers,
     survey.state.errors,
     survey.getVisibleQuestions,
+    survey.overallProgress,
+    survey.stageProgress,
+    survey.groupProgress,
+    survey.progress,
+    showProgress,
+    progressLocations,
+    ProgressBarComponent,
   ])
 
   // Default layout

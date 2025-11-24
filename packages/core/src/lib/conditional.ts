@@ -1,4 +1,10 @@
-import type { SurveyQuestion, SurveyPage, Condition } from '../types/survey'
+import type {
+  SurveyQuestion,
+  SurveyPage,
+  SurveyStage,
+  SurveyGroup,
+  Condition,
+} from '../types/survey'
 
 /**
  * Get all answers as a flat record for easy lookup
@@ -99,5 +105,45 @@ export function shouldShowPage(
     page.conditional.conditions,
     answers,
     page.conditional.logic || 'AND'
+  )
+}
+
+/**
+ * Determine if a group should be shown based on conditional logic
+ * @param group The group to check
+ * @param answers All survey answers
+ * @returns true if group should be visible, false otherwise
+ */
+export function shouldShowGroup(
+  group: SurveyGroup,
+  answers: AnswersRecord
+): boolean {
+  // If no conditional logic, always show
+  if (!group.conditional) return true
+
+  return evaluateConditions(
+    group.conditional.conditions,
+    answers,
+    group.conditional.logic || 'AND'
+  )
+}
+
+/**
+ * Determine if a stage should be shown based on conditional logic
+ * @param stage The stage to check
+ * @param answers All survey answers
+ * @returns true if stage should be visible, false otherwise
+ */
+export function shouldShowStage(
+  stage: SurveyStage,
+  answers: AnswersRecord
+): boolean {
+  // If no conditional logic, always show
+  if (!stage.conditional) return true
+
+  return evaluateConditions(
+    stage.conditional.conditions,
+    answers,
+    stage.conditional.logic || 'AND'
   )
 }

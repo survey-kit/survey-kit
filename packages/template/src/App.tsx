@@ -14,6 +14,7 @@ import {
   Footer,
   Checkbox,
   BlockedPage,
+  StageTabs,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -42,6 +43,7 @@ function App() {
       Footer,
       Checkbox,
       BlockedPage,
+      StageTabs,
     }),
     []
   )
@@ -67,12 +69,12 @@ function App() {
   return (
     <LayoutRenderer
       layoutConfig={layoutConfig as LayoutConfig}
-      surveyConfig={surveyConfig as SurveyConfig}
+      surveyConfig={surveyConfig as unknown as SurveyConfig}
       components={components}
       onAction={handleLayoutAction}
     >
       <SurveyRenderer
-        config={surveyConfig as SurveyConfig}
+        config={surveyConfig as unknown as SurveyConfig}
         components={components}
         onSubmit={handleSurveySubmit}
         layout="default"

@@ -114,15 +114,61 @@ export interface SurveyPage {
 }
 
 /**
+ * Navigation configuration - controls how users can navigate through the survey
+ */
+export interface NavigationConfig {
+  stageOrder?: 'sequential' | 'free' // Must complete stage 1 before stage 2, or free navigation
+  groupOrder?: 'sequential' | 'free' // Within stages
+  pageOrder?: 'sequential' | 'free' // Within groups (defaults to sequential)
+}
+
+/**
+ * Progress display configuration
+ */
+export interface ProgressConfig {
+  showOverall?: boolean // Show overall progress bar
+  showPerStage?: boolean // Show progress for current stage
+  showPerGroup?: boolean // Show progress for current group
+  showPerPage?: boolean // Show progress for current page
+  location?: ('header' | 'page' | 'sidebar')[] // Where to display progress
+}
+
+/**
+ * Group configuration - organizes pages within a stage
+ */
+export interface SurveyGroup {
+  id: string
+  title: string
+  description?: string
+  icon?: string
+  pages: SurveyPage[]
+  conditional?: ConditionalLogic // Group visibility based on answers
+}
+
+/**
+ * Stage configuration - top-level sections of the survey
+ */
+export interface SurveyStage {
+  id: string
+  title: string
+  description?: string
+  icon?: string
+  groups: SurveyGroup[]
+  conditional?: ConditionalLogic // Stage visibility based on answers
+}
+
+/**
  * Complete survey configuration
  */
 export interface SurveyConfig {
   id: string
   title: string
   description?: string
-  pages: SurveyPage[]
-  progressBar?: boolean
+  stages: SurveyStage[] // Required: hierarchical stages → groups → pages
+  progressBar?: boolean // Legacy: simple progress bar (deprecated, use progress config)
   showQuestionNumbers?: boolean
+  navigation?: NavigationConfig // Configurable navigation rules
+  progress?: ProgressConfig // Configurable progress display
 }
 
 /**
