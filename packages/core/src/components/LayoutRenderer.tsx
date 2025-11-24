@@ -633,7 +633,9 @@ export function LayoutRenderer({
                         )}
                         {!sidebarCollapsed && (
                           <>
-                            <span className="text-sm flex-1">{item.label}</span>
+                            <span className="text-sm flex-1 ">
+                              {item.label}
+                            </span>
                             {item.completionStatus === 'complete' && (
                               <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
                             )}
@@ -734,8 +736,10 @@ export function LayoutRenderer({
       {/* Footer */}
       {layoutConfig.footer?.enabled && FooterComponent && (
         <FooterComponent
-          logoSmall={layoutConfig.footer.logo?.small}
-          logoLarge={layoutConfig.footer.logo?.large}
+          {...({
+            logoSmall: layoutConfig.footer.logo?.small,
+            logoLarge: layoutConfig.footer.logo?.large,
+          } as any)}
         >
           {layoutConfig.footer.organization && (
             <div className="flex items-center gap-2">
