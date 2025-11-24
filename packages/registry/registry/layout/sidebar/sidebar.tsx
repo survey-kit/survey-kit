@@ -134,7 +134,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {footer && (
             <div
               className={cn(
-                'border-t flex-shrink-0 bg-white',
+                'border-t flex-shrink-0 bg-white lg:hidden',
                 collapsed ? 'p-2' : 'p-4'
               )}
             >
