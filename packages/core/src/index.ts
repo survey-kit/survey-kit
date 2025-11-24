@@ -10,6 +10,10 @@ export type {
   ValidationRule,
   QuestionOption,
   PageCompletionStatus,
+  Condition,
+  ConditionalLogic,
+  ComparisonOperator,
+  LogicOperator,
 } from './types/survey'
 
 export type {
@@ -25,3 +29,11 @@ export { LayoutRenderer } from './components/LayoutRenderer'
 
 // Export hooks
 export { useSurvey } from './hooks/useSurvey'
+
+// Export conditional logic utilities
+export {
+  evaluateCondition,
+  evaluateConditions,
+  shouldShowQuestion,
+  shouldShowPage,
+} from './lib/conditional'

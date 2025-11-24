@@ -277,8 +277,9 @@ export function SurveyRenderer({
     }
   }
 
-  // Render page questions
+  // Render page questions (only visible questions)
   const pageContent = useMemo(() => {
+    const visibleQuestions = survey.getVisibleQuestions(survey.currentPage)
     return (
       <div className="space-y-6">
         {survey.currentPage.title && (
@@ -292,11 +293,22 @@ export function SurveyRenderer({
           </div>
         )}
         <div className="space-y-4">
-          {survey.currentPage.questions.map(renderQuestion)}
+          {visibleQuestions.length > 0 ? (
+            visibleQuestions.map(renderQuestion)
+          ) : (
+            <p className="text-gray-500 text-sm">
+              No questions available on this page.
+            </p>
+          )}
         </div>
       </div>
     )
-  }, [survey.currentPage, survey.state.answers, survey.state.errors])
+  }, [
+    survey.currentPage,
+    survey.state.answers,
+    survey.state.errors,
+    survey.getVisibleQuestions,
+  ])
 
   // Default layout
   if (layout === 'default' && !children) {

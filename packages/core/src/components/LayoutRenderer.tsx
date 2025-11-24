@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import * as LucideIcons from 'lucide-react'
 import { Check, MoreHorizontal } from 'lucide-react'
 import { cn } from '../lib/utils'
 import { validateQuestion, isValidForNavigation } from '../lib/validation'
+import { shouldShowPage, shouldShowQuestion } from '../lib/conditional'
 import type { LayoutConfig } from '../types/layout'
 import type { SurveyConfig, PageCompletionStatus } from '../types/survey'
 
@@ -26,7 +27,7 @@ const getSurveyAnswers = (
   return {}
 }
 
-// Helper function to check if page is complete (all requiredToNavigate questions are valid)
+// Helper function to check if page is complete (all visible requiredToNavigate questions are valid)
 const isPageComplete = (
   pageIndex: number,
   config: SurveyConfig,
@@ -35,10 +36,24 @@ const isPageComplete = (
   const page = config.pages[pageIndex]
   if (!page) return false
 
-  for (const question of page.questions) {
+  // Flatten answers for conditional logic
+  const flattenedAnswers = Object.entries(answers).reduce(
+    (acc, [key, answer]) => {
+      acc[key] = answer.value
+      return acc
+    },
+    {} as Record<string, unknown>
+  )
+
+  // Get visible questions for this page
+  const visibleQuestions = page.questions.filter((question) =>
+    shouldShowQuestion(question, flattenedAnswers)
+  )
+
+  for (const question of visibleQuestions) {
     if (question.requiredToNavigate) {
       const answer = answers[question.id]?.value
-      if (!isValidForNavigation(question, answer)) {
+      if (!isValidForNavigation(question, answer, answers)) {
         return false
       }
     }
@@ -47,7 +62,7 @@ const isPageComplete = (
   return true
 }
 
-// Helper function to get page completion status
+// Helper function to get page completion status (only considers visible questions)
 const getPageCompletionStatus = (
   pageIndex: number,
   config: SurveyConfig,
@@ -56,11 +71,28 @@ const getPageCompletionStatus = (
   const page = config.pages[pageIndex]
   if (!page) return 'empty'
 
+  // Flatten answers for conditional logic
+  const flattenedAnswers = Object.entries(answers).reduce(
+    (acc, [key, answer]) => {
+      acc[key] = answer.value
+      return acc
+    },
+    {} as Record<string, unknown>
+  )
+
+  // Get visible questions for this page
+  const visibleQuestions = page.questions.filter((question) =>
+    shouldShowQuestion(question, flattenedAnswers)
+  )
+
+  // If no visible questions, consider empty
+  if (visibleQuestions.length === 0) return 'empty'
+
   let hasAnyAnswer = false
   let hasAllAnswers = true
   let hasAllRequiredAnswers = true
 
-  for (const question of page.questions) {
+  for (const question of visibleQuestions) {
     const answer = answers[question.id]?.value
     const hasAnswer =
       answer !== null &&
@@ -69,7 +101,8 @@ const getPageCompletionStatus = (
       !(Array.isArray(answer) && answer.length === 0)
 
     // Check if answer is valid (not just exists, but passes validation)
-    const isValid = hasAnswer && validateQuestion(question, answer).length === 0
+    const isValid =
+      hasAnswer && validateQuestion(question, answer, answers).length === 0
 
     if (hasAnswer) {
       hasAnyAnswer = true
@@ -84,7 +117,9 @@ const getPageCompletionStatus = (
   }
 
   // If page has requiredToNavigate questions, use stricter criteria
-  const hasRequiredToNavigate = page.questions.some((q) => q.requiredToNavigate)
+  const hasRequiredToNavigate = visibleQuestions.some(
+    (q) => q.requiredToNavigate
+  )
   if (hasRequiredToNavigate) {
     // Only mark as complete if all requiredToNavigate questions are valid
     return hasAllRequiredAnswers
@@ -101,21 +136,36 @@ const getPageCompletionStatus = (
 }
 
 // Helper function to get latest accessible page index
-// A page is accessible if all pages BEFORE it are complete
+// A page is accessible if all visible pages BEFORE it are complete
 const getLatestAccessiblePageIndex = (
   config: SurveyConfig,
   answers: Record<string, { value: unknown }>
 ): number => {
-  // First page (index 0) is always accessible
-  if (config.pages.length === 0) return 0
+  // Flatten answers for conditional logic
+  const flattenedAnswers = Object.entries(answers).reduce(
+    (acc, [key, answer]) => {
+      acc[key] = answer.value
+      return acc
+    },
+    {} as Record<string, unknown>
+  )
+
+  // Get visible pages
+  const visiblePages = config.pages.filter((page) =>
+    shouldShowPage(page, flattenedAnswers)
+  )
+
+  if (visiblePages.length === 0) return 0
 
   let latestAccessible = 0
 
-  for (let i = 1; i < config.pages.length; i++) {
-    // Check if all pages BEFORE this one (i) are complete
+  for (let i = 1; i < visiblePages.length; i++) {
+    // Check if all visible pages BEFORE this one (i) are complete
     let allPreviousComplete = true
     for (let j = 0; j < i; j++) {
-      if (!isPageComplete(j, config, answers)) {
+      const page = visiblePages[j]
+      const pageIndex = config.pages.findIndex((p) => p.id === page.id)
+      if (pageIndex >= 0 && !isPageComplete(pageIndex, config, answers)) {
         allPreviousComplete = false
         break
       }
@@ -128,7 +178,16 @@ const getLatestAccessiblePageIndex = (
     }
   }
 
-  return latestAccessible
+  // Convert visible page index back to actual page index
+  const latestVisiblePage = visiblePages[latestAccessible]
+  if (latestVisiblePage) {
+    const actualIndex = config.pages.findIndex(
+      (p) => p.id === latestVisiblePage.id
+    )
+    return actualIndex >= 0 ? actualIndex : 0
+  }
+
+  return 0
 }
 
 interface LayoutRendererProps {
@@ -313,35 +372,50 @@ export function LayoutRenderer({
     }
   }, [surveyConfig?.id])
 
+  // Flatten answers for conditional logic (convert from { value: ... } to flat structure)
+  const flattenedAnswers = useMemo(() => {
+    const flat: Record<string, unknown> = {}
+    Object.entries(surveyAnswers).forEach(([key, answer]) => {
+      flat[key] = answer.value
+    })
+    return flat
+  }, [surveyAnswers])
+
   // Calculate latest accessible page
   const latestAccessiblePageIndex = getLatestAccessiblePageIndex(
     surveyConfig || { id: '', title: '', pages: [] },
     surveyAnswers
   )
 
-  // Generate sidebar items from survey pages
-  const sidebarItems =
-    surveyConfig?.pages?.map((page, index) => {
-      const completionStatus = getPageCompletionStatus(
-        index,
-        surveyConfig,
-        surveyAnswers
-      )
-      const disabled = index > latestAccessiblePageIndex
-      const tooltip = disabled
-        ? 'Please complete all required questions on previous pages before accessing this page'
-        : undefined
+  // Get visible pages (filtered by conditional logic)
+  const visiblePages =
+    surveyConfig?.pages?.filter((page) =>
+      shouldShowPage(page, flattenedAnswers)
+    ) || []
 
-      return {
-        id: page.id,
-        label: page.title || `Page ${index + 1}`,
-        icon: page.icon,
-        active: activePageId === page.id,
-        completionStatus,
-        disabled,
-        tooltip,
-      }
-    }) || []
+  // Generate sidebar items from visible pages only
+  const sidebarItems = visiblePages.map((page) => {
+    const pageIndex =
+      surveyConfig?.pages?.findIndex((p) => p.id === page.id) ?? -1
+    const completionStatus =
+      pageIndex >= 0
+        ? getPageCompletionStatus(pageIndex, surveyConfig, surveyAnswers)
+        : 'empty'
+    const disabled = pageIndex > latestAccessiblePageIndex
+    const tooltip = disabled
+      ? 'Please complete all required questions on previous pages before accessing this page'
+      : undefined
+
+    return {
+      id: page.id,
+      label: page.title || `Page ${pageIndex + 1}`,
+      icon: page.icon,
+      active: activePageId === page.id,
+      completionStatus,
+      disabled,
+      tooltip,
+    }
+  })
 
   const handleSidebarItemClick = (pageId: string, disabled?: boolean) => {
     // Prevent navigation if page is disabled

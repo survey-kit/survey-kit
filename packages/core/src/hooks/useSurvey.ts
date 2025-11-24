@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { validateQuestion as validateQuestionUtil } from '../lib/validation'
+import {
+  shouldShowQuestion,
+  shouldShowPage,
+  evaluateConditions,
+} from '../lib/conditional'
 import type {
   SurveyConfig,
   SurveyState,
@@ -30,6 +35,8 @@ interface UseSurveyReturn {
   isPageComplete: (pageIndex: number) => boolean
   getPageCompletionStatus: (pageIndex: number) => PageCompletionStatus
   getLatestAccessiblePageIndex: () => number
+  getVisiblePages: () => SurveyConfig['pages']
+  getVisibleQuestions: (page: SurveyConfig['pages'][0]) => SurveyQuestion[]
 }
 
 /**
@@ -135,19 +142,68 @@ export function useSurvey({
     }
   }, [state, config])
 
-  const currentPage = useMemo(
-    () => config.pages[state.currentPageIndex],
-    [config.pages, state.currentPageIndex]
-  )
+  // Get all answers as a flat record for conditional logic
+  const allAnswers = useMemo(() => {
+    const answers: Record<string, unknown> = {}
+    Object.values(state.answers).forEach((answer) => {
+      answers[answer.questionId] = answer.value
+    })
+    return answers
+  }, [state.answers])
+
+  // Get visible pages (filtered by conditional logic)
+  const visiblePages = useMemo(() => {
+    return config.pages.filter((page) => shouldShowPage(page, allAnswers))
+  }, [config.pages, allAnswers])
+
+  // Get current page (may be filtered)
+  const currentPage = useMemo(() => {
+    // Find the visible page that corresponds to currentPageIndex
+    const visiblePageIndex = visiblePages.findIndex(
+      (_, index) => index === state.currentPageIndex
+    )
+    if (visiblePageIndex >= 0) {
+      return visiblePages[visiblePageIndex]
+    }
+    // Fallback to original page if not found in visible pages
+    return config.pages[state.currentPageIndex]
+  }, [config.pages, visiblePages, state.currentPageIndex])
+
+  // Get visible questions for current page
+  const visibleQuestions = useMemo(() => {
+    if (!currentPage) return []
+    return currentPage.questions.filter((question) =>
+      shouldShowQuestion(question, allAnswers)
+    )
+  }, [currentPage, allAnswers])
 
   const currentQuestion = useMemo(
-    () => currentPage?.questions[0] || null,
-    [currentPage]
+    () => visibleQuestions[0] || null,
+    [visibleQuestions]
   )
 
-  const isFirstPage = state.currentPageIndex === 0
-  const isLastPage = state.currentPageIndex === config.pages.length - 1
-  const progress = ((state.currentPageIndex + 1) / config.pages.length) * 100
+  // Calculate progress based on visible pages
+  const isFirstPage = useMemo(() => {
+    const visiblePageIndex = visiblePages.findIndex(
+      (p) => p.id === currentPage?.id
+    )
+    return visiblePageIndex === 0
+  }, [visiblePages, currentPage])
+
+  const isLastPage = useMemo(() => {
+    const visiblePageIndex = visiblePages.findIndex(
+      (p) => p.id === currentPage?.id
+    )
+    return visiblePageIndex === visiblePages.length - 1
+  }, [visiblePages, currentPage])
+
+  const progress = useMemo(() => {
+    const visiblePageIndex = visiblePages.findIndex(
+      (p) => p.id === currentPage?.id
+    )
+    if (visiblePageIndex < 0) return 0
+    return ((visiblePageIndex + 1) / visiblePages.length) * 100
+  }, [visiblePages, currentPage])
 
   /**
    * Validate a question's answer
@@ -155,9 +211,9 @@ export function useSurvey({
   const validateQuestion = useCallback(
     (question: SurveyQuestion): string[] => {
       const answer = state.answers[question.id]?.value
-      return validateQuestionUtil(question, answer)
+      return validateQuestionUtil(question, answer, allAnswers)
     },
-    [state.answers]
+    [state.answers, allAnswers]
   )
 
   /**
@@ -208,15 +264,16 @@ export function useSurvey({
 
   /**
    * Move to next page (validates current page first)
+   * Handles dynamic navigation based on skip logic and conditional pages
    */
   const nextPage = useCallback(() => {
     if (isLastPage) return
 
-    // Validate current page - check all requiredToNavigate questions
+    // Validate current page - check all visible requiredToNavigate questions
     const currentPageErrors: Record<string, string[]> = {}
     let canNavigate = true
 
-    currentPage.questions.forEach((question) => {
+    visibleQuestions.forEach((question) => {
       if (question.requiredToNavigate) {
         const errors = validateQuestion(question)
         if (errors.length > 0) {
@@ -253,6 +310,27 @@ export function useSurvey({
       return
     }
 
+    // Check for skip logic - if any visible question has skip logic that matches
+    let targetPageId: string | undefined
+    for (const question of visibleQuestions) {
+      if (question.skipLogic) {
+        const shouldSkip = evaluateConditions(
+          question.skipLogic.conditions,
+          allAnswers,
+          question.skipLogic.logic || 'AND'
+        )
+        if (shouldSkip) {
+          targetPageId = question.skipLogic.nextPageId
+          break
+        }
+      }
+    }
+
+    // Check if current page has dynamic nextPageId
+    if (!targetPageId && currentPage.nextPageId) {
+      targetPageId = currentPage.nextPageId
+    }
+
     // Clear errors and navigate
     setState((prev) => {
       // Clear errors for current page only
@@ -266,13 +344,53 @@ export function useSurvey({
           newErrors[questionId] = prev.errors[questionId]
         }
       })
+
+      let nextPageIndex = prev.currentPageIndex + 1
+
+      // If we have a target page ID, find it in visible pages
+      if (targetPageId) {
+        const targetIndex = visiblePages.findIndex((p) => p.id === targetPageId)
+        if (targetIndex >= 0) {
+          // Find the actual index in the full pages array
+          const targetPage = config.pages.find((p) => p.id === targetPageId)
+          if (targetPage) {
+            nextPageIndex = config.pages.findIndex((p) => p.id === targetPageId)
+          }
+        }
+      } else {
+        // Default: move to next visible page
+        const currentVisibleIndex = visiblePages.findIndex(
+          (p) => p.id === currentPage.id
+        )
+        if (
+          currentVisibleIndex >= 0 &&
+          currentVisibleIndex < visiblePages.length - 1
+        ) {
+          const nextVisiblePage = visiblePages[currentVisibleIndex + 1]
+          const nextPage = config.pages.find((p) => p.id === nextVisiblePage.id)
+          if (nextPage) {
+            nextPageIndex = config.pages.findIndex(
+              (p) => p.id === nextVisiblePage.id
+            )
+          }
+        }
+      }
+
       return {
         ...prev,
-        currentPageIndex: prev.currentPageIndex + 1,
+        currentPageIndex: nextPageIndex,
         errors: newErrors,
       }
     })
-  }, [isLastPage, currentPage, validateQuestion, config.pages])
+  }, [
+    isLastPage,
+    currentPage,
+    visibleQuestions,
+    validateQuestion,
+    config.pages,
+    allAnswers,
+    visiblePages,
+  ])
 
   /**
    * Move to previous page
@@ -297,15 +415,20 @@ export function useSurvey({
   )
 
   /**
-   * Check if a page is complete (all requiredToNavigate questions answered and valid)
+   * Check if a page is complete (all visible requiredToNavigate questions answered and valid)
    */
   const isPageComplete = useCallback(
     (pageIndex: number): boolean => {
       const page = config.pages[pageIndex]
       if (!page) return false
 
-      // Check all questions that require navigation
-      for (const question of page.questions) {
+      // Get visible questions for this page
+      const visibleQuestionsForPage = page.questions.filter((question) =>
+        shouldShowQuestion(question, allAnswers)
+      )
+
+      // Check all visible questions that require navigation
+      for (const question of visibleQuestionsForPage) {
         if (question.requiredToNavigate) {
           const answer = state.answers[question.id]?.value
           const errors = validateQuestion(question)
@@ -324,21 +447,29 @@ export function useSurvey({
 
       return true
     },
-    [config.pages, state.answers, validateQuestion]
+    [config.pages, state.answers, validateQuestion, allAnswers]
   )
 
   /**
-   * Get page completion status
+   * Get page completion status (only considers visible questions)
    */
   const getPageCompletionStatus = useCallback(
     (pageIndex: number): PageCompletionStatus => {
       const page = config.pages[pageIndex]
       if (!page) return 'empty'
 
+      // Get visible questions for this page
+      const visibleQuestionsForPage = page.questions.filter((question) =>
+        shouldShowQuestion(question, allAnswers)
+      )
+
+      // If no visible questions, consider empty
+      if (visibleQuestionsForPage.length === 0) return 'empty'
+
       let hasAnyAnswer = false
       let hasAllAnswers = true
 
-      for (const question of page.questions) {
+      for (const question of visibleQuestionsForPage) {
         const answer = state.answers[question.id]?.value
         const hasAnswer =
           answer !== null &&
@@ -357,25 +488,26 @@ export function useSurvey({
       if (hasAnyAnswer) return 'partial'
       return 'empty'
     },
-    [config.pages, state.answers]
+    [config.pages, state.answers, allAnswers]
   )
 
   /**
    * Get latest accessible page index
-   * Returns the highest page index where all previous pages are complete
-   * A page is accessible if all pages BEFORE it are complete
+   * Returns the highest visible page index where all previous visible pages are complete
+   * A page is accessible if all visible pages BEFORE it are complete
    */
   const getLatestAccessiblePageIndex = useCallback((): number => {
-    // First page (index 0) is always accessible
-    if (config.pages.length === 0) return 0
+    if (visiblePages.length === 0) return 0
 
     let latestAccessible = 0
 
-    for (let i = 1; i < config.pages.length; i++) {
-      // Check if all pages BEFORE this one (i) are complete
+    for (let i = 1; i < visiblePages.length; i++) {
+      // Check if all visible pages BEFORE this one (i) are complete
       let allPreviousComplete = true
       for (let j = 0; j < i; j++) {
-        if (!isPageComplete(j)) {
+        const page = visiblePages[j]
+        const pageIndex = config.pages.findIndex((p) => p.id === page.id)
+        if (pageIndex >= 0 && !isPageComplete(pageIndex)) {
           allPreviousComplete = false
           break
         }
@@ -388,19 +520,50 @@ export function useSurvey({
       }
     }
 
-    return latestAccessible
-  }, [config.pages.length, isPageComplete])
+    // Convert visible page index back to actual page index
+    const latestVisiblePage = visiblePages[latestAccessible]
+    if (latestVisiblePage) {
+      const actualIndex = config.pages.findIndex(
+        (p) => p.id === latestVisiblePage.id
+      )
+      return actualIndex >= 0 ? actualIndex : 0
+    }
+
+    return 0
+  }, [visiblePages, config.pages, isPageComplete])
 
   /**
-   * Submit survey
+   * Get visible pages
+   */
+  const getVisiblePages = useCallback(() => {
+    return visiblePages
+  }, [visiblePages])
+
+  /**
+   * Get visible questions for a page
+   */
+  const getVisibleQuestions = useCallback(
+    (page: SurveyConfig['pages'][0]) => {
+      return page.questions.filter((question) =>
+        shouldShowQuestion(question, allAnswers)
+      )
+    },
+    [allAnswers]
+  )
+
+  /**
+   * Submit survey (only validates visible questions)
    */
   const submitSurvey = useCallback(async () => {
-    // Validate all questions
+    // Validate all visible questions
     const allErrors: Record<string, string[]> = {}
     const answers: Record<string, unknown> = {}
 
-    config.pages.forEach((page) => {
-      page.questions.forEach((question) => {
+    visiblePages.forEach((page) => {
+      const visibleQuestionsForPage = page.questions.filter((question) =>
+        shouldShowQuestion(question, allAnswers)
+      )
+      visibleQuestionsForPage.forEach((question) => {
         const errors = validateQuestion(question)
         if (errors.length > 0) {
           allErrors[question.id] = errors
@@ -426,7 +589,7 @@ export function useSurvey({
     if (onSubmit) {
       await onSubmit(answers)
     }
-  }, [config.pages, validateQuestion, getAnswerValue, onSubmit])
+  }, [visiblePages, allAnswers, validateQuestion, getAnswerValue, onSubmit])
 
   return {
     state,
@@ -444,5 +607,7 @@ export function useSurvey({
     isPageComplete,
     getPageCompletionStatus,
     getLatestAccessiblePageIndex,
+    getVisiblePages,
+    getVisibleQuestions,
   }
 }
