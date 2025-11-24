@@ -61,7 +61,22 @@
           "type": "textarea",
           "label": "What could we improve?",
           "placeholder": "Share your suggestions here...",
-          "description": "Optional - help us understand areas for improvement"
+          "description": "Optional - help us understand areas for improvement",
+          "conditional": {
+            "conditions": [
+              {
+                "operator": "equals",
+                "questionId": "satisfaction",
+                "value": "dissatisfied"
+              },
+              {
+                "operator": "equals",
+                "questionId": "satisfaction",
+                "value": "very_dissatisfied"
+              }
+            ],
+            "logic": "OR"
+          }
         }
       ]
     },
@@ -95,6 +110,87 @@
             { "label": "Engineering", "value": "engineering" },
             { "label": "HR", "value": "hr" },
             { "label": "Other", "value": "other" }
+          ],
+          "skipLogic": {
+            "conditions": [
+              {
+                "operator": "equals",
+                "questionId": "department",
+                "value": "engineering"
+              }
+            ],
+            "logic": "AND",
+            "nextPageId": "page-4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-4",
+      "title": "Engineering Details",
+      "icon": "Code",
+      "description": "Additional questions for engineering team",
+      "conditional": {
+        "conditions": [
+          {
+            "operator": "equals",
+            "questionId": "department",
+            "value": "engineering"
+          }
+        ],
+        "logic": "AND"
+      },
+      "questions": [
+        {
+          "id": "startDate",
+          "type": "date",
+          "label": "Project start date",
+          "required": true,
+          "requiredToNavigate": true
+        },
+        {
+          "id": "endDate",
+          "type": "date",
+          "label": "Project end date",
+          "required": true,
+          "requiredToNavigate": true,
+          "validation": [
+            {
+              "type": "dateRange",
+              "questionId": "startDate",
+              "operator": "greaterThan",
+              "message": "End date must be after start date"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "page-5",
+      "title": "Follow-up Questions",
+      "icon": "MessageSquare",
+      "description": "Optional follow-up questions",
+      "conditional": {
+        "conditions": [
+          {
+            "operator": "equals",
+            "questionId": "satisfaction",
+            "value": "very_satisfied"
+          }
+        ],
+        "logic": "AND"
+      },
+      "questions": [
+        {
+          "id": "referral",
+          "type": "radio",
+          "label": "Would you recommend us to others?",
+          "required": true,
+          "requiredToNavigate": true,
+          "options": [
+            { "label": "Yes", "value": "yes" },
+            { "label": "No", "value": "no" },
+            { "label": "Maybe", "value": "maybe" }
           ]
         }
       ]
