@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../../lib/utils'
 
 const progressBarVariants = cva(
-  'relative h-4 w-full overflow-hidden bg-secondary',
+  'relative h-4 w-full overflow-hidden bg-secondary rounded-md flex items-center',
   {
     variants: {
       size: {
@@ -93,6 +93,10 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
           <div
             className={cn(progressBarFillVariants({ variant, animated }))}
             style={{ width: `${percentage}%` }}
+          />
+          <div
+            className="bg-[var(--ons-color-button-secondary)] h-full"
+            style={{ width: `${100 - percentage}%` }}
           />
         </div>
       </div>

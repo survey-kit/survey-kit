@@ -122,11 +122,19 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
               {header}
             </div>
           )}
-          <div className={cn(sidebarContentVariants())}>{children}</div>
+          <div
+            className={cn(sidebarContentVariants())}
+            onClick={(e) => {
+              // Stop propagation to prevent sidebar from closing when clicking inside content
+              e.stopPropagation()
+            }}
+          >
+            {children}
+          </div>
           {footer && (
             <div
               className={cn(
-                'border-t flex-shrink-0 bg-white',
+                'border-t flex-shrink-0 bg-white lg:hidden',
                 collapsed ? 'p-2' : 'p-4'
               )}
             >

@@ -3,6 +3,8 @@ export type {
   SurveyConfig,
   SurveyPage,
   SurveyQuestion,
+  SurveyStage,
+  SurveyGroup,
   SurveySubmission,
   SurveyState,
   QuestionAnswer,
@@ -10,6 +12,12 @@ export type {
   ValidationRule,
   QuestionOption,
   PageCompletionStatus,
+  Condition,
+  ConditionalLogic,
+  ComparisonOperator,
+  LogicOperator,
+  NavigationConfig,
+  ProgressConfig,
 } from './types/survey'
 
 export type {
@@ -25,3 +33,21 @@ export { LayoutRenderer } from './components/LayoutRenderer'
 
 // Export hooks
 export { useSurvey } from './hooks/useSurvey'
+
+// Export conditional logic utilities
+export {
+  evaluateCondition,
+  evaluateConditions,
+  shouldShowQuestion,
+  shouldShowPage,
+  shouldShowGroup,
+  shouldShowStage,
+} from './lib/conditional'
+
+// Export helper utilities
+export {
+  normaliseSurveyConfig,
+  getAllPages,
+  findPageById,
+  getPageLocation,
+} from './lib/migration'
