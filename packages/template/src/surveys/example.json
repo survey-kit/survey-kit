@@ -1,117 +1,188 @@
 {
-  "id": "customer-feedback-survey",
+  "id": "customer-feedback-survey-stages",
   "title": "Customer Feedback Survey",
   "description": "Help us improve by sharing your feedback",
-  "progressBar": true,
   "showQuestionNumbers": true,
-  "pages": [
+  "navigation": {
+    "stageOrder": "sequential",
+    "groupOrder": "sequential",
+    "pageOrder": "sequential"
+  },
+  "progress": {
+    "showOverall": true,
+    "showPerStage": false,
+    "showPerGroup": false,
+    "showPerPage": false,
+    "location": ["sidebar"]
+  },
+  "stages": [
     {
-      "id": "page-1",
-      "title": "Your Experience",
+      "id": "stage-1",
+      "title": "Initial Information",
+      "description": "Basic information about you",
       "icon": "User",
-      "description": "Tell us about your recent experience",
-      "questions": [
+      "groups": [
         {
-          "id": "name",
-          "type": "text",
-          "label": "What is your name?",
-          "placeholder": "Enter your full name",
-          "required": true,
-          "requiredToNavigate": true,
-          "validation": [
+          "id": "group-1-1",
+          "title": "Personal Details",
+          "description": "Tell us about yourself",
+          "icon": "UserCircle",
+          "pages": [
             {
-              "type": "min",
-              "value": 2,
-              "message": "Name must be at least 2 characters"
+              "id": "page-1",
+              "title": "Your Experience",
+              "icon": "User",
+              "description": "Tell us about your recent experience",
+              "questions": [
+                {
+                  "id": "name",
+                  "type": "text",
+                  "label": "What is your name?",
+                  "placeholder": "Enter your full name",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "validation": [
+                    {
+                      "type": "min",
+                      "value": 2,
+                      "message": "Name must be at least 2 characters"
+                    }
+                  ]
+                },
+                {
+                  "id": "email",
+                  "type": "email",
+                  "label": "Your email address",
+                  "placeholder": "you@example.com",
+                  "required": true,
+                  "requiredToNavigate": true
+                }
+              ]
             }
           ]
         },
         {
-          "id": "email",
-          "type": "email",
-          "label": "Your email address",
-          "placeholder": "you@example.com",
-          "required": true,
-          "requiredToNavigate": true
-        }
-      ]
-    },
-    {
-      "id": "page-2",
-      "title": "Rate Your Experience",
-      "icon": "Star",
-      "description": "How would you rate your recent interaction?",
-      "questions": [
-        {
-          "id": "satisfaction",
-          "type": "radio",
-          "label": "How satisfied were you?",
-          "required": true,
-          "requiredToNavigate": true,
-          "options": [
-            { "label": "Very Satisfied", "value": "very_satisfied" },
-            { "label": "Satisfied", "value": "satisfied" },
-            { "label": "Neutral", "value": "neutral" },
-            { "label": "Dissatisfied", "value": "dissatisfied" },
-            { "label": "Very Dissatisfied", "value": "very_dissatisfied" }
+          "id": "group-1-2",
+          "title": "Rating",
+          "description": "Rate your experience",
+          "icon": "Star",
+          "pages": [
+            {
+              "id": "page-2",
+              "title": "Rate Your Experience",
+              "icon": "Star",
+              "description": "How would you rate your recent interaction?",
+              "questions": [
+                {
+                  "id": "satisfaction",
+                  "type": "radio",
+                  "label": "How satisfied were you?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "Very Satisfied", "value": "very_satisfied" },
+                    { "label": "Satisfied", "value": "satisfied" },
+                    { "label": "Neutral", "value": "neutral" },
+                    { "label": "Dissatisfied", "value": "dissatisfied" },
+                    {
+                      "label": "Very Dissatisfied",
+                      "value": "very_dissatisfied"
+                    }
+                  ]
+                },
+                {
+                  "id": "improvements",
+                  "type": "textarea",
+                  "label": "What could we improve?",
+                  "placeholder": "Share your suggestions here...",
+                  "description": "Optional - help us understand areas for improvement",
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "operator": "equals",
+                        "questionId": "satisfaction",
+                        "value": "dissatisfied"
+                      },
+                      {
+                        "operator": "equals",
+                        "questionId": "satisfaction",
+                        "value": "very_dissatisfied"
+                      }
+                    ],
+                    "logic": "OR"
+                  }
+                }
+              ]
+            }
           ]
-        },
-        {
-          "id": "improvements",
-          "type": "textarea",
-          "label": "What could we improve?",
-          "placeholder": "Share your suggestions here...",
-          "description": "Optional - help us understand areas for improvement",
-          "conditional": {
-            "conditions": [
-              {
-                "operator": "equals",
-                "questionId": "satisfaction",
-                "value": "dissatisfied"
-              },
-              {
-                "operator": "equals",
-                "questionId": "satisfaction",
-                "value": "very_dissatisfied"
-              }
-            ],
-            "logic": "OR"
-          }
         }
       ]
     },
     {
-      "id": "page-3",
-      "title": "Additional Information",
+      "id": "stage-2",
+      "title": "Additional Details",
+      "description": "More information to help us serve you better",
       "icon": "FileText",
-      "description": "Final questions to help us serve you better",
-      "questions": [
+      "groups": [
         {
-          "id": "features",
-          "type": "checkbox",
-          "label": "Which features did you find most useful?",
-          "options": [
-            { "label": "User Interface", "value": "ui" },
-            { "label": "Performance", "value": "performance" },
-            { "label": "Documentation", "value": "docs" },
-            { "label": "Support", "value": "support" },
-            { "label": "Pricing", "value": "pricing" }
+          "id": "group-2-1",
+          "title": "Department Information",
+          "description": "Tell us about your department",
+          "icon": "Building",
+          "pages": [
+            {
+              "id": "page-3",
+              "title": "Additional Information",
+              "icon": null,
+              "description": "Final questions to help us serve you better",
+              "questions": [
+                {
+                  "id": "features",
+                  "type": "checkbox",
+                  "label": "Which features did you find most useful?",
+                  "options": [
+                    { "label": "User Interface", "value": "ui" },
+                    { "label": "Performance", "value": "performance" },
+                    { "label": "Documentation", "value": "docs" },
+                    { "label": "Support", "value": "support" },
+                    { "label": "Pricing", "value": "pricing" }
+                  ]
+                },
+                {
+                  "id": "department",
+                  "type": "select",
+                  "label": "Which department are you from?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "Sales", "value": "sales" },
+                    { "label": "Marketing", "value": "marketing" },
+                    { "label": "Engineering", "value": "engineering" },
+                    { "label": "HR", "value": "hr" },
+                    { "label": "Other", "value": "other" }
+                  ],
+                  "skipLogic": {
+                    "conditions": [
+                      {
+                        "operator": "equals",
+                        "questionId": "department",
+                        "value": "engineering"
+                      }
+                    ],
+                    "logic": "AND",
+                    "nextPageId": "page-4"
+                  }
+                }
+              ]
+            }
           ]
         },
         {
-          "id": "department",
-          "type": "select",
-          "label": "Which department are you from?",
-          "required": true,
-          "requiredToNavigate": true,
-          "options": [
-            { "label": "Sales", "value": "sales" },
-            { "label": "Marketing", "value": "marketing" },
-            { "label": "Engineering", "value": "engineering" },
-            { "label": "HR", "value": "hr" },
-            { "label": "Other", "value": "other" }
-          ],
-          "skipLogic": {
+          "id": "group-2-2",
+          "title": "Engineering Specific",
+          "description": "Questions for engineering team",
+          "icon": "Code",
+          "conditional": {
             "conditions": [
               {
                 "operator": "equals",
@@ -119,57 +190,58 @@
                 "value": "engineering"
               }
             ],
-            "logic": "AND",
-            "nextPageId": "page-4"
-          }
-        }
-      ]
-    },
-    {
-      "id": "page-4",
-      "title": "Engineering Details",
-      "icon": "Code",
-      "description": "Additional questions for engineering team",
-      "conditional": {
-        "conditions": [
-          {
-            "operator": "equals",
-            "questionId": "department",
-            "value": "engineering"
-          }
-        ],
-        "logic": "AND"
-      },
-      "questions": [
-        {
-          "id": "startDate",
-          "type": "date",
-          "label": "Project start date",
-          "required": true,
-          "requiredToNavigate": true
-        },
-        {
-          "id": "endDate",
-          "type": "date",
-          "label": "Project end date",
-          "required": true,
-          "requiredToNavigate": true,
-          "validation": [
+            "logic": "AND"
+          },
+          "pages": [
             {
-              "type": "dateRange",
-              "questionId": "startDate",
-              "operator": "greaterThan",
-              "message": "End date must be after start date"
+              "id": "page-4",
+              "title": "Engineering Details",
+              "icon": null,
+              "description": "Additional questions for engineering team",
+              "conditional": {
+                "conditions": [
+                  {
+                    "operator": "equals",
+                    "questionId": "department",
+                    "value": "engineering"
+                  }
+                ],
+                "logic": "AND"
+              },
+              "questions": [
+                {
+                  "id": "startDate",
+                  "type": "date",
+                  "label": "Project start date",
+                  "required": true,
+                  "requiredToNavigate": true
+                },
+                {
+                  "id": "endDate",
+                  "type": "date",
+                  "label": "Project end date",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "validation": [
+                    {
+                      "type": "dateRange",
+                      "questionId": "startDate",
+                      "operator": "greaterThan",
+                      "message": "End date must be after start date"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
       ]
     },
     {
-      "id": "page-5",
-      "title": "Follow-up Questions",
-      "icon": "MessageSquare",
+      "id": "stage-3",
+      "title": "Follow-up",
       "description": "Optional follow-up questions",
+      "icon": "MessageSquare",
       "conditional": {
         "conditions": [
           {
@@ -180,17 +252,43 @@
         ],
         "logic": "AND"
       },
-      "questions": [
+      "groups": [
         {
-          "id": "referral",
-          "type": "radio",
-          "label": "Would you recommend us to others?",
-          "required": true,
-          "requiredToNavigate": true,
-          "options": [
-            { "label": "Yes", "value": "yes" },
-            { "label": "No", "value": "no" },
-            { "label": "Maybe", "value": "maybe" }
+          "id": "group-3-1",
+          "title": "Referral Questions",
+          "description": "Help us grow",
+          "icon": "Heart",
+          "pages": [
+            {
+              "id": "page-5",
+              "title": "Follow-up Questions",
+              "icon": "MessageSquare",
+              "description": "Optional follow-up questions",
+              "conditional": {
+                "conditions": [
+                  {
+                    "operator": "equals",
+                    "questionId": "satisfaction",
+                    "value": "very_satisfied"
+                  }
+                ],
+                "logic": "AND"
+              },
+              "questions": [
+                {
+                  "id": "referral",
+                  "type": "radio",
+                  "label": "Would you recommend us to others?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "Yes", "value": "yes" },
+                    { "label": "No", "value": "no" },
+                    { "label": "Maybe", "value": "maybe" }
+                  ]
+                }
+              ]
+            }
           ]
         }
       ]
