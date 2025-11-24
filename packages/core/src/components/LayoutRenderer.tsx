@@ -618,9 +618,9 @@ export function LayoutRenderer({
                             : 'cursor-pointer',
                           item.active
                             ? item.disabled
-                              ? 'bg-ocean-blue/30 text-ocean-blue border-2 border-ocean-blue'
-                              : 'bg-ocean-blue text-white'
-                            : !item.disabled && 'hover:bg-muted'
+                              ? 'text-ocean-blue border-2 border-ocean-blue'
+                              : 'border-ocean-blue border-1'
+                            : !item.disabled && 'hover:border-muted'
                         )}
                         title={
                           sidebarCollapsed
