@@ -903,7 +903,7 @@ export function LayoutRenderer({
             {progressConfig.showOverall &&
               ProgressBar &&
               overallProgress !== undefined && (
-                <div className="px-4 py-2 bg-white border-b">
+                <div className="p-4 bg-white border-b">
                   <ProgressBar
                     value={overallProgress}
                     showLabel
