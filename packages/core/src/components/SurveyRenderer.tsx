@@ -72,6 +72,28 @@ export function SurveyRenderer({
     return url.toString()
   }
 
+  // Handle form submission (Enter key or Next button)
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (survey.isLastPage) {
+      survey.submitSurvey()
+    } else {
+      survey.nextPage()
+    }
+  }
+
+  // Handle Enter key press in inputs (not textareas)
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      if (survey.isLastPage) {
+        survey.submitSurvey()
+      } else {
+        survey.nextPage()
+      }
+    }
+  }
+
   // Render a single question based on its type
   const renderQuestion = (question: SurveyQuestion): React.JSX.Element => {
     const { Input, Dropdown } = components
@@ -101,6 +123,7 @@ export function SurveyRenderer({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   survey.setAnswer(question.id, e.target.value)
                 }
+                onKeyDown={handleKeyDown}
               />
             )}
             {survey.state.errors[question.id] && (
@@ -296,7 +319,7 @@ export function SurveyRenderer({
     }
     const visibleQuestions = survey.getVisibleQuestions(survey.currentPage)
     return (
-      <div className="space-y-6">
+      <form id="survey-form" onSubmit={handleFormSubmit} className="space-y-6">
         {/* Progress bars based on config */}
         {progressLocations.includes('page') && ProgressBarComponent && (
           <div className="space-y-2">
@@ -349,7 +372,7 @@ export function SurveyRenderer({
             </p>
           )}
         </div>
-      </div>
+      </form>
     )
   }, [
     survey.currentPage,
@@ -362,9 +385,11 @@ export function SurveyRenderer({
     survey.stageProgress,
     survey.groupProgress,
     survey.progress,
+    survey.isLastPage,
     showProgress,
     progressLocations,
     ProgressBarComponent,
+    handleFormSubmit,
   ])
 
   // Default layout
@@ -406,10 +431,17 @@ export function SurveyRenderer({
             )}
             {Button && (
               <Button
+                type="submit"
+                form="survey-form"
                 variant="default"
-                onClick={
-                  survey.isLastPage ? survey.submitSurvey : survey.nextPage
-                }
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  e.preventDefault()
+                  if (survey.isLastPage) {
+                    survey.submitSurvey()
+                  } else {
+                    survey.nextPage()
+                  }
+                }}
                 className="ml-auto"
               >
                 {survey.isLastPage ? 'Submit' : 'Next'}
