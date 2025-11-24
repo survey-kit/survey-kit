@@ -19,7 +19,6 @@ import type {
   SurveyQuestion,
   SurveyStage,
   QuestionAnswer,
-  QuestionAnswer,
   SurveyGroup,
   SurveyPage,
   PageCompletionStatus,

@@ -231,7 +231,11 @@ interface LayoutRendererProps {
     Wrapper?: React.ComponentType<any>
     Header?: React.ComponentType<any>
     Sidebar?: React.ComponentType<any>
-    Footer?: React.ComponentType<any>
+    Footer?: React.ComponentType<{
+      children?: React.ReactNode
+      logoSmall?: string
+      logoLarge?: string
+    }>
     MainContent?: React.ComponentType<any>
     Button?: React.ComponentType<any>
     Heading?: React.ComponentType<any>
