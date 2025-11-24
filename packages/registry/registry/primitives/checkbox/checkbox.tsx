@@ -52,10 +52,11 @@ const checkboxIconVariants = cva(
 )
 
 export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'>,
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked'>,
     VariantProps<typeof checkboxVariants> {
   label: string
   variant?: 'singular' | 'multiple'
+  checked?: boolean
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
