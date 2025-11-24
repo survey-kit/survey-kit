@@ -40,7 +40,11 @@ function App() {
       Sidebar,
       LayoutWrapper,
       MainContent,
-      Footer,
+      Footer: Footer as React.ComponentType<{
+        children?: React.ReactNode
+        logoSmall?: string
+        logoLarge?: string
+      }>,
       Checkbox,
       BlockedPage,
       StageTabs,

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { cn } from '../../../lib/utils'
 
 export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
-  children: React.ReactNode
+  children?: React.ReactNode
   logoSmall?: string // Path to small logo image
   logoLarge?: string // Path to large logo image
 }
@@ -50,7 +50,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
       >
         <div className="max-w-4xl px-8 py-4 flex items-center gap-2">
           {renderLogo()}
-          {children}
+          {children || null}
         </div>
       </footer>
     )
