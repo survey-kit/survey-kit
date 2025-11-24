@@ -4,13 +4,13 @@ import * as LucideIcons from 'lucide-react'
 import { cn } from '../../../lib/utils'
 
 const stageTabsVariants = cva(
-  'flex items-center border-b bg-ocean-blue overflow-x-auto',
+  'flex items-center border-b bg-ocean-blue overflow-x-auto !pb-0',
   {
     variants: {
       size: {
-        sm: 'px-2 font-size-1rem',
-        md: 'px-4 font-size-1.25rem',
-        lg: 'px-6 font-size-1.5rem',
+        sm: 'p-2 font-size-1rem',
+        md: 'p-4 font-size-1.25rem',
+        lg: 'p-6 font-size-1.5rem',
       },
       variant: {
         default: 'bg-ocean-blue',
