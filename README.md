@@ -1,6 +1,6 @@
 # Survey-Kit
 
-Mobile-first, accessible survey framework for engaging experiences.
+Mobile-first, accessible survey framework for engaging experiences. You can view a live example of the [template](./packages/template) application at [template.survey-kit.com](https://template.survey-kit.com).
 
 ## Overview
 
