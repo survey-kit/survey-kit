@@ -32,3 +32,20 @@ coverage/
 
 # Vercel
 .vercel/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+
+# Terraform variable files (contain sensitive information)
+terraform.tfvars
+
+# Terraform plan files
+*.tfplan
+
+# Crash log files
+crash.log
+
+.terraform.lock.hcl
+/infra/terraform/dev/.terraform
