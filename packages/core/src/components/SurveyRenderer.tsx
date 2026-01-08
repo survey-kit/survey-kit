@@ -16,6 +16,7 @@ interface SurveyRendererProps {
     Dropdown?: React.ComponentType<any>
     Checkbox?: React.ComponentType<any>
     BlockedPage?: React.ComponentType<any>
+    Panel?: React.ComponentType<any>
     [key: string]: React.ComponentType<any> | undefined
   }
   onSubmit?: (answers: Record<string, unknown>) => Promise<void> | void
@@ -96,8 +97,10 @@ export function SurveyRenderer({
 
   // Render a single question based on its type
   const renderQuestion = (question: SurveyQuestion): React.JSX.Element => {
-    const { Input, Dropdown } = components
+    const { Input, Dropdown, Panel: PanelComponent } = components
     const value = survey.getAnswerValue(question.id)
+    const errorId = `${question.id}-error`
+    const hasError = Boolean(survey.state.errors[question.id])
 
     switch (question.type) {
       case 'text':
@@ -124,13 +127,20 @@ export function SurveyRenderer({
                   survey.setAnswer(question.id, e.target.value)
                 }
                 onKeyDown={handleKeyDown}
+                aria-invalid={hasError}
+                aria-describedby={hasError ? errorId : undefined}
               />
             )}
-            {survey.state.errors[question.id] && (
-              <div className="text-sm text-red-500">
-                {survey.state.errors[question.id].join(', ')}
-              </div>
-            )}
+            {hasError &&
+              (PanelComponent ? (
+                <PanelComponent variant="error" id={errorId}>
+                  {survey.state.errors[question.id].join(', ')}
+                </PanelComponent>
+              ) : (
+                <div id={errorId} role="alert" className="text-sm text-red-500">
+                  {survey.state.errors[question.id].join(', ')}
+                </div>
+              ))}
           </div>
         )
 
@@ -154,12 +164,19 @@ export function SurveyRenderer({
               }
               className="w-full p-2 border rounded"
               rows={4}
+              aria-invalid={hasError}
+              aria-describedby={hasError ? errorId : undefined}
             />
-            {survey.state.errors[question.id] && (
-              <div className="text-sm text-red-500">
-                {survey.state.errors[question.id].join(', ')}
-              </div>
-            )}
+            {hasError &&
+              (PanelComponent ? (
+                <PanelComponent variant="error" id={errorId}>
+                  {survey.state.errors[question.id].join(', ')}
+                </PanelComponent>
+              ) : (
+                <div id={errorId} role="alert" className="text-sm text-red-500">
+                  {survey.state.errors[question.id].join(', ')}
+                </div>
+              ))}
           </div>
         )
 
@@ -180,13 +197,20 @@ export function SurveyRenderer({
                 value={value as string}
                 onChange={(val: string) => survey.setAnswer(question.id, val)}
                 options={question.options || []}
+                aria-invalid={hasError}
+                aria-describedby={hasError ? errorId : undefined}
               />
             )}
-            {survey.state.errors[question.id] && (
-              <div className="text-sm text-red-500">
-                {survey.state.errors[question.id].join(', ')}
-              </div>
-            )}
+            {hasError &&
+              (PanelComponent ? (
+                <PanelComponent variant="error" id={errorId}>
+                  {survey.state.errors[question.id].join(', ')}
+                </PanelComponent>
+              ) : (
+                <div id={errorId} role="alert" className="text-sm text-red-500">
+                  {survey.state.errors[question.id].join(', ')}
+                </div>
+              ))}
           </div>
         )
 
@@ -206,7 +230,11 @@ export function SurveyRenderer({
               {question.description && (
                 <p className="text-sm text-gray-500">{question.description}</p>
               )}
-              <div className="space-y-2">
+              <div
+                className="space-y-2"
+                role="group"
+                aria-describedby={hasError ? errorId : undefined}
+              >
                 {question.options?.map((option) => (
                   <label
                     key={option.value}
@@ -238,15 +266,17 @@ export function SurveyRenderer({
                           survey.setAnswer(question.id, option.value)
                         }
                       }}
+                      aria-invalid={hasError}
+                      aria-describedby={hasError ? errorId : undefined}
                     />
                     <span>{option.label}</span>
                   </label>
                 ))}
               </div>
-              {survey.state.errors[question.id] && (
-                <div className="text-sm text-red-500">
+              {hasError && PanelComponent && (
+                <PanelComponent variant="error" id={errorId}>
                   {survey.state.errors[question.id].join(', ')}
-                </div>
+                </PanelComponent>
               )}
             </div>
           )
@@ -263,7 +293,11 @@ export function SurveyRenderer({
             {question.description && (
               <p className="text-sm text-gray-500">{question.description}</p>
             )}
-            <div className="space-y-2">
+            <div
+              className="space-y-2"
+              role="group"
+              aria-describedby={hasError ? errorId : undefined}
+            >
               {question.options?.map((option) => {
                 const isChecked = isMultiple
                   ? (value as string[])?.includes(option.value)
@@ -292,15 +326,22 @@ export function SurveyRenderer({
                         survey.setAnswer(question.id, option.value)
                       }
                     }}
+                    aria-invalid={hasError}
+                    aria-describedby={hasError ? errorId : undefined}
                   />
                 )
               })}
             </div>
-            {survey.state.errors[question.id] && (
-              <div className="text-sm text-red-500">
-                {survey.state.errors[question.id].join(', ')}
-              </div>
-            )}
+            {hasError &&
+              (PanelComponent ? (
+                <PanelComponent variant="error" id={errorId}>
+                  {survey.state.errors[question.id].join(', ')}
+                </PanelComponent>
+              ) : (
+                <div id={errorId} role="alert" className="text-sm text-red-500">
+                  {survey.state.errors[question.id].join(', ')}
+                </div>
+              ))}
           </div>
         )
       }
