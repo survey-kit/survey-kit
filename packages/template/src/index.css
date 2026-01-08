@@ -187,6 +187,9 @@
 
     /* Border radius */
     --radius: 0.5rem;
+
+    /* Font weight custom property */
+    --font-weight-bold: 600;
   }
 
   .dark {
