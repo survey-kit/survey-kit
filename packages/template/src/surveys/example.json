@@ -69,12 +69,12 @@
           "pages": [
             {
               "id": "page-2",
-              "title": "Rate Your Experience",
-              "icon": "Star",
+              "title": "Experience",
+              "icon": "SquareChartGantt",
               "description": "How would you rate your recent interaction?",
               "questions": [
                 {
-                  "id": "satisfaction",
+                  "id": "satisfaction-1",
                   "type": "radio",
                   "label": "How satisfied were you?",
                   "required": true,
@@ -91,7 +91,7 @@
                   ]
                 },
                 {
-                  "id": "improvements",
+                  "id": "improvements-1",
                   "type": "textarea",
                   "label": "What could we improve?",
                   "placeholder": "Share your suggestions here...",
@@ -100,12 +100,59 @@
                     "conditions": [
                       {
                         "operator": "equals",
-                        "questionId": "satisfaction",
+                        "questionId": "satisfaction-1",
                         "value": "dissatisfied"
                       },
                       {
                         "operator": "equals",
-                        "questionId": "satisfaction",
+                        "questionId": "satisfaction-1",
+                        "value": "very_dissatisfied"
+                      }
+                    ],
+                    "logic": "OR"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "page-3",
+              "title": "Team",
+              "icon": "ContactRound",
+              "description": "How would you rate the team that helped you?",
+              "questions": [
+                {
+                  "id": "satisfaction-2",
+                  "type": "radio",
+                  "label": "How satisfied were you with the team that helped you?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "Very Satisfied", "value": "very_satisfied" },
+                    { "label": "Satisfied", "value": "satisfied" },
+                    { "label": "Neutral", "value": "neutral" },
+                    { "label": "Dissatisfied", "value": "dissatisfied" },
+                    {
+                      "label": "Very Dissatisfied",
+                      "value": "very_dissatisfied"
+                    }
+                  ]
+                },
+                {
+                  "id": "improvements-2",
+                  "type": "textarea",
+                  "label": "What could we improve?",
+                  "placeholder": "Share your suggestions here...",
+                  "description": "Optional - help us understand areas for improvement",
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "operator": "equals",
+                        "questionId": "satisfaction-2",
+                        "value": "dissatisfied"
+                      },
+                      {
+                        "operator": "equals",
+                        "questionId": "satisfaction-2",
                         "value": "very_dissatisfied"
                       }
                     ],
@@ -126,13 +173,12 @@
       "groups": [
         {
           "id": "group-2-1",
-          "title": "Department Information",
+          "title": "Departmental",
           "description": "Tell us about your department",
-          "icon": "Building",
           "pages": [
             {
-              "id": "page-3",
-              "title": "Additional Information",
+              "id": "page-4",
+              "title": "Information",
               "icon": null,
               "description": "Final questions to help us serve you better",
               "questions": [
@@ -170,7 +216,7 @@
                       }
                     ],
                     "logic": "AND",
-                    "nextPageId": "page-4"
+                    "nextPageId": "page-5"
                   }
                 }
               ]
@@ -179,9 +225,8 @@
         },
         {
           "id": "group-2-2",
-          "title": "Engineering Specific",
+          "title": "Engineering",
           "description": "Questions for engineering team",
-          "icon": "Code",
           "conditional": {
             "conditions": [
               {
@@ -194,8 +239,8 @@
           },
           "pages": [
             {
-              "id": "page-4",
-              "title": "Engineering Details",
+              "id": "page-5",
+              "title": "Details",
               "icon": null,
               "description": "Additional questions for engineering team",
               "conditional": {
@@ -246,7 +291,7 @@
         "conditions": [
           {
             "operator": "equals",
-            "questionId": "satisfaction",
+            "questionId": "satisfaction-1",
             "value": "very_satisfied"
           }
         ],
@@ -260,7 +305,7 @@
           "icon": "Heart",
           "pages": [
             {
-              "id": "page-5",
+              "id": "page-6",
               "title": "Follow-up Questions",
               "icon": "MessageSquare",
               "description": "Optional follow-up questions",
@@ -268,7 +313,7 @@
                 "conditions": [
                   {
                     "operator": "equals",
-                    "questionId": "satisfaction",
+                    "questionId": "satisfaction-1",
                     "value": "very_satisfied"
                   }
                 ],

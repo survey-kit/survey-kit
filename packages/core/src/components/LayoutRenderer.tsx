@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import * as LucideIcons from 'lucide-react'
 import { Check, MoreHorizontal, ChevronDown, ChevronRight } from 'lucide-react'
 import { cn } from '../lib/utils'
+import type { SidebarMenuItem } from '@survey-kit/registry'
 import { validateQuestion, isValidForNavigation } from '../lib/validation'
 import {
   shouldShowPage,
@@ -283,6 +284,7 @@ export function LayoutRenderer({
     Footer,
     StageTabs,
     ProgressBar,
+    SidebarMenu,
   } = components
 
   // Normalise config to always have stages structure
@@ -297,6 +299,28 @@ export function LayoutRenderer({
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set())
+  const [openGroupMenu, setOpenGroupMenu] = useState<string | null>(null)
+  const [sidebarCollapsed, setSidebarCollapsedState] = useState(() => {
+    // Load collapsed state from localStorage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(
+        `${STORAGE_KEY_PREFIX}sidebar-collapsed`
+      )
+      return saved === 'true'
+    }
+    return false
+  })
+
+  // Wrapper to persist sidebar collapsed state
+  const setSidebarCollapsed = useCallback((collapsed: boolean) => {
+    setSidebarCollapsedState(collapsed)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(
+        `${STORAGE_KEY_PREFIX}sidebar-collapsed`,
+        String(collapsed)
+      )
+    }
+  }, [])
   const [activePageId, setActivePageId] = useState<string>(() => {
     // Get current page from props, URL, or default to first page
     if (currentPageId) return currentPageId
@@ -384,7 +408,6 @@ export function LayoutRenderer({
       <footer>{children}</footer>
     ))
 
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [surveyAnswers, setSurveyAnswers] = useState<
     Record<string, { value: unknown }>
@@ -726,6 +749,43 @@ export function LayoutRenderer({
     allPages,
   ])
 
+  // Filter sidebar items: hide level 1 (children) when sidebar is collapsed
+  const visibleSidebarItems = useMemo(() => {
+    if (!sidebarCollapsed) {
+      return sidebarItems
+    }
+    // When collapsed, only show level 0 items (groups/pages without parents)
+    return sidebarItems.filter((item) => item.level === 0)
+  }, [sidebarItems, sidebarCollapsed])
+
+  // Helper to get children items for a group
+  const getGroupChildrenItems = useMemo(
+    () =>
+      (groupId: string): SidebarMenuItem[] => {
+        return sidebarItems
+          .filter((item) => item.groupId === groupId && item.level === 1)
+          .map((item) => ({
+            id: item.id,
+            label: item.label,
+            icon: item.icon
+              ? (LucideIcons[item.icon as keyof typeof LucideIcons] as
+                  | React.ComponentType<{ className?: string }>
+                  | undefined)
+              : undefined,
+            active: item.active,
+            disabled: item.disabled,
+            completionStatus: item.completionStatus,
+            onClick: () => {
+              handleSidebarItemClick(item.id, item.type, item.disabled)
+              if (isMobile) {
+                setSidebarOpen(false)
+              }
+            },
+          }))
+      },
+    [sidebarItems, isMobile]
+  )
+
   const stageTabsWithActive = useMemo(() => {
     return stageTabs.map((tab) => ({
       ...tab,
@@ -970,9 +1030,9 @@ export function LayoutRenderer({
                             variant="ghost"
                             size="icon"
                             className="hidden lg:flex"
-                            onClick={() =>
+                            onClick={() => {
                               setSidebarCollapsed(!sidebarCollapsed)
-                            }
+                            }}
                             aria-label={
                               sidebarCollapsed
                                 ? 'Expand sidebar'
@@ -1036,7 +1096,7 @@ export function LayoutRenderer({
                   ) : undefined
                 }
               >
-                {sidebarItems.map((item) => {
+                {visibleSidebarItems.map((item) => {
                   // Get icon from lucide-react
                   const IconComponent = item.icon
                     ? (LucideIcons[item.icon as keyof typeof LucideIcons] as
@@ -1047,22 +1107,34 @@ export function LayoutRenderer({
                   const isGroup = item.type === 'group'
                   const isCollapsed =
                     isGroup && collapsedGroups.has(item.groupId || '')
+                  const groupId = item.groupId || ''
+                  const childrenItems = isGroup
+                    ? getGroupChildrenItems(groupId)
+                    : []
 
-                  return (
+                  // Render group item with menu when collapsed
+                  const itemContent = (
                     <div
                       key={item.id}
                       onClick={(e) => {
                         // Stop propagation to prevent sidebar from closing when clicking inside
                         e.stopPropagation()
                         if (!item.disabled) {
-                          handleSidebarItemClick(
-                            item.id,
-                            item.type,
-                            item.disabled
-                          )
-                          // Close sidebar on mobile when clicking a page
-                          if (item.type === 'page' && isMobile) {
-                            setSidebarOpen(false)
+                          if (isGroup && sidebarCollapsed) {
+                            // Toggle menu when collapsed
+                            setOpenGroupMenu(
+                              openGroupMenu === groupId ? null : groupId
+                            )
+                          } else {
+                            handleSidebarItemClick(
+                              item.id,
+                              item.type,
+                              item.disabled
+                            )
+                            // Close sidebar on mobile when clicking a page
+                            if (item.type === 'page' && isMobile) {
+                              setSidebarOpen(false)
+                            }
                           }
                         }
                       }}
@@ -1094,9 +1166,6 @@ export function LayoutRenderer({
                           )}
                         </div>
                       )}
-                      {/* {!isGroup && item.level === 1 && !sidebarCollapsed && (
-                        <div className="w-4 h-4 flex-shrink-0" />
-                      )} */}
                       {IconComponent && (
                         <IconComponent className="w-4 h-4 flex-shrink-0" />
                       )}
@@ -1113,6 +1182,30 @@ export function LayoutRenderer({
                       )}
                     </div>
                   )
+
+                  // Wrap group items with SidebarMenu when collapsed
+                  if (
+                    isGroup &&
+                    sidebarCollapsed &&
+                    SidebarMenu &&
+                    childrenItems.length > 0
+                  ) {
+                    return (
+                      <SidebarMenu
+                        key={item.id}
+                        trigger={itemContent}
+                        parentLabel={item.label}
+                        parentCompletionStatus={item.completionStatus}
+                        items={childrenItems}
+                        open={openGroupMenu === groupId}
+                        onOpenChange={(open: boolean) =>
+                          setOpenGroupMenu(open ? groupId : null)
+                        }
+                      />
+                    )
+                  }
+
+                  return itemContent
                 })}
               </Sidebar>
               <div className="flex-1 w-full">{children}</div>
