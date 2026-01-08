@@ -21,6 +21,7 @@
   --color-gov-teal: #00847d;
   --color-gov-red: #b10e1e;
   --color-gov-black: #0b0c0c;
+  --color-secondary: #f5f5f6;
 }
 
 @layer base {
