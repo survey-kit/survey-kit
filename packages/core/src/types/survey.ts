@@ -10,6 +10,7 @@ export type QuestionType =
   | 'number'
   | 'email'
   | 'date'
+  | 'emoji-slider'
 
 /**
  * Comparison operator for conditional logic
@@ -73,6 +74,22 @@ export interface QuestionOption {
 }
 
 /**
+ * Emoji slider configuration
+ */
+export interface EmojiSliderConfig {
+  type: 'single' | 'scale'
+  // For single type
+  emoji?: string
+  min?: number
+  max?: number
+  step?: number
+  // For scale type
+  scale?: number // e.g., 5 for 1-5 scale
+  emojis?: Array<{ value: number; emoji: string; label?: string }>
+  showLabels?: boolean
+}
+
+/**
  * Page completion status
  */
 export type PageCompletionStatus = 'complete' | 'partial' | 'empty'
@@ -91,6 +108,7 @@ export interface SurveyQuestion {
   validation?: ValidationRule[]
   options?: QuestionOption[]
   defaultValue?: string | number | boolean
+  emojiSlider?: EmojiSliderConfig
   conditional?: ConditionalLogic
   skipLogic?: {
     // Conditional navigation - jump to specific page based on answer
