@@ -15,6 +15,7 @@ import {
   Checkbox,
   BlockedPage,
   StageTabs,
+  Panel,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -44,6 +45,7 @@ function App() {
       Checkbox,
       BlockedPage,
       StageTabs,
+      Panel,
     }),
     []
   )
