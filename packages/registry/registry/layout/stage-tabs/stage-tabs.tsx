@@ -4,7 +4,7 @@ import * as LucideIcons from 'lucide-react'
 import { cn } from '../../../lib/utils'
 
 const stageTabsVariants = cva(
-  'flex items-center border-b bg-ocean-blue overflow-x-auto !pb-0',
+  'flex items-center border-b bg-ocean-blue overflow-x-auto !pb-0 !pt-2',
   {
     variants: {
       size: {
@@ -26,7 +26,7 @@ const stageTabsVariants = cva(
 )
 
 const stageTabVariants = cva(
-  'flex items-center gap-2 px-4 py-2 border-b-2 transition-colors cursor-pointer whitespace-nowrap',
+  'flex items-center gap-2 mx-6 py-2 border-b-2 transition-colors cursor-pointer whitespace-nowrap',
   {
     variants: {
       active: {
