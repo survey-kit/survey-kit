@@ -16,6 +16,7 @@ import {
   BlockedPage,
   StageTabs,
   Panel,
+  SidebarMenu,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -46,6 +47,7 @@ function App() {
       BlockedPage,
       StageTabs,
       Panel,
+      SidebarMenu,
     }),
     []
   )
