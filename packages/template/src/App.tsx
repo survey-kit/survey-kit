@@ -17,6 +17,7 @@ import {
   StageTabs,
   Panel,
   SidebarMenu,
+  EmojiSlider,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -48,6 +49,7 @@ function App() {
       StageTabs,
       Panel,
       SidebarMenu,
+      EmojiSlider,
     }),
     []
   )
@@ -55,6 +57,7 @@ function App() {
   const handleSurveySubmit = async (answers: Record<string, unknown>) => {
     console.log('Survey submitted with answers:', answers)
     // Here you would typically send the data to your backend
+    // TODO add backend submission logic here
     alert(
       'Thank you! Your survey has been submitted.\n\nAnswers:\n' +
         JSON.stringify(answers, null, 2)

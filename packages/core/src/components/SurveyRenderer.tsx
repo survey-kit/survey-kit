@@ -17,6 +17,7 @@ interface SurveyRendererProps {
     Checkbox?: React.ComponentType<any>
     BlockedPage?: React.ComponentType<any>
     Panel?: React.ComponentType<any>
+    EmojiSlider?: React.ComponentType<any>
     [key: string]: React.ComponentType<any> | undefined
   }
   onSubmit?: (answers: Record<string, unknown>) => Promise<void> | void
@@ -332,6 +333,103 @@ export function SurveyRenderer({
                 )
               })}
             </div>
+            {hasError &&
+              (PanelComponent ? (
+                <PanelComponent variant="error" id={errorId}>
+                  {survey.state.errors[question.id].join(', ')}
+                </PanelComponent>
+              ) : (
+                <div id={errorId} role="alert" className="text-sm text-red-500">
+                  {survey.state.errors[question.id].join(', ')}
+                </div>
+              ))}
+          </div>
+        )
+      }
+
+      case 'emoji-slider': {
+        const { EmojiSlider: EmojiSliderComponent, Panel: PanelComponent } =
+          components
+        const config = question.emojiSlider
+
+        // Calculate default min value
+        let defaultMin = 0
+        if (config?.type === 'scale') {
+          if (config.emojis && config.emojis.length > 0) {
+            defaultMin = Math.min(...config.emojis.map((e) => e.value))
+          } else {
+            defaultMin = config.min ?? 1
+          }
+        } else {
+          defaultMin = config?.min ?? 0
+        }
+
+        const sliderValue = (value as number) ?? defaultMin
+
+        if (!EmojiSliderComponent || !config) {
+          return (
+            <div key={question.id} className="text-sm text-red-500">
+              EmojiSlider component or config not provided
+            </div>
+          )
+        }
+
+        // Prepare emoji slider props based on config type
+        let minValue = config.min
+        let maxValue = config.max
+
+        if (config.type === 'scale') {
+          if (!minValue && config.emojis && config.emojis.length > 0) {
+            minValue = Math.min(...config.emojis.map((e) => e.value))
+          }
+          if (!maxValue) {
+            if (config.scale) {
+              maxValue = config.scale
+            } else if (config.emojis && config.emojis.length > 0) {
+              maxValue = Math.max(...config.emojis.map((e) => e.value))
+            } else {
+              maxValue = 5
+            }
+          }
+          if (!minValue) minValue = 1
+        } else {
+          if (minValue === undefined) minValue = 0
+          if (maxValue === undefined) maxValue = 100
+        }
+
+        const sliderProps: any = {
+          value: sliderValue,
+          onChange: (newValue: number) => {
+            survey.setAnswer(question.id, newValue)
+          },
+          min: minValue,
+          max: maxValue,
+          step: config.step ?? 1,
+          disabled: false,
+          ariaLabel: question.label,
+          id: question.id,
+        }
+
+        // Add emoji or emojis based on type
+        if (config.type === 'single' && config.emoji) {
+          sliderProps.emoji = config.emoji
+        } else if (config.type === 'scale' && config.emojis) {
+          sliderProps.emojis = config.emojis
+          sliderProps.showLabels = config.showLabels ?? false
+        }
+
+        return (
+          <div key={question.id} className="space-y-2">
+            <label className="block text-sm font-medium" htmlFor={question.id}>
+              {question.label}
+              {(question.required || question.requiredToNavigate) && (
+                <span className="text-red-500">*</span>
+              )}
+            </label>
+            {question.description && (
+              <p className="text-sm text-gray-500">{question.description}</p>
+            )}
+            <EmojiSliderComponent {...sliderProps} />
             {hasError &&
               (PanelComponent ? (
                 <PanelComponent variant="error" id={errorId}>

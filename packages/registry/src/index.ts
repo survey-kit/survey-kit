@@ -17,6 +17,9 @@ export * from '../registry/complex/score-card/score-card'
 export * from '../registry/complex/blocked-page/blocked-page'
 export * from '../registry/complex/panel/panel'
 export * from '../registry/layout/sidebar-menu/sidebar-menu'
+export * from '../registry/complex/emoji-slider/emoji-slider'
+export * from '../registry/complex/emoji-slider/single-emoji-slider'
+export * from '../registry/complex/emoji-slider/scale-emoji-slider'
 
 // Create a Dropdown alias for convenience
 export {
