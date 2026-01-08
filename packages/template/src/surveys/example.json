@@ -70,7 +70,7 @@
             {
               "id": "page-2",
               "title": "Experience",
-              "icon": "Star",
+              "icon": "SquareChartGantt",
               "description": "How would you rate your recent interaction?",
               "questions": [
                 {
@@ -173,13 +173,12 @@
       "groups": [
         {
           "id": "group-2-1",
-          "title": "Department Information",
+          "title": "Departmental",
           "description": "Tell us about your department",
-          "icon": "Building",
           "pages": [
             {
               "id": "page-4",
-              "title": "Additional Information",
+              "title": "Information",
               "icon": null,
               "description": "Final questions to help us serve you better",
               "questions": [
@@ -226,9 +225,8 @@
         },
         {
           "id": "group-2-2",
-          "title": "Engineering Specific",
+          "title": "Engineering",
           "description": "Questions for engineering team",
-          "icon": "Code",
           "conditional": {
             "conditions": [
               {
@@ -242,7 +240,7 @@
           "pages": [
             {
               "id": "page-5",
-              "title": "Engineering Details",
+              "title": "Details",
               "icon": null,
               "description": "Additional questions for engineering team",
               "conditional": {
