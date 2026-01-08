@@ -74,16 +74,84 @@
               "description": "How would you rate your recent interaction?",
               "questions": [
                 {
+                  "id": "satisfaction-emoji-scale",
+                  "type": "emoji-slider",
+                  "label": "How satisfied were you?",
+                  "description": "Slide to rate your satisfaction",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "emojiSlider": {
+                    "type": "scale",
+                    "scale": 5,
+                    "min": 1,
+                    "max": 5,
+                    "step": 1,
+                    "showLabels": true,
+                    "emojis": [
+                      {
+                        "value": 1,
+                        "emoji": "😢",
+                        "label": "Very Dissatisfied"
+                      },
+                      {
+                        "value": 2,
+                        "emoji": "😕",
+                        "label": "Dissatisfied"
+                      },
+                      {
+                        "value": 3,
+                        "emoji": "😐",
+                        "label": "Neutral"
+                      },
+                      {
+                        "value": 4,
+                        "emoji": "🙂",
+                        "label": "Satisfied"
+                      },
+                      {
+                        "value": 5,
+                        "emoji": "😄",
+                        "label": "Very Satisfied"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "enjoyment-emoji-single",
+                  "type": "emoji-slider",
+                  "label": "How much did you enjoy this experience?",
+                  "description": "Drag the emoji to show your level of enjoyment",
+                  "required": false,
+                  "emojiSlider": {
+                    "type": "single",
+                    "emoji": "😊",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1
+                  }
+                },
+                {
                   "id": "satisfaction-1",
                   "type": "radio",
                   "label": "How satisfied were you?",
-                  "required": true,
-                  "requiredToNavigate": true,
+                  "required": false,
                   "options": [
-                    { "label": "Very Satisfied", "value": "very_satisfied" },
-                    { "label": "Satisfied", "value": "satisfied" },
-                    { "label": "Neutral", "value": "neutral" },
-                    { "label": "Dissatisfied", "value": "dissatisfied" },
+                    {
+                      "label": "Very Satisfied",
+                      "value": "very_satisfied"
+                    },
+                    {
+                      "label": "Satisfied",
+                      "value": "satisfied"
+                    },
+                    {
+                      "label": "Neutral",
+                      "value": "neutral"
+                    },
+                    {
+                      "label": "Dissatisfied",
+                      "value": "dissatisfied"
+                    },
                     {
                       "label": "Very Dissatisfied",
                       "value": "very_dissatisfied"
@@ -127,10 +195,22 @@
                   "required": true,
                   "requiredToNavigate": true,
                   "options": [
-                    { "label": "Very Satisfied", "value": "very_satisfied" },
-                    { "label": "Satisfied", "value": "satisfied" },
-                    { "label": "Neutral", "value": "neutral" },
-                    { "label": "Dissatisfied", "value": "dissatisfied" },
+                    {
+                      "label": "Very Satisfied",
+                      "value": "very_satisfied"
+                    },
+                    {
+                      "label": "Satisfied",
+                      "value": "satisfied"
+                    },
+                    {
+                      "label": "Neutral",
+                      "value": "neutral"
+                    },
+                    {
+                      "label": "Dissatisfied",
+                      "value": "dissatisfied"
+                    },
                     {
                       "label": "Very Dissatisfied",
                       "value": "very_dissatisfied"
@@ -174,12 +254,13 @@
         {
           "id": "group-2-1",
           "title": "Departmental",
+          "icon": "Building",
           "description": "Tell us about your department",
           "pages": [
             {
               "id": "page-4",
               "title": "Information",
-              "icon": null,
+              "icon": "Info",
               "description": "Final questions to help us serve you better",
               "questions": [
                 {
@@ -187,11 +268,26 @@
                   "type": "checkbox",
                   "label": "Which features did you find most useful?",
                   "options": [
-                    { "label": "User Interface", "value": "ui" },
-                    { "label": "Performance", "value": "performance" },
-                    { "label": "Documentation", "value": "docs" },
-                    { "label": "Support", "value": "support" },
-                    { "label": "Pricing", "value": "pricing" }
+                    {
+                      "label": "User Interface",
+                      "value": "ui"
+                    },
+                    {
+                      "label": "Performance",
+                      "value": "performance"
+                    },
+                    {
+                      "label": "Documentation",
+                      "value": "docs"
+                    },
+                    {
+                      "label": "Support",
+                      "value": "support"
+                    },
+                    {
+                      "label": "Pricing",
+                      "value": "pricing"
+                    }
                   ]
                 },
                 {
@@ -201,11 +297,26 @@
                   "required": true,
                   "requiredToNavigate": true,
                   "options": [
-                    { "label": "Sales", "value": "sales" },
-                    { "label": "Marketing", "value": "marketing" },
-                    { "label": "Engineering", "value": "engineering" },
-                    { "label": "HR", "value": "hr" },
-                    { "label": "Other", "value": "other" }
+                    {
+                      "label": "Sales",
+                      "value": "sales"
+                    },
+                    {
+                      "label": "Marketing",
+                      "value": "marketing"
+                    },
+                    {
+                      "label": "Engineering",
+                      "value": "engineering"
+                    },
+                    {
+                      "label": "HR",
+                      "value": "hr"
+                    },
+                    {
+                      "label": "Other",
+                      "value": "other"
+                    }
                   ],
                   "skipLogic": {
                     "conditions": [
@@ -226,6 +337,7 @@
         {
           "id": "group-2-2",
           "title": "Engineering",
+          "icon": "Cog",
           "description": "Questions for engineering team",
           "conditional": {
             "conditions": [
@@ -241,7 +353,7 @@
             {
               "id": "page-5",
               "title": "Details",
-              "icon": null,
+              "icon": "Calendar",
               "description": "Additional questions for engineering team",
               "conditional": {
                 "conditions": [
@@ -327,9 +439,18 @@
                   "required": true,
                   "requiredToNavigate": true,
                   "options": [
-                    { "label": "Yes", "value": "yes" },
-                    { "label": "No", "value": "no" },
-                    { "label": "Maybe", "value": "maybe" }
+                    {
+                      "label": "Yes",
+                      "value": "yes"
+                    },
+                    {
+                      "label": "No",
+                      "value": "no"
+                    },
+                    {
+                      "label": "Maybe",
+                      "value": "maybe"
+                    }
                   ]
                 }
               ]

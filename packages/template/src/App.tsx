@@ -17,6 +17,7 @@ import {
   StageTabs,
   Panel,
   SidebarMenu,
+  EmojiSlider,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -48,6 +49,7 @@ function App() {
       StageTabs,
       Panel,
       SidebarMenu,
+      EmojiSlider,
     }),
     []
   )
