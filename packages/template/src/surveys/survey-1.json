@@ -1,0 +1,1157 @@
+{
+  "id": "technology-inventory-survey",
+  "title": "Technology Inventory",
+  "description": "Complete information about your project's technology stack",
+  "showQuestionNumbers": true,
+  "navigation": {
+    "stageOrder": "sequential",
+    "groupOrder": "sequential",
+    "pageOrder": "sequential"
+  },
+  "progress": {
+    "showOverall": true,
+    "showPerStage": true,
+    "showPerGroup": false,
+    "showPerPage": false,
+    "location": [
+      "sidebar"
+    ]
+  },
+  "stages": [
+    {
+      "id": "stage-project-overview",
+      "title": "Project Overview",
+      "description": "Basic project information",
+      "icon": "Folder",
+      "groups": [
+        {
+          "id": "group-project-details",
+          "title": "Project Details",
+          "description": "Basic project information",
+          "icon": "FileText",
+          "pages": [
+            {
+              "id": "page-project-name",
+              "title": "Project Name",
+              "icon": "Tag",
+              "description": "What is your project called?",
+              "questions": [
+                {
+                  "id": "project_name",
+                  "type": "text",
+                  "label": "What is the full name of your project?",
+                  "placeholder": "e.g., Survey Kit",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "validation": [
+                    {
+                      "type": "min",
+                      "value": 3,
+                      "message": "Project name must be at least 3 characters"
+                    }
+                  ]
+                },
+                {
+                  "id": "project_short",
+                  "type": "text",
+                  "label": "Project short name or acronym",
+                  "placeholder": "e.g., SK",
+                  "description": "A short identifier for your project",
+                  "required": true,
+                  "requiredToNavigate": true
+                }
+              ]
+            },
+            {
+              "id": "page-programme",
+              "title": "Programme",
+              "icon": "Briefcase",
+              "description": "Which programme does this project belong to?",
+              "questions": [
+                {
+                  "id": "programme_name",
+                  "type": "text",
+                  "label": "Programme name",
+                  "placeholder": "e.g., Survey Kit Programme",
+                  "required": true,
+                  "requiredToNavigate": true
+                },
+                {
+                  "id": "programme_short",
+                  "type": "text",
+                  "label": "Programme short name or acronym",
+                  "placeholder": "e.g., SKP",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "id": "page-description",
+              "title": "Description",
+              "icon": "AlignLeft",
+              "description": "Describe your project",
+              "questions": [
+                {
+                  "id": "description",
+                  "type": "textarea",
+                  "label": "Project description",
+                  "placeholder": "Briefly describe what this project does...",
+                  "description": "Provide a brief overview of the project's purpose and goals",
+                  "required": true,
+                  "requiredToNavigate": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-project-status",
+          "title": "Project Status",
+          "description": "Current status and ownership",
+          "icon": "Activity",
+          "pages": [
+            {
+              "id": "page-stage",
+              "title": "Development Stage",
+              "icon": "GitBranch",
+              "description": "What stage is your project in?",
+              "questions": [
+                {
+                  "id": "stage",
+                  "type": "radio",
+                  "label": "What is the current stage of your project?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    {
+                      "label": "Discovery",
+                      "value": "discovery"
+                    },
+                    {
+                      "label": "Alpha",
+                      "value": "alpha"
+                    },
+                    {
+                      "label": "Beta",
+                      "value": "beta"
+                    },
+                    {
+                      "label": "Development",
+                      "value": "development"
+                    },
+                    {
+                      "label": "Live / Production",
+                      "value": "production"
+                    },
+                    {
+                      "label": "Retirement",
+                      "value": "retirement"
+                    }
+                  ]
+                },
+                {
+                  "id": "developed",
+                  "type": "radio",
+                  "label": "How is this project developed?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    {
+                      "label": "In House",
+                      "value": "in_house"
+                    },
+                    {
+                      "label": "Outsourced",
+                      "value": "outsourced"
+                    },
+                    {
+                      "label": "Mixed (In House + Outsourced)",
+                      "value": "mixed"
+                    },
+                    {
+                      "label": "Open Source",
+                      "value": "open_source"
+                    },
+                    {
+                      "label": "COTS (Commercial Off-The-Shelf)",
+                      "value": "cots"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "page-contacts",
+              "title": "Contacts",
+              "icon": "Users",
+              "description": "Who are the key contacts?",
+              "questions": [
+                {
+                  "id": "technical_contact",
+                  "type": "email",
+                  "label": "Technical Contact email",
+                  "placeholder": "technical.lead@survey-kit.com",
+                  "description": "Primary technical contact for this project",
+                  "required": true,
+                  "requiredToNavigate": true
+                },
+                {
+                  "id": "delivery_manager",
+                  "type": "email",
+                  "label": "Delivery Manager email",
+                  "placeholder": "delivery.manager@survey-kit.com",
+                  "description": "Primary delivery/project manager",
+                  "required": true,
+                  "requiredToNavigate": true
+                }
+              ]
+            },
+            {
+              "id": "page-dependencies",
+              "title": "Dependencies",
+              "icon": "Link",
+              "description": "Project dependencies",
+              "questions": [
+                {
+                  "id": "project_dependencies",
+                  "type": "textarea",
+                  "label": "What other projects does this project depend on?",
+                  "placeholder": "List project names, one per line...",
+                  "description": "Leave blank if there are no dependencies",
+                  "required": false
+                },
+                {
+                  "id": "listed_as_dependency",
+                  "type": "textarea",
+                  "label": "Which projects list this as a dependency?",
+                  "placeholder": "List project names, one per line...",
+                  "description": "Leave blank if unknown or none",
+                  "required": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-technology-stack",
+      "title": "Technology Stack",
+      "description": "Languages, frameworks, and infrastructure",
+      "icon": "Code",
+      "groups": [
+        {
+          "id": "group-languages",
+          "title": "Programming Languages",
+          "description": "Languages used in this project",
+          "icon": "Terminal",
+          "pages": [
+            {
+              "id": "page-main-language",
+              "title": "Primary Language",
+              "icon": "Code2",
+              "description": "What is the main programming language?",
+              "questions": [
+                {
+                  "id": "language_main",
+                  "type": "select",
+                  "label": "Primary programming language",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    {
+                      "label": "Java",
+                      "value": "java"
+                    },
+                    {
+                      "label": "Python",
+                      "value": "python"
+                    },
+                    {
+                      "label": "JavaScript",
+                      "value": "javascript"
+                    },
+                    {
+                      "label": "TypeScript",
+                      "value": "typescript"
+                    },
+                    {
+                      "label": "Go",
+                      "value": "go"
+                    },
+                    {
+                      "label": "C#",
+                      "value": "csharp"
+                    },
+                    {
+                      "label": "Ruby",
+                      "value": "ruby"
+                    },
+                    {
+                      "label": "Scala",
+                      "value": "scala"
+                    },
+                    {
+                      "label": "Kotlin",
+                      "value": "kotlin"
+                    },
+                    {
+                      "label": "Rust",
+                      "value": "rust"
+                    },
+                    {
+                      "label": "Other",
+                      "value": "other"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "page-other-languages",
+              "title": "Other Languages",
+              "icon": "Layers",
+              "description": "Additional languages used",
+              "questions": [
+                {
+                  "id": "language_others",
+                  "type": "checkbox",
+                  "label": "What other languages are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "Java",
+                      "value": "java"
+                    },
+                    {
+                      "label": "Python",
+                      "value": "python"
+                    },
+                    {
+                      "label": "JavaScript",
+                      "value": "javascript"
+                    },
+                    {
+                      "label": "TypeScript",
+                      "value": "typescript"
+                    },
+                    {
+                      "label": "Go",
+                      "value": "go"
+                    },
+                    {
+                      "label": "HCL (Terraform)",
+                      "value": "hcl"
+                    },
+                    {
+                      "label": "SQL",
+                      "value": "sql"
+                    },
+                    {
+                      "label": "Shell/Bash",
+                      "value": "shell"
+                    },
+                    {
+                      "label": "C#",
+                      "value": "csharp"
+                    },
+                    {
+                      "label": "Ruby",
+                      "value": "ruby"
+                    },
+                    {
+                      "label": "Scala",
+                      "value": "scala"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "page-frameworks",
+              "title": "Frameworks",
+              "icon": "Boxes",
+              "description": "Frameworks and libraries",
+              "questions": [
+                {
+                  "id": "language_frameworks",
+                  "type": "checkbox",
+                  "label": "Which frameworks and libraries are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "Spring Boot",
+                      "value": "spring_boot"
+                    },
+                    {
+                      "label": "React",
+                      "value": "react"
+                    },
+                    {
+                      "label": "Angular",
+                      "value": "angular"
+                    },
+                    {
+                      "label": "Vue.js",
+                      "value": "vuejs"
+                    },
+                    {
+                      "label": "Next.js",
+                      "value": "nextjs"
+                    },
+                    {
+                      "label": "Python Flask",
+                      "value": "flask"
+                    },
+                    {
+                      "label": "Python Django",
+                      "value": "django"
+                    },
+                    {
+                      "label": "FastAPI",
+                      "value": "fastapi"
+                    },
+                    {
+                      "label": "Express.js",
+                      "value": "express"
+                    },
+                    {
+                      "label": "Node.js",
+                      "value": "nodejs"
+                    },
+                    {
+                      "label": ".NET Core",
+                      "value": "dotnet_core"
+                    },
+                    {
+                      "label": "Ruby on Rails",
+                      "value": "rails"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-hosting",
+          "title": "Hosting & Cloud",
+          "description": "Where is the project hosted?",
+          "icon": "Cloud",
+          "pages": [
+            {
+              "id": "page-hosting",
+              "title": "Hosting",
+              "icon": "Globe",
+              "description": "Where is your project hosted?",
+              "questions": [
+                {
+                  "id": "hosted",
+                  "type": "radio",
+                  "label": "Where is this project hosted?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    {
+                      "label": "Cloud",
+                      "value": "cloud"
+                    },
+                    {
+                      "label": "On-Premise",
+                      "value": "on_premise"
+                    },
+                    {
+                      "label": "Hybrid (Cloud + On-Premise)",
+                      "value": "hybrid"
+                    },
+                    {
+                      "label": "Not Applicable",
+                      "value": "na"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "page-cloud-provider",
+              "title": "Cloud Provider",
+              "icon": "CloudCog",
+              "description": "Which cloud platforms are used?",
+              "questions": [
+                {
+                  "id": "architectures",
+                  "type": "checkbox",
+                  "label": "Which cloud platforms/architectures are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "Google Cloud Platform (GCP)",
+                      "value": "gcp"
+                    },
+                    {
+                      "label": "Amazon Web Services (AWS)",
+                      "value": "aws"
+                    },
+                    {
+                      "label": "Microsoft Azure",
+                      "value": "azure"
+                    },
+                    {
+                      "label": "Heroku",
+                      "value": "heroku"
+                    },
+                    {
+                      "label": "Digital Ocean",
+                      "value": "digital_ocean"
+                    },
+                    {
+                      "label": "On-Premise Infrastructure",
+                      "value": "on_prem"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "page-infrastructure",
+              "title": "Infrastructure Tools",
+              "icon": "Container",
+              "description": "Container and orchestration tools",
+              "questions": [
+                {
+                  "id": "infrastructure",
+                  "type": "checkbox",
+                  "label": "What infrastructure technologies are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "Docker",
+                      "value": "docker"
+                    },
+                    {
+                      "label": "Kubernetes",
+                      "value": "kubernetes"
+                    },
+                    {
+                      "label": "GCP Cloud Run",
+                      "value": "cloud_run"
+                    },
+                    {
+                      "label": "GCP Cloud Functions",
+                      "value": "cloud_functions"
+                    },
+                    {
+                      "label": "AWS Lambda",
+                      "value": "aws_lambda"
+                    },
+                    {
+                      "label": "AWS ECS",
+                      "value": "aws_ecs"
+                    },
+                    {
+                      "label": "AWS ECR",
+                      "value": "aws_ecr"
+                    },
+                    {
+                      "label": "Azure Functions",
+                      "value": "azure_functions"
+                    },
+                    {
+                      "label": "Terraform",
+                      "value": "terraform"
+                    },
+                    {
+                      "label": "Ansible",
+                      "value": "ansible"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-data",
+          "title": "Data & Storage",
+          "description": "Databases and data stores",
+          "icon": "Database",
+          "pages": [
+            {
+              "id": "page-datastores",
+              "title": "Data Stores",
+              "icon": "HardDrive",
+              "description": "What data stores are used?",
+              "questions": [
+                {
+                  "id": "datastores",
+                  "type": "checkbox",
+                  "label": "Which data stores are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "PostgreSQL",
+                      "value": "postgresql"
+                    },
+                    {
+                      "label": "MySQL",
+                      "value": "mysql"
+                    },
+                    {
+                      "label": "MongoDB",
+                      "value": "mongodb"
+                    },
+                    {
+                      "label": "GCP Firestore",
+                      "value": "firestore"
+                    },
+                    {
+                      "label": "GCP BigQuery",
+                      "value": "bigquery"
+                    },
+                    {
+                      "label": "GCP Cloud Storage (Bucket)",
+                      "value": "gcs"
+                    },
+                    {
+                      "label": "AWS S3",
+                      "value": "s3"
+                    },
+                    {
+                      "label": "AWS DynamoDB",
+                      "value": "dynamodb"
+                    },
+                    {
+                      "label": "Redis",
+                      "value": "redis"
+                    },
+                    {
+                      "label": "Elasticsearch",
+                      "value": "elasticsearch"
+                    },
+                    {
+                      "label": "SQL Server",
+                      "value": "sql_server"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-devops",
+          "title": "DevOps & Source Control",
+          "description": "CI/CD and source control",
+          "icon": "GitBranch",
+          "pages": [
+            {
+              "id": "page-source-control",
+              "title": "Source Control",
+              "icon": "GitFork",
+              "description": "How is source code managed?",
+              "questions": [
+                {
+                  "id": "source_control",
+                  "type": "radio",
+                  "label": "What source control system is used?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    {
+                      "label": "GitHub",
+                      "value": "github"
+                    },
+                    {
+                      "label": "GitLab",
+                      "value": "gitlab"
+                    },
+                    {
+                      "label": "Bitbucket",
+                      "value": "bitbucket"
+                    },
+                    {
+                      "label": "Azure DevOps",
+                      "value": "azure_devops"
+                    },
+                    {
+                      "label": "Other",
+                      "value": "other"
+                    }
+                  ]
+                },
+                {
+                  "id": "repo",
+                  "type": "textarea",
+                  "label": "Repository URLs",
+                  "placeholder": "https://github.com/org/project-name\nhttps://github.com/org/another-repo",
+                  "description": "Enter repository URLs, one per line",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "id": "page-cicd",
+              "title": "CI/CD",
+              "icon": "Workflow",
+              "description": "Continuous Integration and Deployment",
+              "questions": [
+                {
+                  "id": "cicd",
+                  "type": "checkbox",
+                  "label": "What CI/CD tools are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "GitHub Actions",
+                      "value": "github_actions"
+                    },
+                    {
+                      "label": "Concourse",
+                      "value": "concourse"
+                    },
+                    {
+                      "label": "Jenkins",
+                      "value": "jenkins"
+                    },
+                    {
+                      "label": "GitLab CI/CD",
+                      "value": "gitlab_ci"
+                    },
+                    {
+                      "label": "CircleCI",
+                      "value": "circleci"
+                    },
+                    {
+                      "label": "Azure Pipelines",
+                      "value": "azure_pipelines"
+                    },
+                    {
+                      "label": "AWS CodePipeline",
+                      "value": "aws_codepipeline"
+                    },
+                    {
+                      "label": "ArgoCD",
+                      "value": "argocd"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-tools-collaboration",
+      "title": "Tools & Collaboration",
+      "description": "Development and communication tools",
+      "icon": "Wrench",
+      "groups": [
+        {
+          "id": "group-editors",
+          "title": "Code Editors",
+          "description": "Development environments",
+          "icon": "Code",
+          "pages": [
+            {
+              "id": "page-code-editors",
+              "title": "Code Editors",
+              "icon": "FileCode",
+              "description": "What code editors does your team use?",
+              "questions": [
+                {
+                  "id": "code_editors",
+                  "type": "checkbox",
+                  "label": "Which code editors/IDEs are used?",
+                  "description": "Select all that apply",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    {
+                      "label": "Visual Studio Code",
+                      "value": "vscode"
+                    },
+                    {
+                      "label": "JetBrains IntelliJ IDEA",
+                      "value": "intellij"
+                    },
+                    {
+                      "label": "PyCharm",
+                      "value": "pycharm"
+                    },
+                    {
+                      "label": "WebStorm",
+                      "value": "webstorm"
+                    },
+                    {
+                      "label": "Sublime Text",
+                      "value": "sublime"
+                    },
+                    {
+                      "label": "Vim/Neovim",
+                      "value": "vim"
+                    },
+                    {
+                      "label": "Eclipse",
+                      "value": "eclipse"
+                    },
+                    {
+                      "label": "Atom",
+                      "value": "atom"
+                    },
+                    {
+                      "label": "Visual Studio",
+                      "value": "visual_studio"
+                    },
+                    {
+                      "label": "Other",
+                      "value": "other"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "page-project-tools",
+              "title": "Project Management",
+              "icon": "Kanban",
+              "description": "Project management tools",
+              "questions": [
+                {
+                  "id": "project_tools",
+                  "type": "checkbox",
+                  "label": "What project management tools are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "Jira",
+                      "value": "jira"
+                    },
+                    {
+                      "label": "Trello",
+                      "value": "trello"
+                    },
+                    {
+                      "label": "Asana",
+                      "value": "asana"
+                    },
+                    {
+                      "label": "Monday.com",
+                      "value": "monday"
+                    },
+                    {
+                      "label": "GitHub Projects",
+                      "value": "github_projects"
+                    },
+                    {
+                      "label": "Azure Boards",
+                      "value": "azure_boards"
+                    },
+                    {
+                      "label": "Notion",
+                      "value": "notion"
+                    },
+                    {
+                      "label": "Linear",
+                      "value": "linear"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-communication",
+          "title": "Communication",
+          "description": "How does your team communicate?",
+          "icon": "MessageSquare",
+          "pages": [
+            {
+              "id": "page-communication",
+              "title": "Communication Tools",
+              "icon": "MessagesSquare",
+              "description": "Team communication channels",
+              "questions": [
+                {
+                  "id": "communication",
+                  "type": "checkbox",
+                  "label": "What communication tools does your team use?",
+                  "description": "Select all that apply",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    {
+                      "label": "Microsoft Teams",
+                      "value": "teams"
+                    },
+                    {
+                      "label": "Slack",
+                      "value": "slack"
+                    },
+                    {
+                      "label": "Email",
+                      "value": "email"
+                    },
+                    {
+                      "label": "Google Meet",
+                      "value": "google_meet"
+                    },
+                    {
+                      "label": "Zoom",
+                      "value": "zoom"
+                    },
+                    {
+                      "label": "Discord",
+                      "value": "discord"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "page-collaboration",
+              "title": "Collaboration Tools",
+              "icon": "Share2",
+              "description": "Collaboration and version control",
+              "questions": [
+                {
+                  "id": "collaboration",
+                  "type": "checkbox",
+                  "label": "What collaboration tools are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "GitHub",
+                      "value": "github"
+                    },
+                    {
+                      "label": "Git",
+                      "value": "git"
+                    },
+                    {
+                      "label": "Google Workspace",
+                      "value": "google_workspace"
+                    },
+                    {
+                      "label": "Microsoft 365",
+                      "value": "microsoft_365"
+                    },
+                    {
+                      "label": "Miro",
+                      "value": "miro"
+                    },
+                    {
+                      "label": "Figma",
+                      "value": "figma"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-documentation",
+          "title": "Documentation",
+          "description": "Documentation and design tools",
+          "icon": "BookOpen",
+          "pages": [
+            {
+              "id": "page-documentation-tools",
+              "title": "Documentation Tools",
+              "icon": "FileText",
+              "description": "Where is documentation stored?",
+              "questions": [
+                {
+                  "id": "documentation_tools",
+                  "type": "checkbox",
+                  "label": "What documentation tools are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "Confluence",
+                      "value": "confluence"
+                    },
+                    {
+                      "label": "Notion",
+                      "value": "notion"
+                    },
+                    {
+                      "label": "GitHub Wiki",
+                      "value": "github_wiki"
+                    },
+                    {
+                      "label": "GitBook",
+                      "value": "gitbook"
+                    },
+                    {
+                      "label": "Google Docs",
+                      "value": "google_docs"
+                    },
+                    {
+                      "label": "SharePoint",
+                      "value": "sharepoint"
+                    },
+                    {
+                      "label": "README files",
+                      "value": "readme"
+                    }
+                  ]
+                },
+                {
+                  "id": "documentation_url",
+                  "type": "text",
+                  "label": "Primary documentation URL",
+                  "placeholder": "https://github.com/org/project-docs",
+                  "description": "Link to main documentation (optional)",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "id": "page-design-tools",
+              "title": "Design Tools",
+              "icon": "Palette",
+              "description": "UI/UX and diagramming tools",
+              "questions": [
+                {
+                  "id": "ui_tools",
+                  "type": "checkbox",
+                  "label": "What UI/UX design tools are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "Figma",
+                      "value": "figma"
+                    },
+                    {
+                      "label": "Sketch",
+                      "value": "sketch"
+                    },
+                    {
+                      "label": "Adobe XD",
+                      "value": "adobe_xd"
+                    },
+                    {
+                      "label": "InVision",
+                      "value": "invision"
+                    },
+                    {
+                      "label": "None",
+                      "value": "none"
+                    }
+                  ]
+                },
+                {
+                  "id": "diagram_tools",
+                  "type": "checkbox",
+                  "label": "What diagramming tools are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "Draw.io",
+                      "value": "drawio"
+                    },
+                    {
+                      "label": "Lucidchart",
+                      "value": "lucidchart"
+                    },
+                    {
+                      "label": "Miro",
+                      "value": "miro"
+                    },
+                    {
+                      "label": "Visio",
+                      "value": "visio"
+                    },
+                    {
+                      "label": "PlantUML",
+                      "value": "plantuml"
+                    },
+                    {
+                      "label": "Mermaid",
+                      "value": "mermaid"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-operations",
+          "title": "Operations",
+          "description": "Incident management and operations",
+          "icon": "Shield",
+          "pages": [
+            {
+              "id": "page-incident-management",
+              "title": "Incident Management",
+              "icon": "AlertTriangle",
+              "description": "How are incidents managed?",
+              "questions": [
+                {
+                  "id": "incident_management",
+                  "type": "checkbox",
+                  "label": "What incident management tools are used?",
+                  "description": "Select all that apply",
+                  "options": [
+                    {
+                      "label": "ServiceNow",
+                      "value": "servicenow"
+                    },
+                    {
+                      "label": "PagerDuty",
+                      "value": "pagerduty"
+                    },
+                    {
+                      "label": "Opsgenie",
+                      "value": "opsgenie"
+                    },
+                    {
+                      "label": "Jira Service Management",
+                      "value": "jira_sm"
+                    },
+                    {
+                      "label": "Zendesk",
+                      "value": "zendesk"
+                    },
+                    {
+                      "label": "None",
+                      "value": "none"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "page-additional",
+              "title": "Additional Information",
+              "icon": "MoreHorizontal",
+              "description": "Any other information",
+              "questions": [
+                {
+                  "id": "miscellaneous",
+                  "type": "textarea",
+                  "label": "Any additional tools or information?",
+                  "placeholder": "List any other tools or relevant details...",
+                  "description": "Optional - anything else we should know about",
+                  "required": false
+                },
+                {
+                  "id": "publishing_target",
+                  "type": "text",
+                  "label": "Publishing target (if applicable)",
+                  "placeholder": "e.g., ons.gov.uk, internal only",
+                  "description": "Where does this project publish to?",
+                  "required": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
