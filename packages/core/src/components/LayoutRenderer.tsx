@@ -978,7 +978,7 @@ export function LayoutRenderer({
       {layoutConfig.main?.enabled && (
         <MainContentComponent>
           {layoutConfig.main.sidebar?.enabled && Sidebar ? (
-            <div className="flex gap-8 relative flex-1">
+            <div className="flex relative flex-1">
               {/* Sidebar - responsive via CSS classes */}
               <Sidebar
                 mobile={true}
