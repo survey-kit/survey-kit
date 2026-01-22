@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://survey-kit.github.io/survey-kit/</loc>
+         <lastmod>2026-01-22</lastmod>
+    </url>
+    <url>
+         <loc>https://survey-kit.github.io/survey-kit/api/core/</loc>
+         <lastmod>2026-01-22</lastmod>
+    </url>
+    <url>
+         <loc>https://survey-kit.github.io/survey-kit/api/registry/</loc>
+         <lastmod>2026-01-22</lastmod>
+    </url>
+    <url>
+         <loc>https://survey-kit.github.io/survey-kit/getting-started/installation/</loc>
+         <lastmod>2026-01-22</lastmod>
+    </url>
+    <url>
+         <loc>https://survey-kit.github.io/survey-kit/getting-started/quickstart/</loc>
+         <lastmod>2026-01-22</lastmod>
+    </url>
+    <url>
+         <loc>https://survey-kit.github.io/survey-kit/guides/configuration/</loc>
+         <lastmod>2026-01-22</lastmod>
+    </url>
+</urlset>
