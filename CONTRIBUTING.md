@@ -1,3 +1,11 @@
+## Branch Convention
+
+Before creating a branch, a ticket is created on [survey-kit.com](https://www.survey-kit.com/#board).
+
+Name the branch as `sk<sprint-number>-<ticket-title>`.
+
+For example: `sk1-initial-creation`.
+
 ## Commit Convention
 
 Before you create a Pull Request, please check whether your commits comply with
@@ -28,6 +36,12 @@ the following categories:
 If you are interested in the detailed specification you can visit
 https://www.conventionalcommits.org/ or check out the
 [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines).
+
+## Pull Request Convetion
+
+When creating a pull request, please reference the sprint and branch name in the title.
+
+For example if the sprint is `sk1` and the branch is `sk1-initial-creation`, the pull request title should be `SK1 - Initial Creation`.
 
 ## Publishing
 

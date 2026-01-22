@@ -1,0 +1,242 @@
+{
+  "id": "feedback-survey",
+  "title": "Feedback",
+  "description": "Help us improve this survey (all questions optional)",
+  "showQuestionNumbers": true,
+  "navigation": {
+    "stageOrder": "sequential",
+    "groupOrder": "sequential",
+    "pageOrder": "sequential"
+  },
+  "progress": {
+    "showOverall": true,
+    "showPerStage": false,
+    "showPerGroup": false,
+    "showPerPage": false,
+    "location": [
+      "sidebar"
+    ]
+  },
+  "stages": [
+    {
+      "id": "stage-feedback",
+      "title": "Survey Feedback",
+      "description": "Help us improve this survey",
+      "icon": "Heart",
+      "groups": [
+        {
+          "id": "group-satisfaction",
+          "title": "Your Experience",
+          "description": "Rate your experience",
+          "icon": "Star",
+          "pages": [
+            {
+              "id": "page-overall-satisfaction",
+              "title": "Overall Satisfaction",
+              "icon": "Smile",
+              "description": "How was your experience?",
+              "questions": [
+                {
+                  "id": "survey_satisfaction",
+                  "type": "emoji-slider",
+                  "label": "How satisfied were you with this survey?",
+                  "description": "Rate your overall experience",
+                  "required": false,
+                  "emojiSlider": {
+                    "type": "scale",
+                    "scale": 5,
+                    "min": 1,
+                    "max": 5,
+                    "step": 1,
+                    "showLabels": true,
+                    "emojis": [
+                      {
+                        "value": 1,
+                        "emoji": "😢",
+                        "label": "Very Dissatisfied"
+                      },
+                      {
+                        "value": 2,
+                        "emoji": "😕",
+                        "label": "Dissatisfied"
+                      },
+                      {
+                        "value": 3,
+                        "emoji": "😐",
+                        "label": "Neutral"
+                      },
+                      {
+                        "value": 4,
+                        "emoji": "🙂",
+                        "label": "Satisfied"
+                      },
+                      {
+                        "value": 5,
+                        "emoji": "😄",
+                        "label": "Very Satisfied"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "page-question-clarity",
+              "title": "Question Clarity",
+              "icon": "HelpCircle",
+              "description": "How clear were the questions?",
+              "questions": [
+                {
+                  "id": "question_clarity",
+                  "type": "emoji-slider",
+                  "label": "How clear were the questions?",
+                  "description": "Were the questions easy to understand?",
+                  "required": false,
+                  "emojiSlider": {
+                    "type": "scale",
+                    "scale": 5,
+                    "min": 1,
+                    "max": 5,
+                    "step": 1,
+                    "showLabels": true,
+                    "emojis": [
+                      {
+                        "value": 1,
+                        "emoji": "😵",
+                        "label": "Very Confusing"
+                      },
+                      {
+                        "value": 2,
+                        "emoji": "😕",
+                        "label": "Somewhat Confusing"
+                      },
+                      {
+                        "value": 3,
+                        "emoji": "😐",
+                        "label": "Neutral"
+                      },
+                      {
+                        "value": 4,
+                        "emoji": "🙂",
+                        "label": "Mostly Clear"
+                      },
+                      {
+                        "value": 5,
+                        "emoji": "😎",
+                        "label": "Crystal Clear"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "id": "page-survey-length",
+              "title": "Survey Length",
+              "icon": "Clock",
+              "description": "How was the length?",
+              "questions": [
+                {
+                  "id": "survey_length",
+                  "type": "emoji-slider",
+                  "label": "How did you feel about the survey length?",
+                  "description": "Was it too short, too long, or just right?",
+                  "required": false,
+                  "emojiSlider": {
+                    "type": "scale",
+                    "scale": 5,
+                    "min": 1,
+                    "max": 5,
+                    "step": 1,
+                    "showLabels": true,
+                    "emojis": [
+                      {
+                        "value": 1,
+                        "emoji": "😴",
+                        "label": "Way Too Long"
+                      },
+                      {
+                        "value": 2,
+                        "emoji": "😩",
+                        "label": "A Bit Long"
+                      },
+                      {
+                        "value": 3,
+                        "emoji": "👌",
+                        "label": "Just Right"
+                      },
+                      {
+                        "value": 4,
+                        "emoji": "🤔",
+                        "label": "A Bit Short"
+                      },
+                      {
+                        "value": 5,
+                        "emoji": "😮",
+                        "label": "Too Short"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-recommend",
+          "title": "Recommendation",
+          "description": "Would you recommend this survey?",
+          "icon": "ThumbsUp",
+          "pages": [
+            {
+              "id": "page-recommend",
+              "title": "Recommendation",
+              "icon": "ThumbsUp",
+              "description": "Would you recommend this survey?",
+              "questions": [
+                {
+                  "id": "recommend_survey",
+                  "type": "emoji-slider",
+                  "label": "How likely are you to recommend this survey to a colleague?",
+                  "description": "Rate from 0 (not at all) to 100 (definitely)",
+                  "required": false,
+                  "emojiSlider": {
+                    "type": "single",
+                    "emoji": "👍",
+                    "min": 0,
+                    "max": 100,
+                    "step": 10
+                  }
+                }
+              ]
+            },
+            {
+              "id": "page-comments",
+              "title": "Additional Comments",
+              "icon": "MessageCircle",
+              "description": "Any other feedback?",
+              "questions": [
+                {
+                  "id": "feedback_comments",
+                  "type": "textarea",
+                  "label": "Any additional feedback?",
+                  "placeholder": "Tell us what you think...",
+                  "description": "Optional - your feedback helps us improve",
+                  "required": false
+                },
+                {
+                  "id": "feature_requests",
+                  "type": "textarea",
+                  "label": "Any feature requests or suggestions?",
+                  "placeholder": "What would make this survey better?",
+                  "description": "Optional - help us improve future surveys",
+                  "required": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
