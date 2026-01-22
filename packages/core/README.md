@@ -21,6 +21,8 @@ The core package provides the essential logic and components for building survey
 - Advanced validation (including cross-question validation)
 - Hierarchical survey structure (stages → groups → pages → questions)
 - Progress tracking at multiple levels
+- **Multi-Survey Support** – Configure multiple distinct surveys with shared routing
+- **Section Layouts** – Configure headers and footers for individual section pages
 - Mobile-first, accessible design
 
 ## Installation
@@ -59,7 +61,7 @@ function MySurvey() {
 - `SurveyRenderer` – Main component for rendering surveys
 - `LayoutRenderer` – Component for rendering survey layout
 - `useSurvey` – Hook for survey state management
-- Type definitions (`SurveyConfig`, `SurveyPage`, `SurveyQuestion`, etc.)
+- Type definitions (`SurveyConfig`, `SurveyPage`, `SurveyQuestion`, `SectionConfig`, `SectionLayout`, etc.)
 - Conditional logic utilities
 - Validation utilities
 

@@ -8,7 +8,7 @@ The registry package provides pre-built, accessible React components for buildin
 
 - **Primitives** – Button, Input, Heading, Card, Checkbox
 - **Layout** – Header, Footer, Sidebar, Wrapper, Stage Tabs
-- **Complex** – Progress Bar, Score Card, Blocked Page
+- **Complex** – Progress Bar, Score Card, Blocked Page, Emoji Slider
 - **Form controls** – Dropdown, Select components
 
 All components are built on accessible primitives (Radix UI) and styled with Tailwind CSS.
@@ -21,6 +21,8 @@ All components are built on accessible primitives (Radix UI) and styled with Tai
 - TypeScript support
 - Mobile-first, responsive design
 - Consistent design system
+- **New**: Configurable Section Layouts
+- **New**: Emoji Slider component
 
 ## Installation
 
@@ -61,12 +63,14 @@ function MyComponent() {
 - `Wrapper` – Layout wrapper component
 - `StageTabs` – Stage navigation tabs
 - `MainContent` – Main content area component
+- `SectionPage` – Flexible page component for sections (intro, sensitive info, etc.)
 
 ### Complex
 
 - `ProgressBar` – Progress indicator component
 - `ScoreCard` – Score display component
 - `BlockedPage` – Page access restriction component
+- `EmojiSlider` – Interactive slider with emoji feedback
 
 ### Form Controls
 
