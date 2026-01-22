@@ -40,6 +40,14 @@ theme:
 
 nav:
   - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quickstart.md
+  - Guides:
+      - Configuration: guides/configuration.md
+  - API Reference:
+      - Core: api/core.md
+      - Registry: api/registry.md
 
 markdown_extensions:
   - admonition
