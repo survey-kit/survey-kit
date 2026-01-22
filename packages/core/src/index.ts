@@ -27,6 +27,15 @@ export type {
   MainContentConfig,
 } from './types/layout'
 
+export type {
+  SectionConfig,
+  SectionsConfig,
+  SectionButton,
+  SectionInput,
+  SectionImage,
+  SectionLayout,
+} from './types/section'
+
 // Export components
 export { SurveyRenderer } from './components/SurveyRenderer'
 export { LayoutRenderer } from './components/LayoutRenderer'
