@@ -1,0 +1,71 @@
+site_name: Survey-Kit Documentation
+site_description: Mobile-first, accessible survey framework for engaging experiences
+site_url: https://survey-kit.github.io/survey-kit
+repo_url: https://github.com/survey-kit/survey-kit
+repo_name: survey-kit/survey-kit
+edit_uri: edit/main/docs/docs/
+
+theme:
+  name: material
+  language: en
+  favicon: assets/favicon.ico
+  logo: assets/logo.png
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: white
+      accent: white
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: black
+      accent: black
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  font: false # Disable default font loading
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.action.edit
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - Home: index.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+extra_css:
+  - assets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/survey-kit/survey-kit
+    - icon: fontawesome/brands/npm
+      link: https://www.npmjs.com/package/@survey-kit/core
+    - icon: fontawesome/brands/npm
+      link: https://www.npmjs.com/package/@survey-kit/registry
