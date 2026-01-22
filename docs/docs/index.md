@@ -7,7 +7,7 @@ Mobile-first, accessible survey framework for engaging experiences.
 - [Survey-Kit Website](https://survey-kit.com)
 - Examples:
   - [Template (Vercel)](https://template.survey-kit.com) using [Vercel](https://vercel.com)
-  - [Template (AWS)](https://template.survey-kit.com) using [/infra/terraform](./infra/terraform)
+  - [Template (AWS)](https://template.survey-kit.com) using [infra/terraform](https://github.com/survey-kit/survey-kit/tree/main/infra/terraform)
 - NPM Packages:
   - [@survey-kit/core](https://www.npmjs.com/package/@survey-kit/core)
   - [@survey-kit/registry](https://www.npmjs.com/package/@survey-kit/registry)
@@ -91,6 +91,6 @@ MIT
 ## Resources
 
 - [GitHub](https://github.com/survey-kit/survey-kit)
-- [Example App](./packages/template)
-- [Component Docs](./packages/registry)
-- [Core API](./packages/core)
+- [Example App](https://github.com/survey-kit/survey-kit/tree/main/packages/template)
+- [Component Docs](https://github.com/survey-kit/survey-kit/tree/main/packages/registry)
+- [Core API](https://github.com/survey-kit/survey-kit/tree/main/packages/core)
