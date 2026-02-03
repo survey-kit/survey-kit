@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '../primitives/button/button'
 import { Input } from '../primitives/input/input'
 import { Checkbox } from '../primitives/checkbox/checkbox'
@@ -51,6 +51,15 @@ export function ChatInput({
   const [textValue, setTextValue] = useState(
     typeof value === 'string' ? value : ''
   )
+
+  // Sync textValue when value prop changes (e.g., when entering edit mode)
+  useEffect(() => {
+    if (typeof value === 'string') {
+      setTextValue(value)
+    } else if (value === null || value === undefined) {
+      setTextValue('')
+    }
+  }, [value])
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextValue(e.target.value)

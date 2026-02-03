@@ -167,6 +167,17 @@ export function ChatSurveyRenderer({
   // Current input value (for controlled input)
   const [inputValue, setInputValue] = useState<unknown>(null)
 
+  // Ref to track the latest input value (for async callbacks like radio auto-submit)
+  const inputValueRef = useRef<unknown>(null)
+
+  // Track locally submitted answers (to show bubbles before survey.state.answers updates)
+  const [localAnswers, setLocalAnswers] = useState<Record<string, unknown>>({})
+
+  // Combined answers: merge survey answers with local answers (local takes precedence for immediate display)
+  const combinedAnswers = useMemo(() => {
+    return { ...allAnswers, ...localAnswers }
+  }, [allAnswers, localAnswers])
+
   // Reference to track if typing animation should run
   const typingTimeoutRef = useRef<number | null>(null)
 
@@ -226,7 +237,9 @@ export function ChatSurveyRenderer({
   useEffect(() => {
     if (currentQuestion) {
       const existingAnswer = allAnswers[currentQuestion.id]
-      setInputValue(existingAnswer ?? null)
+      const valueToSet = existingAnswer ?? null
+      setInputValue(valueToSet)
+      inputValueRef.current = valueToSet
     }
   }, [currentQuestion, allAnswers])
 
@@ -236,13 +249,23 @@ export function ChatSurveyRenderer({
   const handleSubmitAnswer = useCallback(() => {
     if (!currentQuestion) return
 
-    // Save the answer
-    survey.setAnswer(currentQuestion.id, inputValue)
+    // Use ref value to ensure we get the latest value (important for async radio auto-submit)
+    const valueToSave = inputValueRef.current
+
+    // Save the answer to both survey state and local state
+    survey.setAnswer(currentQuestion.id, valueToSave)
+
+    // Update local answers immediately so the bubble appears right away
+    setLocalAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: valueToSave,
+    }))
 
     if (editingQuestionId) {
       // Exit edit mode
       setEditingQuestionId(null)
       setInputValue(null)
+      inputValueRef.current = null
     } else {
       // Move to next question
       const nextIndex = currentQuestionIndex + 1
@@ -252,11 +275,11 @@ export function ChatSurveyRenderer({
       } else {
         setCurrentQuestionIndex(nextIndex)
         setInputValue(null)
+        inputValueRef.current = null
       }
     }
   }, [
     currentQuestion,
-    inputValue,
     editingQuestionId,
     currentQuestionIndex,
     visibleQuestions.length,
@@ -271,6 +294,7 @@ export function ChatSurveyRenderer({
     } else {
       setCurrentQuestionIndex(nextIndex)
       setInputValue(null)
+      inputValueRef.current = null
     }
   }, [currentQuestionIndex, visibleQuestions.length])
 
@@ -278,6 +302,12 @@ export function ChatSurveyRenderer({
   const handleEdit = useCallback((questionId: string) => {
     setShowReview(false)
     setEditingQuestionId(questionId)
+  }, [])
+
+  // Handle input value changes - updates both state and ref
+  const handleInputChange = useCallback((value: unknown) => {
+    setInputValue(value)
+    inputValueRef.current = value
   }, [])
 
   // Handle final submission
@@ -316,7 +346,7 @@ export function ChatSurveyRenderer({
       <ChatContainer title={config.title} progress={100}>
         <ChatReviewScreen
           questions={reviewQuestions}
-          answers={allAnswers}
+          answers={combinedAnswers}
           onEdit={handleEdit}
           onSubmit={handleFinalSubmit}
           isSubmitting={isSubmitting}
@@ -334,13 +364,23 @@ export function ChatSurveyRenderer({
 
   // Get questions to display as answered (include current if answered and not editing)
   const displayedAnsweredQuestions = useMemo(() => {
-    // Show all questions up to current index
-    const answered = visibleQuestions.slice(0, currentQuestionIndex)
+    // Show all questions up to current index that have answers
+    const answered = visibleQuestions
+      .slice(0, currentQuestionIndex)
+      .filter((q) => {
+        const answer = combinedAnswers[q.id]
+        return (
+          answer !== undefined &&
+          answer !== null &&
+          answer !== '' &&
+          !(Array.isArray(answer) && answer.length === 0)
+        )
+      })
 
     // If we're past the current index or on review, include all answered
     if (currentQuestionIndex >= visibleQuestions.length) {
       return visibleQuestions.filter((q) => {
-        const answer = allAnswers[q.id]
+        const answer = combinedAnswers[q.id]
         return (
           answer !== undefined &&
           answer !== null &&
@@ -351,7 +391,7 @@ export function ChatSurveyRenderer({
     }
 
     return answered
-  }, [visibleQuestions, currentQuestionIndex, allAnswers])
+  }, [visibleQuestions, currentQuestionIndex, combinedAnswers])
 
   return (
     <ChatContainer
@@ -362,7 +402,7 @@ export function ChatSurveyRenderer({
           <ChatInput
             type={getChatInputType(currentQuestion.type)}
             value={inputValue}
-            onChange={setInputValue}
+            onChange={handleInputChange}
             onSubmit={handleSubmitAnswer}
             onSkip={
               !currentQuestion.required && !currentQuestion.requiredToNavigate
@@ -392,7 +432,7 @@ export function ChatSurveyRenderer({
               required: question.required || question.requiredToNavigate,
               description: question.description,
             }}
-            answer={allAnswers[question.id]}
+            answer={combinedAnswers[question.id]}
             isEditing={isBeingEdited}
             onEdit={!isBeingEdited ? () => handleEdit(question.id) : undefined}
           />
@@ -420,7 +460,7 @@ export function ChatSurveyRenderer({
                 currentQuestion.required || currentQuestion.requiredToNavigate,
               description: currentQuestion.description,
             }}
-            answer={allAnswers[currentQuestion.id]}
+            answer={combinedAnswers[currentQuestion.id]}
           />
         )}
     </ChatContainer>
