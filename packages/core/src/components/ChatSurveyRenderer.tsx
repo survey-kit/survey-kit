@@ -333,8 +333,29 @@ export function ChatSurveyRenderer({
     return 'text'
   }
 
-  // Show review screen
-  if (showReview) {
+  // Check if we should show the review screen
+  // Either explicitly set, or we've answered all questions
+  const allQuestionsAnswered = useMemo(() => {
+    if (visibleQuestions.length === 0) return false
+    return visibleQuestions.every((q) => {
+      const answer = combinedAnswers[q.id]
+      // For non-required questions, empty answers are acceptable
+      if (!q.required && !q.requiredToNavigate) return true
+      return (
+        answer !== undefined &&
+        answer !== null &&
+        answer !== '' &&
+        !(Array.isArray(answer) && answer.length === 0)
+      )
+    })
+  }, [visibleQuestions, combinedAnswers])
+
+  // Show review screen when explicitly set OR when all questions are answered and no current question
+  const shouldShowReview =
+    showReview ||
+    (allQuestionsAnswered && currentQuestionIndex >= visibleQuestions.length)
+
+  if (shouldShowReview) {
     const reviewQuestions = visibleQuestions.map((q) => ({
       id: q.id,
       label: q.label,
