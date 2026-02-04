@@ -21,6 +21,8 @@ import {
   SectionPage,
   CookieConsent,
   useCookieConsent,
+  CookieConsentProvider,
+  useCookieConsentContext,
   type SectionConfig,
   type CookieConsentConfig,
 } from '@survey-kit/registry'
@@ -65,6 +67,7 @@ interface SurveyPageProps {
 
 function SurveyPage({ config, completionRoute }: SurveyPageProps) {
   const navigate = useNavigate()
+  const cookieContext = useCookieConsentContext()
 
   const handleSurveySubmit = async (answers: Record<string, unknown>) => {
     console.log('Survey submitted with answers:', answers)
@@ -75,6 +78,8 @@ function SurveyPage({ config, completionRoute }: SurveyPageProps) {
     console.log('Layout action triggered:', actionId)
     if (actionId === 'handleSave') {
       navigate('/sign-out')
+    } else if (actionId === 'showCookies') {
+      cookieContext.showBanner()
     }
   }
 
@@ -176,60 +181,69 @@ function App() {
     (cookieConfig as CookieConsentConfig).categories
   )
 
+  // Context value for child components
+  const cookieContextValue = {
+    showBanner: consent.showBanner,
+    hideBanner: consent.hideBanner,
+    hasConsent: consent.hasConsent,
+  }
+
   return (
     <BrowserRouter>
-      {/* Cookie consent banner - shown at top when consent not given */}
-      {consent.isLoaded && !consent.hasConsentBeenGiven && (
-        <CookieConsent
-          config={cookieConfig as CookieConsentConfig}
-          onAcceptAll={consent.acceptAll}
-          onRejectAll={consent.rejectAll}
-          onSavePreferences={consent.saveGranular}
-        />
-      )}
+      <CookieConsentProvider value={cookieContextValue}>
+        {/* Cookie consent banner - shown at top when needed */}
+        {consent.isLoaded && consent.shouldShowBanner && (
+          <CookieConsent
+            config={cookieConfig as CookieConsentConfig}
+            onAcceptAll={consent.acceptAll}
+            onRejectAll={consent.rejectAll}
+            onSavePreferences={consent.saveGranular}
+          />
+        )}
 
-      <Routes>
-        <Route path="/" element={<SectionPageWrapper sectionId="intro" />} />
-        <Route
-          path="/login"
-          element={<SectionPageWrapper sectionId="login" />}
-        />
+        <Routes>
+          <Route path="/" element={<SectionPageWrapper sectionId="intro" />} />
+          <Route
+            path="/login"
+            element={<SectionPageWrapper sectionId="login" />}
+          />
 
-        {/* Survey 1: Technology Inventory (3 stages) */}
-        <Route
-          path="/survey-1/*"
-          element={
-            <SurveyPage
-              config={surveyConfig1 as unknown as SurveyConfig}
-              completionRoute="/complete-1"
-            />
-          }
-        />
-        <Route
-          path="/complete-1"
-          element={<SectionPageWrapper sectionId="complete-1" />}
-        />
+          {/* Survey 1: Technology Inventory (3 stages) */}
+          <Route
+            path="/survey-1/*"
+            element={
+              <SurveyPage
+                config={surveyConfig1 as unknown as SurveyConfig}
+                completionRoute="/complete-1"
+              />
+            }
+          />
+          <Route
+            path="/complete-1"
+            element={<SectionPageWrapper sectionId="complete-1" />}
+          />
 
-        {/* Survey 2: Feedback (all optional) */}
-        <Route
-          path="/survey-2/*"
-          element={
-            <SurveyPage
-              config={surveyConfig2 as unknown as SurveyConfig}
-              completionRoute="/complete-2"
-            />
-          }
-        />
-        <Route
-          path="/complete-2"
-          element={<SectionPageWrapper sectionId="complete-2" />}
-        />
+          {/* Survey 2: Feedback (all optional) */}
+          <Route
+            path="/survey-2/*"
+            element={
+              <SurveyPage
+                config={surveyConfig2 as unknown as SurveyConfig}
+                completionRoute="/complete-2"
+              />
+            }
+          />
+          <Route
+            path="/complete-2"
+            element={<SectionPageWrapper sectionId="complete-2" />}
+          />
 
-        <Route
-          path="/sign-out"
-          element={<SectionPageWrapper sectionId="sign-out" />}
-        />
-      </Routes>
+          <Route
+            path="/sign-out"
+            element={<SectionPageWrapper sectionId="sign-out" />}
+          />
+        </Routes>
+      </CookieConsentProvider>
     </BrowserRouter>
   )
 }
