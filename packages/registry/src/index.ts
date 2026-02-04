@@ -37,5 +37,8 @@ export {
 // Export SimpleDropdown for SurveyRenderer (with simple API: value, onChange, options)
 export { SimpleDropdown } from '../registry/layout/dropdown/simple-dropdown'
 
+// Chat components - messaging-style survey interface
+export * from '../registry/chat'
+
 // Export utilities
 export { cn } from '../lib/utils'

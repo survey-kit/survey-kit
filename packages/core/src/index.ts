@@ -39,6 +39,11 @@ export type {
 // Export components
 export { SurveyRenderer } from './components/SurveyRenderer'
 export { LayoutRenderer } from './components/LayoutRenderer'
+export {
+  ChatSurveyRenderer,
+  type ChatSurveyRendererProps,
+  type TypingDelayConfig,
+} from './components/ChatSurveyRenderer'
 
 // Export hooks
 export { useSurvey } from './hooks/useSurvey'
