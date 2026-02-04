@@ -236,6 +236,9 @@ interface LayoutRendererProps {
       children?: React.ReactNode
       logoSmall?: string
       logoLarge?: string
+      links?: Array<{ label: string; href?: string; action?: string }>
+      description?: string
+      onAction?: (actionId: string) => void
     }>
     MainContent?: React.ComponentType<any>
     Button?: React.ComponentType<any>
@@ -1221,6 +1224,9 @@ export function LayoutRenderer({
         <FooterComponent
           logoSmall={layoutConfig.footer.logo?.small}
           logoLarge={layoutConfig.footer.logo?.large}
+          links={layoutConfig.footer.links}
+          description={layoutConfig.footer.description}
+          onAction={onAction}
         >
           {layoutConfig.footer.organization && (
             <div className="flex items-center gap-2">
