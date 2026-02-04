@@ -4,13 +4,13 @@ import * as LucideIcons from 'lucide-react'
 import { cn } from '../../../lib/utils'
 
 const stageTabsVariants = cva(
-  'flex items-center border-b bg-ocean-blue overflow-x-auto !pb-0 !pt-2',
+  'flex items-center bg-ocean-blue overflow-x-auto pt-2',
   {
     variants: {
       size: {
-        sm: 'p-2 font-size-1rem',
-        md: 'p-4 font-size-1.25rem',
-        lg: 'p-6 font-size-1.5rem',
+        sm: 'font-size-1rem',
+        md: 'font-size-1.5rem',
+        lg: 'font-size-2rem',
       },
       variant: {
         default: 'bg-ocean-blue',
@@ -26,24 +26,44 @@ const stageTabsVariants = cva(
 )
 
 const stageTabVariants = cva(
-  'flex items-center gap-2 mx-6 py-2 border-b-2 transition-colors cursor-pointer whitespace-nowrap',
+  'flex items-center gap-2 mx-6 py-2 pb-0 border-b-4 cursor-pointer whitespace-nowrap',
   {
     variants: {
       active: {
-        true: 'border-ocean-blue text-white font-semibold border-white',
-        false: 'border-transparent text-white',
+        true: 'border-ocean-blue text-white font-bold border-white',
+        false:
+          'border-transparent text-white hover:border-b-4 hover:border-white',
       },
       disabled: {
         true: 'opacity-50 cursor-not-allowed',
         false: '',
       },
+      size: {
+        sm: '',
+        md: '',
+        lg: '',
+      },
     },
     defaultVariants: {
       active: false,
       disabled: false,
+      size: 'md',
     },
   }
 )
+
+const stageTabTextVariants = cva('', {
+  variants: {
+    size: {
+      sm: 'font-size-1rem',
+      md: 'font-size-1.5rem',
+      lg: 'font-size-2rem',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+})
 
 export interface StageTab {
   id: string
@@ -101,14 +121,17 @@ const StageTabs = React.forwardRef<HTMLDivElement, StageTabsProps>(
                 stageTabVariants({
                   active: stage.active,
                   disabled: stage.disabled,
-                })
+                  size,
+                }) + ' pb-2'
               )}
               title={stage.description || stage.title}
             >
               {IconComponent && (
                 <IconComponent className="w-4 h-4 flex-shrink-0" />
               )}
-              <span className="text-sm">{stage.title}</span>
+              <span className={cn(stageTabTextVariants({ size }))}>
+                {stage.title}
+              </span>
             </button>
           )
         })}
@@ -118,4 +141,4 @@ const StageTabs = React.forwardRef<HTMLDivElement, StageTabsProps>(
 )
 StageTabs.displayName = 'StageTabs'
 
-export { StageTabs, stageTabsVariants, stageTabVariants }
+export { StageTabs, stageTabsVariants, stageTabVariants, stageTabTextVariants }
