@@ -1,153 +1,139 @@
 # Quick Start
 
-This guide will walk you through creating your first survey with Survey-Kit in just a few minutes.
+Build your first survey in minutes.
 
-## Step 1: Create a Survey Configuration
+## 1. Create a Survey Configuration
 
-Survey-Kit uses JSON or YAML files to define survey structure. Create a file called `survey.json`:
+Create `survey.json`:
 
 ```json
 {
-  "id": "my-first-survey",
-  "title": "My First Survey",
-  "description": "A simple survey to get started",
-  "questions": [
+  "id": "feedback-survey",
+  "title": "Feedback Survey",
+  "stages": [
     {
-      "id": "name",
-      "type": "text",
-      "question": "What is your name?",
-      "required": true
-    },
-    {
-      "id": "email",
-      "type": "email",
-      "question": "What is your email address?",
-      "required": true,
-      "validation": {
-        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
-      }
-    },
-    {
-      "id": "feedback",
-      "type": "textarea",
-      "question": "How can we improve?",
-      "required": false
+      "id": "main",
+      "title": "Main",
+      "groups": [
+        {
+          "id": "questions",
+          "title": "Questions",
+          "pages": [
+            {
+              "id": "page-1",
+              "questions": [
+                {
+                  "id": "name",
+                  "type": "text",
+                  "label": "What is your name?",
+                  "requiredToNavigate": true
+                }
+              ]
+            },
+            {
+              "id": "page-2",
+              "questions": [
+                {
+                  "id": "rating",
+                  "type": "radio",
+                  "label": "How would you rate our service?",
+                  "options": [
+                    { "value": "excellent", "label": "Excellent" },
+                    { "value": "good", "label": "Good" },
+                    { "value": "average", "label": "Average" },
+                    { "value": "poor", "label": "Poor" }
+                  ],
+                  "requiredToNavigate": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
 ```
 
-## Step 2: Create a Survey Component
+## 2. Render the Survey
 
-Create a React component to render your survey:
+### Form-Based Rendering
 
-```typescript
-import { useSurvey } from '@survey-kit/core';
-import { SurveyRenderer } from '@survey-kit/core';
-import surveyConfig from './survey.json';
+```tsx
+import { SurveyRenderer, LayoutRenderer } from '@survey-kit/core'
+import { Button, Input, Card, Header } from '@survey-kit/registry'
+import surveyConfig from './survey.json'
+
+const components = { Button, Input, Card, Header }
 
 function MySurvey() {
-  const survey = useSurvey(surveyConfig);
-
-  const handleComplete = (data) => {
-    console.log('Survey completed!', data);
-    // Handle survey submission here
-  };
+  const handleSubmit = (answers) => {
+    console.log('Submitted:', answers)
+  }
 
   return (
-    <div className="survey-container">
-      <SurveyRenderer
-        survey={survey}
-        onComplete={handleComplete}
-      />
-    </div>
-  );
-}
-
-export default MySurvey;
-```
-
-## Step 3: Add Styling
-
-Survey-Kit components work with Tailwind CSS. Ensure you have Tailwind configured in your project.
-
-Add some basic styles to your survey container:
-
-```css
-.survey-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
+    <SurveyRenderer
+      config={surveyConfig}
+      components={components}
+      onSubmit={handleSubmit}
+    />
+  )
 }
 ```
 
-## Step 4: Run Your Survey
+### Chat-Based Rendering
 
-Start your development server:
+```tsx
+import { ChatSurveyRenderer } from '@survey-kit/core'
+import {
+  ChatBubble,
+  ChatMessage,
+  ChatInput,
+  TypingIndicator,
+  ChatContainer,
+  ChatReviewScreen,
+} from '@survey-kit/registry'
+import surveyConfig from './survey.json'
 
-```bash
-npm run dev
+const chatComponents = {
+  ChatBubble,
+  ChatMessage,
+  ChatInput,
+  TypingIndicator,
+  ChatContainer,
+  ChatReviewScreen,
+}
+
+function MyChatSurvey() {
+  const handleSubmit = (answers) => {
+    console.log('Submitted:', answers)
+  }
+
+  return (
+    <ChatSurveyRenderer
+      config={surveyConfig}
+      components={chatComponents}
+      onSubmit={handleSubmit}
+      typingDelay={{ min: 500, max: 1000 }}
+    />
+  )
+}
 ```
 
-Navigate to your survey component, and you should see your first Survey-Kit survey!
+## 3. What Happens Automatically
 
-## Understanding the Flow
+Survey-Kit handles:
 
-Survey-Kit handles the survey flow automatically:
-
-1. **Question Display**: Shows one question at a time
-2. **Validation**: Validates answers before proceeding
-3. **Progress Tracking**: Updates progress as users complete questions
-4. **Data Collection**: Collects all answers in a structured format
-5. **Completion**: Calls your `onComplete` handler with the results
+- **Navigation**: One question per page with back/next
+- **Validation**: Required fields checked before proceeding
+- **Progress**: Tracks completion percentage
+- **Persistence**: Saves answers to localStorage
+- **Accessibility**: WCAG 2.2 AA compliant
 
 ## Next Steps
 
-### Customise Components
-
-Learn how to customise Survey-Kit components to match your brand:
-
-```typescript
-import { Button, Input } from '@survey-kit/registry';
-
-<Button variant="primary" size="lg">
-  Custom Button
-</Button>
-```
-
-### Advanced Configuration
-
-Explore more advanced features:
-
-- Conditional logic
-- Multi-step surveys
-- Custom validation rules
-- Progress persistence
-- Custom themes
-
-Check out the [Configuration Guide](../guides/configuration.md) for more details.
-
-### API Reference
-
-For a complete reference of available components and hooks, see:
-
-- [Core API Documentation](../api/core.md)
-- [Registry Components](../api/registry.md)
-
-## Example Surveys
-
-Visit our [template application](https://github.com/survey-kit/survey-kit/tree/main/packages/template) for more complete examples, including:
-
-- Multi-page surveys
-- Conditional questions
-- File uploads
-- Rating scales
-- And more!
-
-## Need Help?
-
-If you run into any issues:
-
-- Check the [API Reference](../api/core.md)
-- Visit our [GitHub Repository](https://github.com/survey-kit/survey-kit)
-- Open an [Issue](https://github.com/survey-kit/survey-kit/issues)
+- [Survey Configuration](../guides/configuration.md) – Learn the full
+  configuration options
+- [Rendering Modes](../guides/rendering-modes.md) – Compare form vs chat
+  rendering
+- [Core API](../api/core.md) – Full API reference

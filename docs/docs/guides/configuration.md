@@ -1,119 +1,138 @@
-# Configuration Guide
+# Survey Configuration
 
-Learn how to configure Survey-Kit surveys using JSON or YAML configuration files.
+Learn how to structure surveys using JSON or YAML.
 
-## Overview
+## Hierarchy
 
-Survey-Kit supports both JSON and YAML configuration formats. This flexibility allows you to choose the format that best fits your workflow and tooling.
+Survey-Kit uses a hierarchical structure:
 
-## Basic Configuration Structure
+```
+Survey
+└── Stages (top-level sections)
+    └── Groups (logical groupings)
+        └── Pages (one screen)
+            └── Questions (form fields)
+```
 
-### JSON Format
+This hierarchy enables:
+
+- **Stage tabs** for major survey sections
+- **Sidebar navigation** for groups within stages
+- **One question per page** for mobile-first clarity
+- **Conditional visibility** at any level
+
+## Basic Structure
 
 ```json
 {
-  "id": "survey-id",
-  "title": "Survey Title",
-  "description": "Survey description",
-  "questions": [
+  "id": "my-survey",
+  "title": "My Survey",
+  "stages": [
     {
-      "id": "question-1",
-      "type": "text",
-      "question": "Your question here?",
-      "required": true
+      "id": "stage-1",
+      "title": "About You",
+      "groups": [
+        {
+          "id": "basics",
+          "title": "Basic Information",
+          "pages": [
+            {
+              "id": "page-name",
+              "questions": [
+                {
+                  "id": "name",
+                  "type": "text",
+                  "label": "What is your name?",
+                  "requiredToNavigate": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
-  ],
-  "settings": {
-    "showProgress": true,
-    "allowBack": true,
-    "submitButtonText": "Submit Survey"
-  }
+  ]
 }
 ```
 
-### YAML Format
-
-```yaml
-id: survey-id
-title: Survey Title
-description: Survey description
-questions:
-  - id: question-1
-    type: text
-    question: Your question here?
-    required: true
-settings:
-  showProgress: true
-  allowBack: true
-  submitButtonText: Submit Survey
-```
+---
 
 ## Question Types
 
-Survey-Kit supports various question types to collect different kinds of data.
+### text
 
-### Text Input
+Single-line text input.
 
 ```json
 {
   "id": "name",
   "type": "text",
-  "question": "What is your name?",
-  "placeholder": "Enter your name",
-  "required": true
+  "label": "What is your name?",
+  "placeholder": "Enter your name"
 }
 ```
 
-### Email Input
+### textarea
 
-```json
-{
-  "id": "email",
-  "type": "email",
-  "question": "What is your email?",
-  "required": true,
-  "validation": {
-    "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-    "message": "Please enter a valid email address"
-  }
-}
-```
-
-### Text Area
+Multi-line text input.
 
 ```json
 {
   "id": "feedback",
   "type": "textarea",
-  "question": "Please provide your feedback",
-  "rows": 5,
-  "maxLength": 500
+  "label": "Any additional comments?"
 }
 ```
 
-### Multiple Choice
+### email
+
+Email input with validation.
+
+```json
+{
+  "id": "email",
+  "type": "email",
+  "label": "Your email address"
+}
+```
+
+### number
+
+Numeric input.
+
+```json
+{
+  "id": "age",
+  "type": "number",
+  "label": "Your age"
+}
+```
+
+### radio
+
+Single selection from options.
 
 ```json
 {
   "id": "preference",
   "type": "radio",
-  "question": "Which do you prefer?",
+  "label": "Which do you prefer?",
   "options": [
-    { "value": "option1", "label": "Option 1" },
-    { "value": "option2", "label": "Option 2" },
-    { "value": "option3", "label": "Option 3" }
-  ],
-  "required": true
+    { "value": "option-a", "label": "Option A" },
+    { "value": "option-b", "label": "Option B" }
+  ]
 }
 ```
 
-### Checkboxes
+### checkbox
+
+Multiple selection from options.
 
 ```json
 {
   "id": "interests",
   "type": "checkbox",
-  "question": "Select your interests",
+  "label": "Select your interests",
   "options": [
     { "value": "tech", "label": "Technology" },
     { "value": "design", "label": "Design" },
@@ -122,73 +141,161 @@ Survey-Kit supports various question types to collect different kinds of data.
 }
 ```
 
-## Validation Rules
+### select
 
-Add validation to ensure data quality:
+Dropdown selection.
+
+```json
+{
+  "id": "country",
+  "type": "select",
+  "label": "Select your country",
+  "options": [
+    { "value": "uk", "label": "United Kingdom" },
+    { "value": "us", "label": "United States" }
+  ]
+}
+```
+
+### emoji-slider
+
+Visual rating scale with emojis.
+
+```json
+{
+  "id": "satisfaction",
+  "type": "emoji-slider",
+  "label": "How satisfied are you?",
+  "emojiSlider": {
+    "type": "scale",
+    "scale": 5,
+    "showLabels": true
+  }
+}
+```
+
+---
+
+## Question Properties
+
+| Property             | Type           | Description                       |
+| -------------------- | -------------- | --------------------------------- |
+| `id`                 | `string`       | Unique identifier                 |
+| `type`               | `QuestionType` | Input type                        |
+| `label`              | `string`       | Question text                     |
+| `description`        | `string`       | Helper text                       |
+| `placeholder`        | `string`       | Input placeholder                 |
+| `required`           | `boolean`      | Must be answered                  |
+| `requiredToNavigate` | `boolean`      | Must be answered to proceed       |
+| `options`            | `array`        | Options for radio/checkbox/select |
+| `validation`         | `array`        | Validation rules                  |
+| `conditional`        | `object`       | Show/hide logic                   |
+
+---
+
+## Conditional Logic
+
+Show questions based on previous answers.
+
+```json
+{
+  "id": "other-reason",
+  "type": "text",
+  "label": "Please specify",
+  "conditional": {
+    "conditions": [
+      {
+        "questionId": "reason",
+        "operator": "equals",
+        "value": "other"
+      }
+    ]
+  }
+}
+```
+
+### Multiple Conditions
+
+```json
+{
+  "conditional": {
+    "conditions": [
+      { "questionId": "age", "operator": "equals", "value": "18-25" },
+      { "questionId": "employed", "operator": "equals", "value": "yes" }
+    ],
+    "logic": "AND"
+  }
+}
+```
+
+Operators: `equals`, `notEquals`
+
+Logic: `AND` (default), `OR`
+
+---
+
+## Validation Rules
 
 ```json
 {
   "id": "age",
   "type": "number",
-  "question": "What is your age?",
-  "validation": {
-    "min": 18,
-    "max": 120,
-    "message": "Age must be between 18 and 120"
-  }
+  "label": "Your age",
+  "validation": [
+    { "type": "required", "message": "Age is required" },
+    { "type": "min", "value": 18, "message": "Must be 18 or older" },
+    { "type": "max", "value": 120, "message": "Please enter a valid age" }
+  ]
 }
 ```
 
-## Conditional Logic
+Validation types:
 
-_Coming soon - This feature is under development._
+- `required` – Field must have a value
+- `min` – Minimum numeric value
+- `max` – Maximum numeric value
+- `pattern` – Regex pattern match
 
-## Survey Settings
+---
 
-Configure global survey behavior:
+## Navigation Settings
 
 ```json
 {
-  "settings": {
-    "showProgress": true,
-    "allowBack": true,
-    "submitButtonText": "Complete Survey",
-    "theme": "default",
-    "mobileOptimized": true
+  "navigation": {
+    "stageOrder": "sequential",
+    "groupOrder": "free",
+    "pageOrder": "sequential"
   }
 }
 ```
 
-### Available Settings
+| Setting      | Values                | Description                   |
+| ------------ | --------------------- | ----------------------------- |
+| `stageOrder` | `sequential` / `free` | Must complete stages in order |
+| `groupOrder` | `sequential` / `free` | Must complete groups in order |
+| `pageOrder`  | `sequential` / `free` | Must complete pages in order  |
 
-- `showProgress`: Display progress indicator (default: `true`)
-- `allowBack`: Allow users to go back to previous questions (default: `true`)
-- `submitButtonText`: Custom text for submit button (default: `"Submit"`)
-- `theme`: Theme name to use (default: `"default"`)
-- `mobileOptimized`: Enable mobile optimisations (default: `true`)
+---
 
-## Theme Customisation
+## YAML Format
 
-_This section will be expanded with detailed theming options._
+The same configuration in YAML:
 
-## Component Overrides
-
-_This section will cover how to override default components with custom implementations._
-
-## Best Practices
-
-1. **Keep questions concise**: One concept per question
-2. **Use appropriate types**: Choose the right input type for your data
-3. **Provide helpful placeholders**: Guide users with example inputs
-4. **Validate early**: Add validation rules to catch errors immediately
-5. **Test on mobile**: Ensure your survey works well on small screens
-
-## Example Configurations
-
-For complete working examples, check out the configurations in our [template package](https://github.com/survey-kit/survey-kit/tree/main/packages/template).
-
-## Next Steps
-
-- Explore the [Core API](../api/core.md) for programmatic configuration
-- Learn about [Registry Components](../api/registry.md) for customisation
-- Check out the [Quick Start Guide](../getting-started/quickstart.md) for implementation examples
+```yaml
+id: my-survey
+title: My Survey
+stages:
+  - id: stage-1
+    title: About You
+    groups:
+      - id: basics
+        title: Basic Information
+        pages:
+          - id: page-name
+            questions:
+              - id: name
+                type: text
+                label: What is your name?
+                requiredToNavigate: true
+```
