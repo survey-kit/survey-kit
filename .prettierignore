@@ -14,3 +14,8 @@ package.json
 
 # OS files
 .DS_Store
+
+# Docs build artifacts
+docs/venv/
+docs/site/
+
