@@ -1,8 +1,8 @@
 {
   "name": "@survey-kit/core",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "type": "module",
-  "description": "Core survey framework for rendering surveys from JSON/YAML configuration",
+  "description": "Core survey framework for rendering surveys for Survey-Kit.",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "types": "src/index.ts",
