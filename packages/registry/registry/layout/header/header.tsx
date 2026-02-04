@@ -82,13 +82,15 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
         className={cn(headerVariants({ size, variant, className }))}
         {...props}
       >
-        <div className="flex items-center space-x-4">
-          {renderLogo()}
-          {children}
+        <div className="w-full mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            {renderLogo()}
+            {children}
+          </div>
+          {actions && (
+            <div className="flex items-center space-x-2">{actions}</div>
+          )}
         </div>
-        {actions && (
-          <div className="flex items-center space-x-2">{actions}</div>
-        )}
       </header>
     )
   }
