@@ -6,3 +6,7 @@ export type {
 } from './CookieConsent'
 export { useCookieConsent } from './useCookieConsent'
 export type { CookieConsentState } from './useCookieConsent'
+export {
+  CookieConsentProvider,
+  useCookieConsentContext,
+} from './CookieConsentContext'

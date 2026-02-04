@@ -36,6 +36,7 @@ const defaultState: CookieConsentState = {
 export function useCookieConsent(categories: CookieCategory[]) {
   const [consent, setConsent] = useState<CookieConsentState>(defaultState)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [bannerVisible, setBannerVisible] = useState(false)
 
   // Load consent from localStorage on mount
   useEffect(() => {
@@ -59,6 +60,7 @@ export function useCookieConsent(categories: CookieCategory[]) {
       // Ignore storage errors
     }
     setConsent(state)
+    setBannerVisible(false) // Hide banner after saving
   }, [])
 
   // Accept all cookies
@@ -106,7 +108,7 @@ export function useCookieConsent(categories: CookieCategory[]) {
     [categories, saveConsent]
   )
 
-  // Reset consent (for testing or re-prompting)
+  // Reset consent completely (removes localStorage)
   const resetConsent = useCallback(() => {
     try {
       localStorage.removeItem(STORAGE_KEY)
@@ -114,6 +116,17 @@ export function useCookieConsent(categories: CookieCategory[]) {
       // Ignore errors
     }
     setConsent(defaultState)
+    setBannerVisible(false)
+  }, [])
+
+  // Show banner (without resetting consent)
+  const showBanner = useCallback(() => {
+    setBannerVisible(true)
+  }, [])
+
+  // Hide banner (without saving)
+  const hideBanner = useCallback(() => {
+    setBannerVisible(false)
   }, [])
 
   // Check if a specific category is consented
@@ -124,14 +137,20 @@ export function useCookieConsent(categories: CookieCategory[]) {
     [consent.categories]
   )
 
+  // Determine if banner should be shown
+  const shouldShowBanner = !consent.given || bannerVisible
+
   return {
     consent,
     isLoaded,
     hasConsentBeenGiven: consent.given,
+    shouldShowBanner,
     acceptAll,
     rejectAll,
     saveGranular,
     resetConsent,
+    showBanner,
+    hideBanner,
     hasConsent,
   }
 }
