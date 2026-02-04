@@ -20,7 +20,6 @@
       "id": "stage-project-overview",
       "title": "Project Overview",
       "description": "Basic project information",
-      "icon": "Folder",
       "groups": [
         {
           "id": "group-project-details",
@@ -236,7 +235,6 @@
       "id": "stage-technology-stack",
       "title": "Technology Stack",
       "description": "Languages, frameworks, and infrastructure",
-      "icon": "Code",
       "groups": [
         {
           "id": "group-languages",
@@ -743,7 +741,6 @@
       "id": "stage-tools-collaboration",
       "title": "Tools & Collaboration",
       "description": "Development and communication tools",
-      "icon": "Wrench",
       "groups": [
         {
           "id": "group-editors",
