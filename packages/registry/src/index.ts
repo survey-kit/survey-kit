@@ -20,6 +20,7 @@ export * from '../registry/layout/sidebar-menu/sidebar-menu'
 export * from '../registry/complex/emoji-slider/emoji-slider'
 export * from '../registry/complex/emoji-slider/single-emoji-slider'
 export * from '../registry/complex/emoji-slider/scale-emoji-slider'
+export * from '../registry/complex/cookie-consent'
 
 // Sections - flexible page components
 export * from '../registry/sections/section-page/section-page'
