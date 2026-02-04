@@ -19,7 +19,10 @@ import {
   SidebarMenu,
   EmojiSlider,
   SectionPage,
+  CookieConsent,
+  useCookieConsent,
   type SectionConfig,
+  type CookieConsentConfig,
 } from '@survey-kit/registry'
 import {
   SurveyRenderer,
@@ -32,6 +35,7 @@ import surveyConfig1 from './surveys/survey-1.json'
 import surveyConfig2 from './surveys/survey-2.json'
 import layoutConfig from './layouts/layout.config.json'
 import sectionsConfig from './sections/sections.config.json'
+import cookieConfig from './cookies/cookies.config.json'
 
 const components = {
   Button,
@@ -164,9 +168,26 @@ function SectionPageWrapper({ sectionId }: { sectionId: string }) {
   )
 }
 
+/**
+ * Main App component with cookie consent banner
+ */
 function App() {
+  const consent = useCookieConsent(
+    (cookieConfig as CookieConsentConfig).categories
+  )
+
   return (
     <BrowserRouter>
+      {/* Cookie consent banner - shown at top when consent not given */}
+      {consent.isLoaded && !consent.hasConsentBeenGiven && (
+        <CookieConsent
+          config={cookieConfig as CookieConsentConfig}
+          onAcceptAll={consent.acceptAll}
+          onRejectAll={consent.rejectAll}
+          onSavePreferences={consent.saveGranular}
+        />
+      )}
+
       <Routes>
         <Route path="/" element={<SectionPageWrapper sectionId="intro" />} />
         <Route
