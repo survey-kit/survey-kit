@@ -103,6 +103,7 @@ function SurveyPage({ config, completionRoute }: SurveyPageProps) {
 
 function SectionPageWrapper({ sectionId }: { sectionId: string }) {
   const navigate = useNavigate()
+  const cookieContext = useCookieConsentContext()
   const config = (sectionsConfig as SectionsConfig).sections.find(
     (s) => s.id === sectionId
   ) as SectionConfig | undefined
@@ -123,8 +124,13 @@ function SectionPageWrapper({ sectionId }: { sectionId: string }) {
     console.log('Layout action triggered:', actionId)
     if (actionId === 'handleSave') {
       navigate('/sign-out')
+    } else if (actionId === 'showCookies') {
+      cookieContext.showBanner()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
+
+  const footerConfig = (layoutConfig as LayoutConfig).footer
 
   if (config.layout?.header || config.layout?.footer) {
     return (
@@ -155,8 +161,11 @@ function SectionPageWrapper({ sectionId }: { sectionId: string }) {
         </main>
         {config.layout.footer && (
           <Footer
-            logoSmall={(layoutConfig as LayoutConfig).footer?.logo?.small}
-            logoLarge={(layoutConfig as LayoutConfig).footer?.logo?.large}
+            logoSmall={footerConfig?.logo?.small}
+            logoLarge={footerConfig?.logo?.large}
+            links={footerConfig?.links}
+            description={footerConfig?.description}
+            onAction={handleLayoutAction}
           />
         )}
       </div>
