@@ -80,6 +80,7 @@ function SurveyPage({ config, completionRoute }: SurveyPageProps) {
       navigate('/sign-out')
     } else if (actionId === 'showCookies') {
       cookieContext.showBanner()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
