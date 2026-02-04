@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Button } from '../primitives/button/button'
 
 /**
  * Represents a question in the review screen.
@@ -160,22 +161,15 @@ export function ChatReviewScreen({
         </div>
 
         {/* Submit button */}
-        <button
+        <Button
           type="button"
           onClick={onSubmit}
           disabled={isSubmitting}
-          className="
-            w-full py-4 rounded-xl
-            bg-[var(--ons-color-leaf-green)] text-white text-lg font-semibold
-            hover:bg-[var(--ons-color-leaf-green-dark-5)]
-            focus:outline-none focus:ring-2 focus:ring-[var(--ons-color-leaf-green)]/50
-            disabled:opacity-50 disabled:cursor-not-allowed
-            transition-colors
-            shadow-lg shadow-[var(--ons-color-leaf-green)]/20
-          "
+          className="w-full"
+          size="lg"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Survey'}
-        </button>
+        </Button>
       </div>
     </div>
   )
