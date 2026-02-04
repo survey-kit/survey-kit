@@ -1,34 +1,34 @@
 {
-    "id": "default-cookie-consent",
-    "title": "Cookies on this site",
-    "description": "Cookies are small files stored on your device when you visit a website. We use some essential cookies to make this website work.",
-    "additionalDescription": "We would like to set additional cookies to remember your settings and understand how you use the site. This helps us to improve our services.",
-    "acceptButtonText": "Accept additional cookies",
-    "rejectButtonText": "Reject additional cookies",
-    "preferencesLinkText": "View cookies",
-    "saveButtonText": "Save cookie preferences",
-    "backButtonText": "Back",
-    "categories": [
-        {
-            "id": "necessary",
-            "label": "Strictly necessary cookies",
-            "description": "These essential cookies do things like remember the notifications you have seen so we do not show them again. They always need to be on.",
-            "required": true
-        },
-        {
-            "id": "analytics",
-            "label": "Cookies that measure website use",
-            "description": "We use analytics cookies to measure how you use the website so we can improve it based on user needs. They store anonymised information about how you got to the site, the pages you visit, and what you click on."
-        },
-        {
-            "id": "settings",
-            "label": "Cookies that remember your settings",
-            "description": "These cookies remember your preferences and the choices you make, to personalise your experience of using the site."
-        },
-        {
-            "id": "communications",
-            "label": "Cookies that help with our communications",
-            "description": "Some of our pages may contain content from other sites, like YouTube, which may set their own cookies. These sites are sometimes called 'third party' services."
-        }
-    ]
+  "id": "default-cookie-consent",
+  "title": "Cookies on this site",
+  "description": "Cookies are small files stored on your device when you visit a website. We use some essential cookies to make this website work.",
+  "additionalDescription": "We would like to set additional cookies to remember your settings and understand how you use the site. This helps us to improve our services.",
+  "acceptButtonText": "Accept additional cookies",
+  "rejectButtonText": "Reject additional cookies",
+  "preferencesLinkText": "View cookies",
+  "saveButtonText": "Save cookie preferences",
+  "backButtonText": "Back",
+  "categories": [
+    {
+      "id": "necessary",
+      "label": "Strictly necessary cookies",
+      "description": "These essential cookies do things like remember the notifications you have seen so we do not show them again. They always need to be on.",
+      "required": true
+    },
+    {
+      "id": "analytics",
+      "label": "Cookies that measure website use",
+      "description": "We use analytics cookies to measure how you use the website so we can improve it based on user needs. They store anonymised information about how you got to the site, the pages you visit, and what you click on."
+    },
+    {
+      "id": "settings",
+      "label": "Cookies that remember your settings",
+      "description": "These cookies remember your preferences and the choices you make, to personalise your experience of using the site."
+    },
+    {
+      "id": "communications",
+      "label": "Cookies that help with our communications",
+      "description": "Some of our pages may contain content from other sites, like YouTube, which may set their own cookies. These sites are sometimes called 'third party' services."
+    }
+  ]
 }
