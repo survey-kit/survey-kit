@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '../../../lib/utils'
 
-const headerVariants = cva('flex items-center justify-between w-full', {
+const headerVariants = cva('flex items-center justify-between', {
   variants: {
     size: {
       sm: 'h-12 px-4',
