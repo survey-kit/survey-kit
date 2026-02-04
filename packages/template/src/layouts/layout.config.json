@@ -26,6 +26,21 @@
     "logo": {
       "small": "/branding_kit/Favicon/ONS-symbol_digital.svg",
       "large": "/branding_kit/SVG/Landscape/English/ONS_Logo_Digital_Black_Landscape_English_RGB.svg"
-    }
+    },
+    "links": [
+      {
+        "label": "Cookies",
+        "action": "showCookies"
+      },
+      {
+        "label": "Accessibility statement",
+        "href": "/accessibility"
+      },
+      {
+        "label": "Privacy notice",
+        "href": "/privacy"
+      }
+    ],
+    "description": "All content is available under the Open Government Licence v3.0, except where otherwise stated"
   }
 }

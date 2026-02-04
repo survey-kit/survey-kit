@@ -27,10 +27,18 @@ export interface MainContentConfig {
   }
 }
 
+export interface FooterLink {
+  label: string
+  href?: string
+  action?: string
+}
+
 export interface FooterConfig {
   enabled: boolean
   organization?: string
   logo?: LogoConfig
+  links?: FooterLink[]
+  description?: string
 }
 
 export interface LayoutConfig {
