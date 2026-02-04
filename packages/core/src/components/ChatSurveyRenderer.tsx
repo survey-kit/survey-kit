@@ -243,6 +243,19 @@ export function ChatSurveyRenderer({
     }
   }, [currentQuestion, allAnswers])
 
+  // Update URL to track progress through chat questions
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const currentQ = visibleQuestions[currentQuestionIndex]
+    if (!currentQ) return
+
+    const url = new URL(window.location.href)
+    url.searchParams.set('question', currentQ.id)
+    url.hash = currentQ.id
+    window.history.replaceState({}, '', url.toString())
+  }, [currentQuestionIndex, visibleQuestions])
+
   // Note: answeredQuestions logic moved to displayedAnsweredQuestions in render
 
   // Handle answer submission
@@ -351,39 +364,14 @@ export function ChatSurveyRenderer({
   }, [visibleQuestions, combinedAnswers])
 
   // Show review screen when explicitly set OR when all questions are answered and no current question
+  // But NOT when editing a question
   const shouldShowReview =
-    showReview ||
-    (allQuestionsAnswered && currentQuestionIndex >= visibleQuestions.length)
-
-  if (shouldShowReview) {
-    const reviewQuestions = visibleQuestions.map((q) => ({
-      id: q.id,
-      label: q.label,
-      type: getChatInputType(q.type),
-      options: q.options,
-    }))
-
-    return (
-      <ChatContainer title={config.title} progress={100}>
-        <ChatReviewScreen
-          questions={reviewQuestions}
-          answers={combinedAnswers}
-          onEdit={handleEdit}
-          onSubmit={handleFinalSubmit}
-          isSubmitting={isSubmitting}
-        />
-      </ChatContainer>
-    )
-  }
-
-  // Main chat view
-  // Determine if we should show the input
-  const shouldShowInput =
-    currentQuestion &&
-    (editingQuestionId || // Always show input when editing
-      (!isTyping && showingQuestionId === currentQuestion.id))
+    !editingQuestionId &&
+    (showReview ||
+      (allQuestionsAnswered && currentQuestionIndex >= visibleQuestions.length))
 
   // Get questions to display as answered (include current if answered and not editing)
+  // MUST be before any conditional returns to maintain hook order
   const displayedAnsweredQuestions = useMemo(() => {
     // Show all questions up to current index that have answers
     const answered = visibleQuestions
@@ -413,6 +401,35 @@ export function ChatSurveyRenderer({
 
     return answered
   }, [visibleQuestions, currentQuestionIndex, combinedAnswers])
+
+  // Determine if we should show the input (must be before early return)
+  const shouldShowInput =
+    currentQuestion &&
+    (editingQuestionId || // Always show input when editing
+      (!isTyping && showingQuestionId === currentQuestion?.id))
+
+  if (shouldShowReview) {
+    const reviewQuestions = visibleQuestions.map((q) => ({
+      id: q.id,
+      label: q.label,
+      type: getChatInputType(q.type),
+      options: q.options,
+    }))
+
+    return (
+      <ChatContainer title={config.title} progress={100}>
+        <ChatReviewScreen
+          questions={reviewQuestions}
+          answers={combinedAnswers}
+          onEdit={handleEdit}
+          onSubmit={handleFinalSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </ChatContainer>
+    )
+  }
+
+  // Main chat view
 
   return (
     <ChatContainer
