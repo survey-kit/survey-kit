@@ -1,115 +1,115 @@
 {
-    "sections": [
+  "sections": [
+    {
+      "id": "intro",
+      "path": "/",
+      "title": "Technology Inventory Survey",
+      "subtitle": "Help us understand your project's technology stack",
+      "body": "This survey collects information about your project in 3 stages:<br/><br/>1. Project Overview: Basic project information<br/>2. Technology Stack: Languages, hosting and infrastructure<br/>3. Tools & Collaboration: Development and communication tools<br/><br/>After completing the main survey, you'll have the option to provide feedback.",
+      "layout": {
+        "header": true,
+        "footer": true
+      },
+      "buttons": [
         {
-            "id": "intro",
-            "path": "/",
-            "title": "Technology Inventory Survey",
-            "subtitle": "Help us understand your project's technology stack",
-            "body": "This survey collects information about your project in 3 stages:<br/><br/>1. Project Overview: Basic project information<br/>2. Technology Stack: Languages, hosting and infrastructure<br/>3. Tools & Collaboration: Development and communication tools<br/><br/>After completing the main survey, you'll have the option to provide feedback.",
-            "layout": {
-                "header": true,
-                "footer": true
-            },
-            "buttons": [
-                {
-                    "label": "Get Started",
-                    "to": "/survey-1",
-                    "variant": "default"
-                },
-                {
-                    "label": "Sign In",
-                    "to": "/login",
-                    "variant": "outline"
-                }
-            ]
+          "label": "Get Started",
+          "to": "/survey-1",
+          "variant": "default"
         },
         {
-            "id": "login",
-            "path": "/login",
-            "title": "Sign In",
-            "subtitle": "Access your saved progress",
-            "body": "Sign in to continue where you left off or start a new survey.",
-            "layout": {
-                "header": true,
-                "footer": true
-            },
-            "buttons": [
-                {
-                    "label": "Sign in with AWS",
-                    "href": "https://aws.amazon.com/login",
-                    "variant": "default"
-                },
-                {
-                    "label": "Continue as Guest",
-                    "to": "/survey-1",
-                    "variant": "outline"
-                }
-            ]
-        },
-        {
-            "id": "complete-1",
-            "path": "/complete-1",
-            "title": "Technology Inventory Complete!",
-            "subtitle": "Thank you for your responses",
-            "body": "Your project information has been saved.<br/><br/>Would you like to provide feedback on your survey experience? This is optional and helps us improve.",
-            "layout": {
-                "header": true,
-                "footer": true
-            },
-            "buttons": [
-                {
-                    "label": "Provide Feedback",
-                    "to": "/survey-2",
-                    "variant": "default"
-                },
-                {
-                    "label": "Skip & Finish",
-                    "to": "/complete-2",
-                    "variant": "outline"
-                }
-            ]
-        },
-        {
-            "id": "complete-2",
-            "path": "/complete-2",
-            "title": "All Done!",
-            "subtitle": "Thank you for completing the survey",
-            "body": "Your responses have been recorded and will help us better understand the technology landscape across projects.",
-            "layout": {
-                "header": true,
-                "footer": true
-            },
-            "buttons": [
-                {
-                    "label": "Return Home",
-                    "to": "/",
-                    "variant": "default"
-                },
-                {
-                    "label": "Sign Out",
-                    "to": "/sign-out",
-                    "variant": "outline"
-                }
-            ]
-        },
-        {
-            "id": "sign-out",
-            "path": "/sign-out",
-            "title": "Signed Out",
-            "subtitle": "You have been successfully signed out",
-            "body": "Thank you for completing the Technology Inventory Survey. Your session has ended and your progress has been saved.",
-            "layout": {
-                "header": true,
-                "footer": true
-            },
-            "buttons": [
-                {
-                    "label": "Return to Home",
-                    "to": "/",
-                    "variant": "default"
-                }
-            ]
+          "label": "Sign In",
+          "to": "/login",
+          "variant": "outline"
         }
-    ],
-    "defaultPath": "/"
+      ]
+    },
+    {
+      "id": "login",
+      "path": "/login",
+      "title": "Sign In",
+      "subtitle": "Access your saved progress",
+      "body": "Sign in to continue where you left off or start a new survey.",
+      "layout": {
+        "header": true,
+        "footer": true
+      },
+      "buttons": [
+        {
+          "label": "Sign in with AWS",
+          "href": "https://aws.amazon.com/login",
+          "variant": "default"
+        },
+        {
+          "label": "Continue as Guest",
+          "to": "/survey-1",
+          "variant": "outline"
+        }
+      ]
+    },
+    {
+      "id": "complete-1",
+      "path": "/complete-1",
+      "title": "Technology Inventory Complete!",
+      "subtitle": "Thank you for your responses",
+      "body": "Your project information has been saved.<br/><br/>Would you like to provide feedback on your survey experience? This is optional and helps us improve.",
+      "layout": {
+        "header": true,
+        "footer": true
+      },
+      "buttons": [
+        {
+          "label": "Provide Feedback",
+          "to": "/survey-2",
+          "variant": "default"
+        },
+        {
+          "label": "Skip & Finish",
+          "to": "/complete-2",
+          "variant": "outline"
+        }
+      ]
+    },
+    {
+      "id": "complete-2",
+      "path": "/complete-2",
+      "title": "All Done!",
+      "subtitle": "Thank you for completing the survey",
+      "body": "Your responses have been recorded and will help us better understand the technology landscape across projects.",
+      "layout": {
+        "header": true,
+        "footer": true
+      },
+      "buttons": [
+        {
+          "label": "Return Home",
+          "to": "/",
+          "variant": "default"
+        },
+        {
+          "label": "Sign Out",
+          "to": "/sign-out",
+          "variant": "outline"
+        }
+      ]
+    },
+    {
+      "id": "sign-out",
+      "path": "/sign-out",
+      "title": "Signed Out",
+      "subtitle": "You have been successfully signed out",
+      "body": "Thank you for completing the Technology Inventory Survey. Your session has ended and your progress has been saved.",
+      "layout": {
+        "header": true,
+        "footer": true
+      },
+      "buttons": [
+        {
+          "label": "Return to Home",
+          "to": "/",
+          "variant": "default"
+        }
+      ]
+    }
+  ],
+  "defaultPath": "/"
 }

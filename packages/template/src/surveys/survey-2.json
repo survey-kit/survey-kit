@@ -13,9 +13,7 @@
     "showPerStage": false,
     "showPerGroup": false,
     "showPerPage": false,
-    "location": [
-      "sidebar"
-    ]
+    "location": ["sidebar"]
   },
   "stages": [
     {
