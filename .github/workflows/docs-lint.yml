@@ -1,9 +1,6 @@
 name: Docs Lint
 
 on:
-  push:
-    paths:
-      - '*'
   pull_request:
     paths:
       - 'docs/**/*.md'
