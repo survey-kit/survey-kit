@@ -1169,8 +1169,19 @@ export function LayoutRenderer({
                           )}
                         </div>
                       )}
-                      {IconComponent && (
-                        <IconComponent className="w-4 h-4 flex-shrink-0" />
+                      {/* Icon or fallback when collapsed */}
+                      {sidebarCollapsed ? (
+                        IconComponent ? (
+                          <IconComponent className="w-4 h-4 flex-shrink-0" />
+                        ) : (
+                          <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded bg-ocean-blue/10 text-ocean-blue font-semibold text-sm">
+                            {item.label.charAt(0).toUpperCase()}
+                          </div>
+                        )
+                      ) : (
+                        IconComponent && (
+                          <IconComponent className="w-4 h-4 flex-shrink-0" />
+                        )
                       )}
                       {!sidebarCollapsed && (
                         <>

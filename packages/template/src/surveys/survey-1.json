@@ -105,7 +105,7 @@
           "id": "group-project-status",
           "title": "Project Status",
           "description": "Current status and ownership",
-          "icon": "Activity",
+          "icon": null,
           "pages": [
             {
               "id": "page-stage",
