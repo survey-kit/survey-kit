@@ -1,6 +1,6 @@
 {
   "name": "@survey-kit/core",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "description": "Core survey framework for rendering surveys for Survey-Kit.",
   "main": "src/index.ts",
@@ -14,7 +14,6 @@
     }
   },
   "files": [
-    "dist",
     "src"
   ],
   "scripts": {
