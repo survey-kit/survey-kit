@@ -4,6 +4,7 @@
  */
 import express from 'express'
 import serverless from 'serverless-http'
+import surveyRoutes from './routes/surveys.js'
 
 const app = express()
 
@@ -34,6 +35,9 @@ app.use((req, res, next) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
+
+// Survey routes
+app.use('/api/surveys', surveyRoutes)
 
 // 404 handler
 app.use((req, res) => {
