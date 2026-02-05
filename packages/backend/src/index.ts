@@ -9,6 +9,27 @@ const app = express()
 
 // Middleware
 app.use(express.json())
+
+// CORS headers for CloudFront domain
+app.use((req, res, next) => {
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['*']
+  const origin = req.headers.origin || ''
+
+  if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin || '*')
+  }
+
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type')
+
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200)
+    return
+  }
+
+  next()
+})
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
