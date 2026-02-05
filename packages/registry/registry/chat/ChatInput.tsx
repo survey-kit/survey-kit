@@ -116,7 +116,7 @@ export function ChatInput({
           onKeyDown={handleTextKeyDown}
           placeholder={placeholder}
           disabled={disabled}
-          className="flex-1"
+          className="flex-1 text-base sm:text-sm"
           aria-label="Your answer"
         />
         <Button

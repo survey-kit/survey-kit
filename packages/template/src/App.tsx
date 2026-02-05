@@ -86,6 +86,7 @@ function ChatSurveyPage() {
 
   const handleSubmit = async (answers: Record<string, unknown>) => {
     console.log('Chat survey submitted with answers:', answers)
+    localStorage.clear()
     navigate('/')
   }
 

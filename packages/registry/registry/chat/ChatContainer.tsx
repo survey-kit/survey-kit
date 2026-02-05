@@ -50,7 +50,7 @@ export function ChatContainer({
     >
       {/* Header */}
       {(header || title || progress !== undefined) && (
-        <header className="flex-shrink-0 border-b border-[var(--ons-color-grey-15)]">
+        <header className="flex-shrink-0 sticky top-0 w-full z-10 border-b border-[var(--ons-color-grey-15)] bg-white">
           {header || (
             <div className="px-4 py-3">
               {title && (
@@ -95,7 +95,11 @@ export function ChatContainer({
       </div>
 
       {/* Footer (input area) */}
-      {footer && <footer className="flex-shrink-0">{footer}</footer>}
+      {footer && (
+        <footer className="flex-shrink-0 sticky bottom-0 w-full z-10">
+          {footer}
+        </footer>
+      )}
     </div>
   )
 }
