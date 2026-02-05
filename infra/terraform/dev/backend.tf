@@ -1,3 +1,5 @@
+# Backend Infrastructure: DynamoDB, Lambda and API Gateway
+
 # DynamoDB Table for Survey Responses
 resource "aws_dynamodb_table" "survey_responses" {
   name         = "${var.bucket_name}-responses"
