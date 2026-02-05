@@ -1,3 +1,27 @@
+# DynamoDB Table for Survey Responses
+resource "aws_dynamodb_table" "survey_responses" {
+  name         = "${var.bucket_name}-responses"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "pk"
+  range_key    = "sk"
+
+  attribute {
+    name = "pk"
+    type = "S"
+  }
+
+  attribute {
+    name = "sk"
+    type = "S"
+  }
+
+  tags = {
+    Name        = "${var.bucket_name}-responses"
+    Environment = var.environment
+    Project     = "survey-kit"
+  }
+}
+
 # ECR Repository for Lambda Container Image
 resource "aws_ecr_repository" "lambda" {
   name                 = "${var.bucket_name}-api"
