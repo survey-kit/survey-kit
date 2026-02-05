@@ -46,3 +46,15 @@ variable "acm_certificate_arn" {
     error_message = "Must be a valid ACM certificate ARN."
   }
 }
+
+variable "api_throttle_rate" {
+  description = "API Gateway sustained request rate limit (rps)"
+  type        = number
+  default     = 50
+}
+
+variable "api_throttle_burst" {
+  description = "API Gateway burst request rate limit"
+  type        = number
+  default     = 100
+}
