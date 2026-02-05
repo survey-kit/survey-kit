@@ -1,6 +1,6 @@
 {
   "name": "@survey-kit/registry",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "description": "Component registry for survey UI components built Survey-Kit.",
   "main": "src/index.ts",
@@ -42,7 +42,7 @@
     "registry"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.37.0",
     "@shadcn/ui": "^0.0.4",

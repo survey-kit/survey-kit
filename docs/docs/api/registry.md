@@ -1,6 +1,6 @@
 # Registry API Reference
 
-The `@survey-kit/registry` package provides pre-built, accessible React components for building survey interfaces.
+The `@survey-kit/registry` package provides pre-built, accessible UI components.
 
 ## Installation
 
@@ -8,180 +8,349 @@ The `@survey-kit/registry` package provides pre-built, accessible React componen
 npm install @survey-kit/registry
 ```
 
-## Components
+---
+
+## Primitives
+
+Basic building blocks for survey interfaces.
 
 ### Button
 
-A versatile button component with multiple variants and sizes.
+Versatile button with multiple variants.
 
-```typescript
-import { Button } from '@survey-kit/registry';
-
-<Button variant="primary" size="md" onClick={handleClick}>
-  Click Me
+```tsx
+import { Button } from '@survey-kit/registry'
+;<Button variant="primary" size="md" onClick={handleClick}>
+  Continue
 </Button>
 ```
 
-**Props:**
-
-| Prop       | Type                                    | Default     | Description          |
-| ---------- | --------------------------------------- | ----------- | -------------------- |
-| `variant`  | `'primary' \| 'secondary' \| 'outline'` | `'primary'` | Button style variant |
-| `size`     | `'sm' \| 'md' \| 'lg'`                  | `'md'`      | Button size          |
-| `disabled` | `boolean`                               | `false`     | Disable the button   |
-| `onClick`  | `() => void`                            | -           | Click handler        |
+| Prop       | Type                                               | Default     | Description    |
+| ---------- | -------------------------------------------------- | ----------- | -------------- |
+| `variant`  | `'primary' \| 'secondary' \| 'outline' \| 'ghost'` | `'primary'` | Style variant  |
+| `size`     | `'sm' \| 'md' \| 'lg'`                             | `'md'`      | Size           |
+| `disabled` | `boolean`                                          | `false`     | Disabled state |
 
 ### Input
 
-Text input component with validation support.
+Text input with validation support.
 
-```typescript
-import { Input } from '@survey-kit/registry';
-
-<Input
+```tsx
+import { Input } from '@survey-kit/registry'
+;<Input
   type="text"
+  value={value}
+  onChange={setValue}
   placeholder="Enter your name"
-  value={value}
-  onChange={setValue}
-  error={error}
+  error={errorMessage}
 />
 ```
 
-**Props:**
+### Checkbox
 
-| Prop          | Type                                          | Default  | Description       |
-| ------------- | --------------------------------------------- | -------- | ----------------- |
-| `type`        | `'text' \| 'email' \| 'number' \| 'password'` | `'text'` | Input type        |
-| `value`       | `string`                                      | -        | Input value       |
-| `onChange`    | `(value: string) => void`                     | -        | Change handler    |
-| `placeholder` | `string`                                      | -        | Placeholder text  |
-| `error`       | `string`                                      | -        | Error message     |
-| `disabled`    | `boolean`                                     | `false`  | Disable the input |
+Checkbox for single or multiple selections.
 
-### Textarea
-
-Multi-line text input component.
-
-```typescript
-import { Textarea } from '@survey-kit/registry';
-
-<Textarea
-  rows={5}
-  placeholder="Enter your feedback"
-  value={value}
-  onChange={setValue}
+```tsx
+import { Checkbox } from '@survey-kit/registry'
+;<Checkbox
+  checked={isChecked}
+  onChange={setChecked}
+  label="I agree to the terms"
 />
 ```
-
-**Props:**
-
-| Prop          | Type                      | Default | Description              |
-| ------------- | ------------------------- | ------- | ------------------------ |
-| `rows`        | `number`                  | `3`     | Number of rows           |
-| `value`       | `string`                  | -       | Textarea value           |
-| `onChange`    | `(value: string) => void` | -       | Change handler           |
-| `placeholder` | `string`                  | -       | Placeholder text         |
-| `maxLength`   | `number`                  | -       | Maximum character length |
 
 ### Card
 
-Container component for grouping related content.
+Container for grouping content.
 
-```typescript
-import { Card } from '@survey-kit/registry';
-
-<Card>
+```tsx
+import { Card } from '@survey-kit/registry'
+;<Card>
   <Card.Header>
-    <Card.Title>Question 1</Card.Title>
+    <Card.Title>Question Title</Card.Title>
   </Card.Header>
-  <Card.Content>
-    {/* Your content here */}
-  </Card.Content>
+  <Card.Content>{/* Content here */}</Card.Content>
 </Card>
 ```
 
-### Radio Group
+### Heading
 
-Radio button group for single selection.
+Semantic heading component.
 
-```typescript
-import { RadioGroup } from '@survey-kit/registry';
+```tsx
+import { Heading } from '@survey-kit/registry'
+;<Heading level={2}>Section Title</Heading>
+```
 
-<RadioGroup
-  options={[
-    { value: '1', label: 'Option 1' },
-    { value: '2', label: 'Option 2' }
-  ]}
-  value={selected}
-  onChange={setSelected}
+---
+
+## Layout
+
+Components for structuring the survey interface.
+
+### Header
+
+Survey header with logo and actions.
+
+```tsx
+import { Header } from '@survey-kit/registry'
+;<Header
+  variant="primary"
+  logoSmall="/logo-sm.svg"
+  logoLarge="/logo-lg.svg"
+  actions={<Button>Save</Button>}
 />
 ```
 
-### Checkbox Group
+### Footer
 
-Checkbox group for multiple selections.
+Survey footer with links and branding.
 
-```typescript
-import { CheckboxGroup } from '@survey-kit/registry';
-
-<CheckboxGroup
-  options={[
-    { value: 'a', label: 'Option A' },
-    { value: 'b', label: 'Option B' }
-  ]}
-  values={selectedValues}
-  onChange={setSelectedValues}
+```tsx
+import { Footer } from '@survey-kit/registry'
+;<Footer
+  logoSmall="/logo-sm.svg"
+  links={[{ label: 'Privacy', href: '/privacy' }]}
+  description="© 2024 Survey-Kit"
+  onAction={handleAction}
 />
 ```
 
-### Progress Indicator
+### Sidebar
 
-Visual progress tracker for surveys.
+Side navigation panel.
 
-```typescript
-import { ProgressIndicator } from '@survey-kit/registry';
+```tsx
+import { Sidebar } from '@survey-kit/registry'
+;<Sidebar variant="default">{/* Sidebar content */}</Sidebar>
+```
 
-<ProgressIndicator
-  current={3}
-  total={10}
-  showPercentage={true}
+### SidebarMenu
+
+Navigation menu for the sidebar.
+
+```tsx
+import { SidebarMenu } from '@survey-kit/registry'
+;<SidebarMenu
+  items={menuItems}
+  currentPage={currentPage}
+  onNavigate={handleNavigate}
 />
 ```
+
+### Wrapper
+
+Container wrapper component.
+
+```tsx
+import { Wrapper } from '@survey-kit/registry'
+;<Wrapper>{children}</Wrapper>
+```
+
+### LayoutWrapper
+
+Main layout container.
+
+```tsx
+import { LayoutWrapper } from '@survey-kit/registry'
+;<LayoutWrapper>{/* Layout content */}</LayoutWrapper>
+```
+
+### MainContent
+
+Main content area component.
+
+```tsx
+import { MainContent } from '@survey-kit/registry'
+;<MainContent>{children}</MainContent>
+```
+
+### StageTabs
+
+Tab navigation for survey stages.
+
+```tsx
+import { StageTabs } from '@survey-kit/registry'
+;<StageTabs
+  stages={stages}
+  currentStageId={currentStage}
+  onStageClick={handleStageClick}
+/>
+```
+
+---
+
+## Complex
+
+Advanced components with specific functionality.
+
+### ProgressBar
+
+Visual progress indicator.
+
+```tsx
+import { ProgressBar } from '@survey-kit/registry'
+;<ProgressBar progress={45} showPercentage />
+```
+
+### EmojiSlider
+
+Visual rating scale using emojis.
+
+```tsx
+import { EmojiSlider } from '@survey-kit/registry'
+;<EmojiSlider value={rating} onChange={setRating} min={1} max={5} />
+```
+
+### Panel
+
+Expandable information panel.
+
+```tsx
+import { Panel } from '@survey-kit/registry'
+;<Panel title="More Information" expanded={isOpen}>
+  {/* Panel content */}
+</Panel>
+```
+
+### BlockedPage
+
+Displayed when navigation is blocked.
+
+```tsx
+import { BlockedPage } from '@survey-kit/registry'
+;<BlockedPage
+  message="Complete previous sections first"
+  redirectUrl="/survey/page-1"
+/>
+```
+
+### CookieConsent
+
+GDPR-compliant cookie consent banner.
+
+```tsx
+import { CookieConsent, useCookieConsent } from '@survey-kit/registry'
+
+const consent = useCookieConsent(categories)
+
+<CookieConsent
+  config={cookieConfig}
+  onAcceptAll={consent.acceptAll}
+  onRejectAll={consent.rejectAll}
+  onSavePreferences={consent.saveGranular}
+/>
+```
+
+---
+
+## Chat
+
+Components for chat-style survey rendering.
+
+### ChatContainer
+
+Main wrapper for chat interface.
+
+```tsx
+import { ChatContainer } from '@survey-kit/registry'
+;<ChatContainer>{/* Chat messages */}</ChatContainer>
+```
+
+### ChatBubble
+
+Individual message bubble.
+
+```tsx
+import { ChatBubble } from '@survey-kit/registry'
+
+<ChatBubble variant="question">
+  What is your name?
+</ChatBubble>
+
+<ChatBubble variant="answer">
+  John
+</ChatBubble>
+```
+
+| Prop      | Type                     | Description  |
+| --------- | ------------------------ | ------------ |
+| `variant` | `'question' \| 'answer'` | Bubble style |
+
+### ChatMessage
+
+Complete message with avatar/metadata.
+
+```tsx
+import { ChatMessage } from '@survey-kit/registry'
+;<ChatMessage type="question" content="What is your name?" />
+```
+
+### ChatInput
+
+Input field for chat responses.
+
+```tsx
+import { ChatInput } from '@survey-kit/registry'
+;<ChatInput
+  type="text"
+  value={value}
+  onChange={setValue}
+  onSubmit={handleSubmit}
+  placeholder="Type your answer..."
+/>
+```
+
+Supports types: `'text'`, `'radio'`, `'checkbox'`
+
+### TypingIndicator
+
+Animated typing dots.
+
+```tsx
+import { TypingIndicator } from '@survey-kit/registry'
+;<TypingIndicator />
+```
+
+### ChatReviewScreen
+
+Summary screen before submission.
+
+```tsx
+import { ChatReviewScreen } from '@survey-kit/registry'
+;<ChatReviewScreen
+  questions={questions}
+  answers={answers}
+  onEdit={handleEdit}
+  onSubmit={handleSubmit}
+/>
+```
+
+---
+
+## Sections
+
+### SectionPage
+
+Standalone page for intro/completion screens.
+
+```tsx
+import { SectionPage } from '@survey-kit/registry'
+;<SectionPage
+  config={sectionConfig}
+  onNavigate={handleNavigate}
+  onAction={handleAction}
+/>
+```
+
+---
 
 ## Accessibility
 
-All Registry components follow WCAG 2.2 AA guidelines and include:
+All components follow WCAG 2.2 AA guidelines:
 
 - Proper ARIA labels and roles
 - Keyboard navigation support
 - Screen reader compatibility
 - Focus management
 - High contrast mode support
-
-## Customisation
-
-### Styling with Tailwind
-
-Registry components are built with Tailwind CSS and can be customised using Tailwind classes:
-
-```typescript
-<Button className="bg-blue-500 hover:bg-blue-600">
-  Custom Styled Button
-</Button>
-```
-
-### Theme Overrides
-
-_Documentation for theme customisation coming soon._
-
-## Component Library
-
-For a complete visual reference of all components, visit the [component showcase](https://github.com/survey-kit/survey-kit/tree/main/packages/registry).
-
-## Examples
-
-Find usage examples in the [template package](https://github.com/survey-kit/survey-kit/tree/main/packages/template).
-
-## Contributing
-
-To contribute new components to the Registry, see our [Contributing Guide](https://github.com/survey-kit/survey-kit/blob/main/CONTRIBUTING.md).

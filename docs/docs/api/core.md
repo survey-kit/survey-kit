@@ -1,6 +1,7 @@
 # Core API Reference
 
-The `@survey-kit/core` package provides the fundamental building blocks for creating and managing surveys.
+The `@survey-kit/core` package provides the survey engine: renderers, state
+management and types.
 
 ## Installation
 
@@ -8,148 +9,265 @@ The `@survey-kit/core` package provides the fundamental building blocks for crea
 npm install @survey-kit/core
 ```
 
+---
+
 ## Hooks
 
 ### useSurvey
 
-The main hook for initialising and managing survey state.
+Main hook for managing survey state and navigation.
 
 ```typescript
 import { useSurvey } from '@survey-kit/core'
 
-const survey = useSurvey(config)
+const survey = useSurvey({ config, onSubmit })
 ```
 
 **Parameters:**
 
-- `config` (SurveyConfig): Survey configuration object
+| Param      | Type                | Description                       |
+| ---------- | ------------------- | --------------------------------- |
+| `config`   | `SurveyConfig`      | Survey configuration object       |
+| `onSubmit` | `(answers) => void` | Callback when survey is submitted |
 
 **Returns:**
 
-- Survey instance with state and methods
-
-**Example:**
-
 ```typescript
-const survey = useSurvey({
-  id: 'my-survey',
-  title: 'Customer Feedback',
-  questions: [...]
-});
+interface UseSurveyReturn {
+  // State
+  state: SurveyState
+  currentPage: SurveyPage | undefined
+  currentQuestion: SurveyQuestion | null
+  currentStage: SurveyStage | null
+  currentGroup: SurveyGroup | null
+
+  // Navigation flags
+  isFirstPage: boolean
+  isLastPage: boolean
+  isReviewPage: boolean
+
+  // Progress
+  progress: number
+  allQuestionsAnswered: boolean
+  canNavigateForward: boolean
+
+  // Navigation methods
+  goToNextPage: () => void
+  goToPreviousPage: () => void
+  goToPage: (pageId: string) => boolean
+  goToStage: (stageId: string) => void
+  goToGroup: (groupId: string) => void
+  submitSurvey: () => Promise<void>
+
+  // Answer management
+  setAnswer: (questionId: string, value: unknown) => void
+  getAnswer: (questionId: string) => unknown
+  validateQuestion: (questionId: string) => boolean
+  validateCurrentPage: () => boolean
+
+  // Stage/Group progress
+  getStageProgress: (stageId: string) => number
+  getGroupProgress: (groupId: string) => number
+}
 ```
+
+---
 
 ## Components
 
 ### SurveyRenderer
 
-Main component for rendering the survey interface.
+Form-based survey renderer displaying one page at a time.
 
-```typescript
-import { SurveyRenderer } from '@survey-kit/core';
-
-<SurveyRenderer
-  survey={survey}
-  onComplete={handleComplete}
-  onProgress={handleProgress}
+```tsx
+import { SurveyRenderer } from '@survey-kit/core'
+;<SurveyRenderer
+  config={surveyConfig}
+  components={components}
+  onSubmit={handleSubmit}
+  layout="default"
 />
 ```
 
 **Props:**
 
-| Prop         | Type                         | Required | Description                       |
-| ------------ | ---------------------------- | -------- | --------------------------------- |
-| `survey`     | Survey                       | Yes      | Survey instance from `useSurvey`  |
-| `onComplete` | `(data: SurveyData) => void` | Yes      | Callback when survey is completed |
-| `onProgress` | `(progress: number) => void` | No       | Callback for progress updates     |
+| Prop         | Type                | Required | Description                 |
+| ------------ | ------------------- | -------- | --------------------------- |
+| `config`     | `SurveyConfig`      | Yes      | Survey configuration        |
+| `components` | `object`            | Yes      | UI components from registry |
+| `onSubmit`   | `(answers) => void` | Yes      | Submission callback         |
+| `layout`     | `string`            | No       | Layout variant              |
+
+### ChatSurveyRenderer
+
+Chat-style survey renderer with messaging UI.
+
+```tsx
+import { ChatSurveyRenderer } from '@survey-kit/core'
+;<ChatSurveyRenderer
+  config={surveyConfig}
+  components={chatComponents}
+  onSubmit={handleSubmit}
+  typingDelay={{ min: 500, max: 1000 }}
+/>
+```
+
+**Props:**
+
+| Prop          | Type                | Required | Description                 |
+| ------------- | ------------------- | -------- | --------------------------- |
+| `config`      | `SurveyConfig`      | Yes      | Survey configuration        |
+| `components`  | `object`            | Yes      | Chat UI components          |
+| `onSubmit`    | `(answers) => void` | Yes      | Submission callback         |
+| `typingDelay` | `{ min, max }`      | No       | Typing indicator delay (ms) |
+
+### LayoutRenderer
+
+Wraps `SurveyRenderer` with header, sidebar and footer.
+
+```tsx
+import { LayoutRenderer, SurveyRenderer } from '@survey-kit/core'
+;<LayoutRenderer
+  layoutConfig={layoutConfig}
+  surveyConfig={surveyConfig}
+  components={components}
+  onAction={handleAction}
+>
+  <SurveyRenderer
+    config={surveyConfig}
+    components={components}
+    onSubmit={handleSubmit}
+  />
+</LayoutRenderer>
+```
+
+---
 
 ## Types
 
 ### SurveyConfig
 
-The main configuration interface for defining surveys.
+Top-level survey configuration.
 
 ```typescript
 interface SurveyConfig {
   id: string
   title: string
   description?: string
-  questions: Question[]
-  settings?: SurveySettings
+  stages: SurveyStage[]
+  navigation?: NavigationConfig
+  progress?: ProgressConfig
 }
 ```
 
-### Question
+### SurveyStage
 
-Interface for individual questions.
+Top-level section of a survey.
 
 ```typescript
-interface Question {
+interface SurveyStage {
+  id: string
+  title: string
+  description?: string
+  icon?: string
+  groups: SurveyGroup[]
+  conditional?: ConditionalLogic
+}
+```
+
+### SurveyGroup
+
+Organises pages within a stage.
+
+```typescript
+interface SurveyGroup {
+  id: string
+  title: string
+  description?: string
+  pages: SurveyPage[]
+  conditional?: ConditionalLogic
+}
+```
+
+### SurveyPage
+
+Container for questions (one page = one screen).
+
+```typescript
+interface SurveyPage {
+  id: string
+  title?: string
+  description?: string
+  questions: SurveyQuestion[]
+  conditional?: ConditionalLogic
+  nextPageId?: string
+}
+```
+
+### SurveyQuestion
+
+Individual form field.
+
+```typescript
+interface SurveyQuestion {
   id: string
   type: QuestionType
-  question: string
-  required?: boolean
-  validation?: ValidationRule
-  options?: Option[]
+  label: string
+  description?: string
   placeholder?: string
+  required?: boolean
+  requiredToNavigate?: boolean
+  options?: QuestionOption[]
+  validation?: ValidationRule[]
+  conditional?: ConditionalLogic
+  emojiSlider?: EmojiSliderConfig
 }
 ```
 
 ### QuestionType
 
-Supported question types:
-
 ```typescript
 type QuestionType =
   | 'text'
+  | 'textarea'
   | 'email'
   | 'number'
-  | 'textarea'
+  | 'date'
+  | 'select'
   | 'radio'
   | 'checkbox'
-  | 'select'
-  | 'date'
+  | 'emoji-slider'
 ```
 
-### SurveySettings
+---
 
-Configuration for survey behavior:
+## Utilities
+
+### Conditional Logic
 
 ```typescript
-interface SurveySettings {
-  showProgress?: boolean
-  allowBack?: boolean
-  submitButtonText?: string
-  theme?: string
-  mobileOptimized?: boolean
-}
+import {
+  shouldShowQuestion,
+  shouldShowPage,
+  shouldShowGroup,
+  shouldShowStage,
+  evaluateConditions,
+} from '@survey-kit/core'
+
+// Check if a question should be visible
+const visible = shouldShowQuestion(question, answers)
 ```
 
-## Validation
+### Configuration Helpers
 
-_Detailed validation API documentation coming soon._
+```typescript
+import {
+  normaliseSurveyConfig,
+  getAllPages,
+  findPageById,
+  getPageLocation,
+} from '@survey-kit/core'
 
-## State Management
-
-_Detailed state management documentation coming soon._
-
-## Advanced Usage
-
-### Custom Question Types
-
-_Documentation for creating custom question types coming soon._
-
-### Persistence
-
-_Documentation for saving and restoring survey progress coming soon._
-
-## Examples
-
-For complete working examples, see the [template package](https://github.com/survey-kit/survey-kit/tree/main/packages/template).
-
-## Migration Guide
-
-_Migration guide for version updates coming soon._
-
-## API Changelog
-
-_API changes and deprecations will be documented here._
+// Get all pages from a config
+const pages = getAllPages(config)
+```
