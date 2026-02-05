@@ -1,6 +1,6 @@
 {
   "name": "@survey-kit/registry",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "description": "Component registry for survey UI components built Survey-Kit.",
   "main": "src/index.ts",
