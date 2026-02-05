@@ -194,15 +194,7 @@ function SectionPageWrapper({ sectionId }: { sectionId: string }) {
             size="lg"
             logoSmall={(layoutConfig as LayoutConfig).header?.logo?.small}
             logoLarge={(layoutConfig as LayoutConfig).header?.logo?.large}
-            actions={
-              <Button
-                variant="ghost"
-                className="text-white hover:bg-white/10"
-                onClick={() => handleLayoutAction('handleSave')}
-              >
-                Save and sign out
-              </Button>
-            }
+            actions={[]}
           />
         )}
         <main className="flex-1">
