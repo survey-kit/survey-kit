@@ -2,7 +2,7 @@
   "name": "@survey-kit/registry",
   "version": "0.1.6",
   "type": "module",
-  "description": "Component registry for survey UI components built with shadcn/ui",
+  "description": "Component registry for survey UI components built Survey-Kit.",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "types": "src/index.ts",
