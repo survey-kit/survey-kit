@@ -1,4 +1,6 @@
+import React from 'react'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
+import { submitSurveyResponse, initSession } from './services/api'
 import {
   Button,
   Card,
@@ -102,15 +104,27 @@ function ChatSurveyPage() {
 
 interface SurveyPageProps {
   config: SurveyConfig
+  surveyId: string
   completionRoute: string
 }
 
-function SurveyPage({ config, completionRoute }: SurveyPageProps) {
+function SurveyPage({ config, surveyId, completionRoute }: SurveyPageProps) {
   const navigate = useNavigate()
   const cookieContext = useCookieConsentContext()
+  const sessionStartRef = React.useRef(initSession())
 
   const handleSurveySubmit = async (answers: Record<string, unknown>) => {
-    console.log('Survey submitted with answers:', answers)
+    const result = await submitSurveyResponse({
+      surveyId,
+      answers,
+      sessionStartTime: sessionStartRef.current,
+      hasAnalyticsConsent: cookieContext.hasConsent('analytics'),
+    })
+
+    if (!result.success) {
+      console.warn('Survey submission failed:', result.error)
+    }
+
     navigate(completionRoute)
   }
 
@@ -181,15 +195,7 @@ function SectionPageWrapper({ sectionId }: { sectionId: string }) {
             size="lg"
             logoSmall={(layoutConfig as LayoutConfig).header?.logo?.small}
             logoLarge={(layoutConfig as LayoutConfig).header?.logo?.large}
-            actions={
-              <Button
-                variant="ghost"
-                className="text-white hover:bg-white/10"
-                onClick={() => handleLayoutAction('handleSave')}
-              >
-                Save and sign out
-              </Button>
-            }
+            actions={[]}
           />
         )}
         <main className="flex-1">
@@ -264,6 +270,7 @@ function App() {
             element={
               <SurveyPage
                 config={surveyConfig1 as unknown as SurveyConfig}
+                surveyId="survey-1"
                 completionRoute="/complete-1"
               />
             }
@@ -279,6 +286,7 @@ function App() {
             element={
               <SurveyPage
                 config={surveyConfig2 as unknown as SurveyConfig}
+                surveyId="survey-2"
                 completionRoute="/complete-2"
               />
             }

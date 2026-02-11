@@ -15,34 +15,24 @@
           "label": "Get Started",
           "to": "/survey-1",
           "variant": "default"
-        },
-        {
-          "label": "Sign In",
-          "to": "/login",
-          "variant": "outline"
         }
       ]
     },
     {
-      "id": "login",
-      "path": "/login",
-      "title": "Sign In",
-      "subtitle": "Access your saved progress",
-      "body": "Sign in to continue where you left off or start a new survey.",
+      "id": "complete-1",
+      "path": "/complete-1",
+      "title": "Technology Inventory Complete!",
+      "subtitle": "Thank you for your responses",
+      "body": "Your project information has been saved.<br/><br/>Would you like to provide feedback on your survey experience? This is optional and helps us improve.",
       "layout": {
         "header": true,
         "footer": true
       },
       "buttons": [
         {
-          "label": "Sign in with AWS",
-          "href": "https://aws.amazon.com/login",
+          "label": "Continue",
+          "to": "/survey-2",
           "variant": "default"
-        },
-        {
-          "label": "Continue as Guest",
-          "to": "/survey-1",
-          "variant": "outline"
         }
       ]
     },
@@ -82,29 +72,6 @@
       "buttons": [
         {
           "label": "Return Home",
-          "to": "/",
-          "variant": "default"
-        },
-        {
-          "label": "Sign Out",
-          "to": "/sign-out",
-          "variant": "outline"
-        }
-      ]
-    },
-    {
-      "id": "sign-out",
-      "path": "/sign-out",
-      "title": "Signed Out",
-      "subtitle": "You have been successfully signed out",
-      "body": "Thank you for completing the Technology Inventory Survey. Your session has ended and your progress has been saved.",
-      "layout": {
-        "header": true,
-        "footer": true
-      },
-      "buttons": [
-        {
-          "label": "Return to Home",
           "to": "/",
           "variant": "default"
         }

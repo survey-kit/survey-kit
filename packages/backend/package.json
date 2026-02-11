@@ -1,0 +1,31 @@
+{
+    "name": "@survey-kit/backend",
+    "version": "0.0.1",
+    "description": "Lambda backend for survey response storage",
+    "type": "module",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "node esbuild.config.js",
+        "deploy": "bash scripts/deploy-lambda.sh",
+        "dev": "node esbuild.config.js --watch",
+        "test": "vitest",
+        "lint": "eslint src --ext .ts",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.600.0",
+        "@aws-sdk/lib-dynamodb": "^3.600.0",
+        "express": "^4.21.0",
+        "serverless-http": "^3.2.0",
+        "uuid": "^10.0.0"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.140",
+        "@types/express": "^4.17.21",
+        "@types/node": "^22.0.0",
+        "@types/uuid": "^10.0.0",
+        "esbuild": "^0.23.0",
+        "typescript": "^5.9.3",
+        "vitest": "^2.0.0"
+    }
+}

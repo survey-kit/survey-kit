@@ -27,3 +27,23 @@ output "cloudfront_distribution_arn" {
   description = "CloudFront distribution ARN"
   value       = aws_cloudfront_distribution.website.arn
 }
+
+output "api_gateway_url" {
+  description = "API Gateway endpoint URL"
+  value       = aws_apigatewayv2_api.api.api_endpoint
+}
+
+output "dynamodb_table_name" {
+  description = "DynamoDB table name for survey responses"
+  value       = aws_dynamodb_table.survey_responses.name
+}
+
+output "lambda_function_name" {
+  description = "Lambda function name"
+  value       = aws_lambda_function.api.function_name
+}
+
+output "ecr_repository_url" {
+  description = "ECR repository URL for Lambda container image"
+  value       = aws_ecr_repository.lambda.repository_url
+}
