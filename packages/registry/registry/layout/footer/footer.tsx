@@ -80,6 +80,8 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
           'border-t border-gray-200 bg-gray-100 mt-auto',
           className
         )}
+        role="contentinfo"
+        aria-label="Footer"
         {...props}
       >
         <div className="w-full mx-auto px-4 sm:px-8 py-6">
