@@ -104,7 +104,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
 
           {/* Description */}
           {description && (
-            <p className="text-sm text-[var(--ons-color-grey-75,#707070)] mb-4">
+            <p className="text-base text-[var(--ons-color-black,#222)] mb-4">
               {description}
             </p>
           )}
