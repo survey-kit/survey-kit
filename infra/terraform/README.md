@@ -122,6 +122,12 @@ Type `yes` when prompted. This will take 15-20 minutes for CloudFront distributi
 
 ### 6. Upload Build Artifacts
 
+Make sure you're logged into AWS:
+
+```bash
+aws sso login --profile <profile>
+```
+
 After infrastructure is created, upload your build artifacts to S3:
 
 ```bash
