@@ -946,40 +946,39 @@ export function LayoutRenderer({
         />
       )}
 
-      {/* Stage Tabs Subheader */}
-      {layoutConfig.main?.sidebar?.enabled &&
-        StageTabs &&
-        normalisedConfig.stages &&
-        normalisedConfig.stages.length > 0 &&
-        stageTabsWithActive.length > 0 && (
-          <div>
-            <StageTabs
-              stages={stageTabsWithActive.map((tab) => ({
-                ...tab,
-                onClick: () => handleStageChange(tab.id),
-              }))}
-              onStageChange={handleStageChange}
-              size="md"
-              variant="default"
-            />
-            {/* Overall Progress Bar below Stage Tabs */}
-            {progressConfig.showOverall &&
-              ProgressBar &&
-              overallProgress !== undefined && (
-                <div className="p-4 px-8 bg-white border-b">
-                  <ProgressBar
-                    value={overallProgress}
-                    showLabel
-                    label="Overall Progress"
-                  />
-                </div>
-              )}
-          </div>
-        )}
-
       {/* Main Content */}
       {layoutConfig.main?.enabled && (
         <MainContentComponent>
+          {/* Stage Tabs Subheader */}
+          {layoutConfig.main?.sidebar?.enabled &&
+            StageTabs &&
+            normalisedConfig.stages &&
+            normalisedConfig.stages.length > 0 &&
+            stageTabsWithActive.length > 0 && (
+              <div>
+                <StageTabs
+                  stages={stageTabsWithActive.map((tab) => ({
+                    ...tab,
+                    onClick: () => handleStageChange(tab.id),
+                  }))}
+                  onStageChange={handleStageChange}
+                  size="md"
+                  variant="default"
+                />
+                {/* Overall Progress Bar below Stage Tabs */}
+                {progressConfig.showOverall &&
+                  ProgressBar &&
+                  overallProgress !== undefined && (
+                    <div className="p-4 px-8 bg-white border-b">
+                      <ProgressBar
+                        value={overallProgress}
+                        showLabel
+                        label="Overall Progress"
+                      />
+                    </div>
+                  )}
+              </div>
+            )}
           {layoutConfig.main.sidebar?.enabled && Sidebar ? (
             <div className="flex relative flex-1">
               {/* Sidebar - responsive via CSS classes */}

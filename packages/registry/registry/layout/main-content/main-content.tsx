@@ -14,6 +14,8 @@ const MainContent = React.forwardRef<HTMLDivElement, MainContentProps>(
     <div
       ref={ref}
       className={cn('bg-white flex-1 flex flex-col', className)}
+      role="main"
+      aria-label="Main content"
       {...props}
     >
       {children}

@@ -70,6 +70,7 @@ export function ChatContainer({
                       style={{ width: `${progress}%` }}
                       role="progressbar"
                       aria-valuenow={progress}
+                      aria-label="Progress"
                       aria-valuemin={0}
                       aria-valuemax={100}
                     />

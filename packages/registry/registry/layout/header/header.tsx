@@ -80,6 +80,8 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
       <header
         ref={ref}
         className={cn(headerVariants({ size, variant, className }))}
+        role="banner"
+        aria-label="Header"
         {...props}
       >
         <div className="w-full mx-auto flex items-center justify-between">

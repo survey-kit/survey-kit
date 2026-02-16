@@ -494,7 +494,7 @@ export function SurveyRenderer({
         )}
         {survey.currentPage.title && (
           <div>
-            <h2 className="text-2xl font-bold">{survey.currentPage.title}</h2>
+            <h1 className="text-2xl font-bold">{survey.currentPage.title}</h1>
             {survey.currentPage.description && (
               <p className="text-gray-600 mt-2">
                 {survey.currentPage.description}

@@ -101,7 +101,7 @@ export function CookieConsent({
 
   return (
     <div
-      className={`w-full bg-[var(--ons-color-grey-5,#f5f5f5)] border-b border-gray-300 ${className}`}
+      className={`w-full bg-[var(--ons-color-grey-5,#e5e5e5)] border-b border-gray-300 ${className}`}
       role="region"
       aria-label="Cookie consent"
     >
@@ -112,10 +112,10 @@ export function CookieConsent({
             <h2 className="text-lg font-bold text-[var(--ons-color-black)]">
               {title}
             </h2>
-            <p className="text-sm text-[var(--ons-color-black)]">
+            <p className="text-base text-[var(--ons-color-black)]">
               {description}
             </p>
-            <p className="text-sm text-[var(--ons-color-black)]">
+            <p className="text-base text-[var(--ons-color-black)]">
               {additionalDescription}
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -127,7 +127,7 @@ export function CookieConsent({
               </Button>
               <button
                 onClick={handleViewCookies}
-                className="text-[var(--ons-color-ocean-blue)] underline hover:no-underline text-sm"
+                className="text-[var(--ons-color-ocean-blue)] underline hover:no-underline text-base"
               >
                 {preferencesLinkText}
               </button>
@@ -141,7 +141,7 @@ export function CookieConsent({
             <h2 className="text-lg font-bold text-[var(--ons-color-black)]">
               Cookie settings
             </h2>
-            <p className="text-sm text-[var(--ons-color-black)]">
+            <p className="text-base text-[var(--ons-color-black)]">
               We use four types of cookie. You can choose which cookies you are
               happy for us to use.
             </p>
@@ -155,7 +155,7 @@ export function CookieConsent({
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-[var(--ons-color-black)] text-sm">
+                        <h3 className="font-semibold text-[var(--ons-color-black)] text-base">
                           {category.label}
                         </h3>
                         {category.required && (
@@ -164,7 +164,7 @@ export function CookieConsent({
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-[var(--ons-color-grey-75,#707070)]">
+                      <p className="text-base text-[var(--ons-color-grey-75,#222)]">
                         {category.description}
                       </p>
                     </div>
