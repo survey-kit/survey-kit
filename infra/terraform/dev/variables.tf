@@ -62,5 +62,5 @@ variable "api_throttle_burst" {
 variable "allowed_origins" {
   description = "Allowed CORS origins for the API"
   type        = list(string)
-  default     = ["https://${var.domain_name}"]
+  default     = []
 }
