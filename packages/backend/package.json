@@ -7,7 +7,7 @@
     "scripts": {
         "build": "node esbuild.config.js",
         "deploy": "bash scripts/deploy-lambda.sh",
-        "dev": "node esbuild.config.js --watch",
+        "dev": "node esbuild.config.js --dev",
         "test": "vitest",
         "lint": "eslint src --ext .ts",
         "typecheck": "tsc --noEmit"
@@ -15,6 +15,7 @@
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.600.0",
         "@aws-sdk/lib-dynamodb": "^3.600.0",
+        "dotenv": "^16.6.1",
         "express": "^4.21.0",
         "serverless-http": "^3.2.0",
         "uuid": "^10.0.0"
