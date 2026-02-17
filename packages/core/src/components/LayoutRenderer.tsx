@@ -14,7 +14,7 @@ import {
   normaliseSurveyConfig,
   getAllPages,
   findPageById,
-} from '../lib/migration'
+} from '../lib/configUtils'
 import type { LayoutConfig } from '../types/layout'
 import type {
   SurveyConfig,

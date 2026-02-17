@@ -1,6 +1,6 @@
 import { shouldShowQuestion } from '../../lib/conditional'
 import { validateQuestion as validateQuestionUtil } from '../../lib/validation'
-import { findPageById } from '../../lib/migration'
+import { findPageById } from '../../lib/configUtils'
 import { getVisibleGroupsForStage, getVisiblePagesForGroup } from './visibility'
 import type {
   SurveyConfig,

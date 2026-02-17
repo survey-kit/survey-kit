@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import type { SurveyConfig, SurveyQuestion, SurveyPage } from '../types/survey'
 import { useSurvey } from '../hooks/useSurvey'
 import { shouldShowQuestion } from '../lib/conditional'
-import { getAllPages } from '../lib/migration'
+import { getAllPages } from '../lib/configUtils'
 
 /**
  * Configuration for the typing indicator delay.

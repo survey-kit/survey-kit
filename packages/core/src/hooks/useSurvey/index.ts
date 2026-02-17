@@ -5,7 +5,7 @@ import {
   normaliseSurveyConfig,
   getAllPages,
   getPageLocation,
-} from '../../lib/migration'
+} from '../../lib/configUtils'
 import {
   getInitialState,
   saveToStorage,
