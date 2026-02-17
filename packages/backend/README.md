@@ -77,11 +77,4 @@ List responses for a survey (admin use).
 
 ## Deployment
 
-Uses container image deployment to ECR:
-
-```bash
-# After terraform apply creates the ECR repository
-npm run deploy <ecr_repository_url> <aws_profile>
-```
-
 See `infra/terraform/dev/backend.tf` for infrastructure configuration.
