@@ -13,7 +13,9 @@
     "showPerStage": true,
     "showPerGroup": false,
     "showPerPage": false,
-    "location": ["sidebar"]
+    "location": [
+      "sidebar"
+    ]
   },
   "stages": [
     {
@@ -174,6 +176,28 @@
                       "value": "cots"
                     }
                   ]
+                },
+                {
+                  "id": "outsourced_partner",
+                  "type": "text",
+                  "label": "Who is the outsourced development partner?",
+                  "placeholder": "e.g. ONS",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "developed",
+                        "operator": "equals",
+                        "value": "outsourced"
+                      },
+                      {
+                        "questionId": "developed",
+                        "operator": "equals",
+                        "value": "mixed"
+                      }
+                    ],
+                    "logic": "OR"
+                  }
                 }
               ]
             },
@@ -276,30 +300,26 @@
                       "value": "go"
                     },
                     {
-                      "label": "C#",
-                      "value": "csharp"
-                    },
-                    {
-                      "label": "Ruby",
-                      "value": "ruby"
-                    },
-                    {
-                      "label": "Scala",
-                      "value": "scala"
-                    },
-                    {
-                      "label": "Kotlin",
-                      "value": "kotlin"
-                    },
-                    {
-                      "label": "Rust",
-                      "value": "rust"
-                    },
-                    {
                       "label": "Other",
                       "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "language_main_other",
+                  "type": "text",
+                  "label": "Please specify your primary language",
+                  "placeholder": "e.g. Ruby, Kotlin, Rust",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "language_main",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             },
@@ -473,6 +493,21 @@
               "title": "Cloud Provider",
               "icon": "CloudCog",
               "description": "Which cloud platforms are used?",
+              "conditional": {
+                "conditions": [
+                  {
+                    "questionId": "hosted",
+                    "operator": "notEquals",
+                    "value": "on_premise"
+                  },
+                  {
+                    "questionId": "hosted",
+                    "operator": "notEquals",
+                    "value": "na"
+                  }
+                ],
+                "logic": "AND"
+              },
               "questions": [
                 {
                   "id": "architectures",
@@ -676,6 +711,22 @@
                   ]
                 },
                 {
+                  "id": "source_control_other",
+                  "type": "text",
+                  "label": "Please specify your source control system",
+                  "placeholder": "e.g., Mercurial, Perforce",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "source_control",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
+                },
+                {
                   "id": "repo",
                   "type": "textarea",
                   "label": "Repository URLs",
@@ -775,34 +826,26 @@
                       "value": "pycharm"
                     },
                     {
-                      "label": "WebStorm",
-                      "value": "webstorm"
-                    },
-                    {
-                      "label": "Sublime Text",
-                      "value": "sublime"
-                    },
-                    {
-                      "label": "Vim/Neovim",
-                      "value": "vim"
-                    },
-                    {
-                      "label": "Eclipse",
-                      "value": "eclipse"
-                    },
-                    {
-                      "label": "Atom",
-                      "value": "atom"
-                    },
-                    {
-                      "label": "Visual Studio",
-                      "value": "visual_studio"
-                    },
-                    {
                       "label": "Other",
                       "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "code_editors_other",
+                  "type": "text",
+                  "label": "Please specify your editor(s)",
+                  "placeholder": "e.g., Webstorm, Sublime, Vim",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "code_editors",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             },
