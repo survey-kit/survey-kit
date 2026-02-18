@@ -47,6 +47,7 @@ nav:
       - Survey Configuration: guides/configuration.md
       - Rendering Modes: guides/rendering-modes.md
       - Template Demo: guides/template.md
+  - Backend: backend.md
   - API Reference:
       - Core: api/core.md
       - Registry: api/registry.md
