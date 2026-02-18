@@ -9,7 +9,7 @@ Survey-Kit boosts survey participation with:
 - **Mobile-first** conversational UI
 - **One question per page** for clarity and flow
 - **Accessible** (WCAG 2.2 AA) components
-- **Developer-friendly** React + JSON/YAML configuration
+- **Developer-friendly** React + JSON configuration
 
 ## Packages
 

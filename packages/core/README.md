@@ -1,6 +1,6 @@
 # @survey-kit/core
 
-Core survey engine for rendering surveys from JSON/YAML configuration.
+Core survey engine for rendering surveys from JSON configuration.
 
 ## Overview
 
