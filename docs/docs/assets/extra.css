@@ -33,7 +33,7 @@
 
 /* Handle dark mode */
 [data-md-color-scheme='slate'] .md-content {
-  background-color: #1e1e1e; /* Dark mode background */
+  background-color: var(--md-default-bg-color); /* Dark mode background */
 }
 
 /* Optional: Add some padding and rounded corners to the content container */
