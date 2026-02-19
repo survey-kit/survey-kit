@@ -33,7 +33,7 @@
 
 /* Handle dark mode */
 [data-md-color-scheme='slate'] .md-content {
-  background-color: #1e1e1e; /* Dark mode background */
+  background-color: var(--md-default-bg-color); /* Dark mode background */
 }
 
 /* Optional: Add some padding and rounded corners to the content container */
@@ -46,7 +46,6 @@
 /* Optional: Add a subtle border to the content area for better definition */
 .md-content {
   border-radius: 6px;
-  border: 1px solid var(--md-default-fg-color--lightest);
 }
 
 .md-copyright {
