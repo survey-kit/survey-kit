@@ -120,7 +120,7 @@ resource "aws_lambda_function" "api" {
   environment {
     variables = {
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.survey_responses.name
-      ALLOWED_ORIGINS     = "https://${var.domain_name}"
+      ALLOWED_ORIGINS     = length(var.allowed_origins) > 0 ? join(",", var.allowed_origins) : "https://${var.domain_name}"
     }
   }
 

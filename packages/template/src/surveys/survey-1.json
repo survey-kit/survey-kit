@@ -13,7 +13,9 @@
     "showPerStage": true,
     "showPerGroup": false,
     "showPerPage": false,
-    "location": ["sidebar"]
+    "location": [
+      "sidebar"
+    ]
   },
   "stages": [
     {
@@ -174,6 +176,28 @@
                       "value": "cots"
                     }
                   ]
+                },
+                {
+                  "id": "outsourced_partner",
+                  "type": "text",
+                  "label": "Who is the outsourced development partner?",
+                  "placeholder": "e.g. ONS",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "developed",
+                        "operator": "equals",
+                        "value": "outsourced"
+                      },
+                      {
+                        "questionId": "developed",
+                        "operator": "equals",
+                        "value": "mixed"
+                      }
+                    ],
+                    "logic": "OR"
+                  }
                 }
               ]
             },
@@ -276,30 +300,26 @@
                       "value": "go"
                     },
                     {
-                      "label": "C#",
-                      "value": "csharp"
-                    },
-                    {
-                      "label": "Ruby",
-                      "value": "ruby"
-                    },
-                    {
-                      "label": "Scala",
-                      "value": "scala"
-                    },
-                    {
-                      "label": "Kotlin",
-                      "value": "kotlin"
-                    },
-                    {
-                      "label": "Rust",
-                      "value": "rust"
-                    },
-                    {
                       "label": "Other",
                       "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "language_main_other",
+                  "type": "text",
+                  "label": "Please specify your primary language",
+                  "placeholder": "e.g. Ruby, Kotlin, Rust",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "language_main",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             },
@@ -332,34 +352,26 @@
                       "value": "typescript"
                     },
                     {
-                      "label": "Go",
-                      "value": "go"
-                    },
-                    {
-                      "label": "HCL (Terraform)",
-                      "value": "hcl"
-                    },
-                    {
-                      "label": "SQL",
-                      "value": "sql"
-                    },
-                    {
-                      "label": "Shell/Bash",
-                      "value": "shell"
-                    },
-                    {
-                      "label": "C#",
-                      "value": "csharp"
-                    },
-                    {
-                      "label": "Ruby",
-                      "value": "ruby"
-                    },
-                    {
-                      "label": "Scala",
-                      "value": "scala"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "language_others_other",
+                  "type": "textarea",
+                  "label": "Please specify the other languages used",
+                  "placeholder": "e.g. Go, HCL, SQL, Shell/Bash",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "language_others",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             },
@@ -392,38 +404,26 @@
                       "value": "vuejs"
                     },
                     {
-                      "label": "Next.js",
-                      "value": "nextjs"
-                    },
-                    {
-                      "label": "Python Flask",
-                      "value": "flask"
-                    },
-                    {
-                      "label": "Python Django",
-                      "value": "django"
-                    },
-                    {
-                      "label": "FastAPI",
-                      "value": "fastapi"
-                    },
-                    {
-                      "label": "Express.js",
-                      "value": "express"
-                    },
-                    {
-                      "label": "Node.js",
-                      "value": "nodejs"
-                    },
-                    {
-                      "label": ".NET Core",
-                      "value": "dotnet_core"
-                    },
-                    {
-                      "label": "Ruby on Rails",
-                      "value": "rails"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "language_frameworks_other",
+                  "type": "textarea",
+                  "label": "Please specify the other frameworks used",
+                  "placeholder": "e.g. Next.js, Django, Express.js, .NET Core",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "language_frameworks",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             }
@@ -473,6 +473,21 @@
               "title": "Cloud Provider",
               "icon": "CloudCog",
               "description": "Which cloud platforms are used?",
+              "conditional": {
+                "conditions": [
+                  {
+                    "questionId": "hosted",
+                    "operator": "notEquals",
+                    "value": "on_premise"
+                  },
+                  {
+                    "questionId": "hosted",
+                    "operator": "notEquals",
+                    "value": "na"
+                  }
+                ],
+                "logic": "AND"
+              },
               "questions": [
                 {
                   "id": "architectures",
@@ -497,14 +512,26 @@
                       "value": "heroku"
                     },
                     {
-                      "label": "Digital Ocean",
-                      "value": "digital_ocean"
-                    },
-                    {
-                      "label": "On-Premise Infrastructure",
-                      "value": "on_prem"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "architectures_other",
+                  "type": "textarea",
+                  "label": "Please specify the other cloud platforms used",
+                  "placeholder": "e.g. Digital Ocean, Hetzner, Vercel",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "architectures",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             },
@@ -529,38 +556,34 @@
                       "value": "kubernetes"
                     },
                     {
-                      "label": "GCP Cloud Run",
-                      "value": "cloud_run"
-                    },
-                    {
-                      "label": "GCP Cloud Functions",
-                      "value": "cloud_functions"
-                    },
-                    {
                       "label": "AWS Lambda",
                       "value": "aws_lambda"
-                    },
-                    {
-                      "label": "AWS ECS",
-                      "value": "aws_ecs"
-                    },
-                    {
-                      "label": "AWS ECR",
-                      "value": "aws_ecr"
-                    },
-                    {
-                      "label": "Azure Functions",
-                      "value": "azure_functions"
                     },
                     {
                       "label": "Terraform",
                       "value": "terraform"
                     },
                     {
-                      "label": "Ansible",
-                      "value": "ansible"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "infrastructure_other",
+                  "type": "textarea",
+                  "label": "Please specify the other infrastructure tools used",
+                  "placeholder": "e.g. Cloud Run, AWS ECS, Azure Functions, Ansible",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "infrastructure",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             }
@@ -597,38 +620,30 @@
                       "value": "mongodb"
                     },
                     {
-                      "label": "GCP Firestore",
-                      "value": "firestore"
-                    },
-                    {
-                      "label": "GCP BigQuery",
-                      "value": "bigquery"
-                    },
-                    {
-                      "label": "GCP Cloud Storage (Bucket)",
-                      "value": "gcs"
-                    },
-                    {
-                      "label": "AWS S3",
-                      "value": "s3"
-                    },
-                    {
                       "label": "AWS DynamoDB",
                       "value": "dynamodb"
                     },
                     {
-                      "label": "Redis",
-                      "value": "redis"
-                    },
-                    {
-                      "label": "Elasticsearch",
-                      "value": "elasticsearch"
-                    },
-                    {
-                      "label": "SQL Server",
-                      "value": "sql_server"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "datastores_other",
+                  "type": "textarea",
+                  "label": "Please specify the other data stores used",
+                  "placeholder": "e.g. Firestore, Redis, Elasticsearch, S3",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "datastores",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             }
@@ -676,6 +691,22 @@
                   ]
                 },
                 {
+                  "id": "source_control_other",
+                  "type": "text",
+                  "label": "Please specify your source control system",
+                  "placeholder": "e.g., Mercurial, Perforce",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "source_control",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
+                },
+                {
                   "id": "repo",
                   "type": "textarea",
                   "label": "Repository URLs",
@@ -714,22 +745,26 @@
                       "value": "gitlab_ci"
                     },
                     {
-                      "label": "CircleCI",
-                      "value": "circleci"
-                    },
-                    {
-                      "label": "Azure Pipelines",
-                      "value": "azure_pipelines"
-                    },
-                    {
-                      "label": "AWS CodePipeline",
-                      "value": "aws_codepipeline"
-                    },
-                    {
-                      "label": "ArgoCD",
-                      "value": "argocd"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "cicd_other",
+                  "type": "textarea",
+                  "label": "Please specify the other CI/CD tools used",
+                  "placeholder": "e.g. CircleCI, Azure Pipelines, ArgoCD",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "cicd",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             }
@@ -775,34 +810,26 @@
                       "value": "pycharm"
                     },
                     {
-                      "label": "WebStorm",
-                      "value": "webstorm"
-                    },
-                    {
-                      "label": "Sublime Text",
-                      "value": "sublime"
-                    },
-                    {
-                      "label": "Vim/Neovim",
-                      "value": "vim"
-                    },
-                    {
-                      "label": "Eclipse",
-                      "value": "eclipse"
-                    },
-                    {
-                      "label": "Atom",
-                      "value": "atom"
-                    },
-                    {
-                      "label": "Visual Studio",
-                      "value": "visual_studio"
-                    },
-                    {
                       "label": "Other",
                       "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "code_editors_other",
+                  "type": "text",
+                  "label": "Please specify your editor(s)",
+                  "placeholder": "e.g., Webstorm, Sublime, Vim",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "code_editors",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             },
@@ -827,30 +854,34 @@
                       "value": "trello"
                     },
                     {
-                      "label": "Asana",
-                      "value": "asana"
-                    },
-                    {
-                      "label": "Monday.com",
-                      "value": "monday"
-                    },
-                    {
                       "label": "GitHub Projects",
                       "value": "github_projects"
-                    },
-                    {
-                      "label": "Azure Boards",
-                      "value": "azure_boards"
                     },
                     {
                       "label": "Notion",
                       "value": "notion"
                     },
                     {
-                      "label": "Linear",
-                      "value": "linear"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "project_tools_other",
+                  "type": "textarea",
+                  "label": "Please specify the other project management tools used",
+                  "placeholder": "e.g. Asana, Monday.com, Linear, Azure Boards",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "project_tools",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             }
@@ -893,14 +924,26 @@
                       "value": "google_meet"
                     },
                     {
-                      "label": "Zoom",
-                      "value": "zoom"
-                    },
-                    {
-                      "label": "Discord",
-                      "value": "discord"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "communication_other",
+                  "type": "textarea",
+                  "label": "Please specify the other communication tools used",
+                  "placeholder": "e.g. Zoom, Discord, WhatsApp",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "communication",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             },
@@ -933,14 +976,26 @@
                       "value": "microsoft_365"
                     },
                     {
-                      "label": "Miro",
-                      "value": "miro"
-                    },
-                    {
-                      "label": "Figma",
-                      "value": "figma"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "collaboration_other",
+                  "type": "textarea",
+                  "label": "Please specify the other collaboration tools used",
+                  "placeholder": "e.g. Miro, Figma, Confluence",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "collaboration",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             }
@@ -977,22 +1032,30 @@
                       "value": "github_wiki"
                     },
                     {
-                      "label": "GitBook",
-                      "value": "gitbook"
-                    },
-                    {
-                      "label": "Google Docs",
-                      "value": "google_docs"
-                    },
-                    {
-                      "label": "SharePoint",
-                      "value": "sharepoint"
-                    },
-                    {
                       "label": "README files",
                       "value": "readme"
+                    },
+                    {
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "documentation_tools_other",
+                  "type": "textarea",
+                  "label": "Please specify the other documentation tools used",
+                  "placeholder": "e.g. GitBook, Google Docs, SharePoint",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "documentation_tools",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 },
                 {
                   "id": "documentation_url",
@@ -1029,14 +1092,30 @@
                       "value": "adobe_xd"
                     },
                     {
-                      "label": "InVision",
-                      "value": "invision"
-                    },
-                    {
                       "label": "None",
                       "value": "none"
+                    },
+                    {
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "ui_tools_other",
+                  "type": "textarea",
+                  "label": "Please specify the other UI/UX tools used",
+                  "placeholder": "e.g. InVision, Framer, Canva",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "ui_tools",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 },
                 {
                   "id": "diagram_tools",
@@ -1061,14 +1140,26 @@
                       "value": "visio"
                     },
                     {
-                      "label": "PlantUML",
-                      "value": "plantuml"
-                    },
-                    {
-                      "label": "Mermaid",
-                      "value": "mermaid"
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "diagram_tools_other",
+                  "type": "textarea",
+                  "label": "Please specify the other diagramming tools used",
+                  "placeholder": "e.g. PlantUML, Mermaid, Excalidraw",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "diagram_tools",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             }
@@ -1101,22 +1192,34 @@
                       "value": "pagerduty"
                     },
                     {
-                      "label": "Opsgenie",
-                      "value": "opsgenie"
-                    },
-                    {
                       "label": "Jira Service Management",
                       "value": "jira_sm"
                     },
                     {
-                      "label": "Zendesk",
-                      "value": "zendesk"
-                    },
-                    {
                       "label": "None",
                       "value": "none"
+                    },
+                    {
+                      "label": "Other",
+                      "value": "other"
                     }
                   ]
+                },
+                {
+                  "id": "incident_management_other",
+                  "type": "textarea",
+                  "label": "Please specify the other incident management tools used",
+                  "placeholder": "e.g. Opsgenie, Zendesk, Statuspage",
+                  "required": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "incident_management",
+                        "operator": "equals",
+                        "value": "other"
+                      }
+                    ]
+                  }
                 }
               ]
             },

@@ -45,7 +45,7 @@ import {
 } from '@survey-kit/core'
 import surveyConfig1 from './surveys/survey-1.json'
 import surveyConfig2 from './surveys/survey-2.json'
-import chatSurveyConfig from './surveys/chat-survey.json'
+import chatSurveyConfig from './surveys/survey-1.json'
 import layoutConfig from './layouts/layout.config.json'
 import sectionsConfig from './sections/sections.config.json'
 import cookieConfig from './cookies/cookies.config.json'

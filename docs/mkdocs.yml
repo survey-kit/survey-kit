@@ -1,6 +1,6 @@
 site_name: Survey-Kit Documentation
 site_description: Mobile-first, accessible survey framework for engaging experiences
-site_url: https://survey-kit.github.io/survey-kit
+site_url: https://survey-kit.github.io
 repo_url: https://github.com/survey-kit/survey-kit
 repo_name: survey-kit/survey-kit
 edit_uri: edit/main/docs/docs/
@@ -47,6 +47,7 @@ nav:
       - Survey Configuration: guides/configuration.md
       - Rendering Modes: guides/rendering-modes.md
       - Template Demo: guides/template.md
+  - Backend: backend.md
   - API Reference:
       - Core: api/core.md
       - Registry: api/registry.md

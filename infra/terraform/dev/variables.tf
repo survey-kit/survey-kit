@@ -58,3 +58,9 @@ variable "api_throttle_burst" {
   type        = number
   default     = 100
 }
+
+variable "allowed_origins" {
+  description = "Allowed CORS origins for the API"
+  type        = list(string)
+  default     = []
+}
