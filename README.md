@@ -12,7 +12,7 @@ Mobile-first, accessible survey framework for engaging experiences.
   - [@survey-kit/core](https://www.npmjs.com/package/@survey-kit/core)
   - [@survey-kit/registry](https://www.npmjs.com/package/@survey-kit/registry)
 
-See the full documentation at [survey-kit.github.io/survey-kit](https://survey-kit.github.io/survey-kit/).
+See the full documentation at [docs.survey-kit.com](https://docs.survey-kit.com/).
 
 ## Overview
 
@@ -97,4 +97,4 @@ MIT
   - [Template Package](./packages/template)
   - [Component Package](./packages/registry)
   - [Core Package](./packages/core)
-- [Documentation](https://survey-kit.github.io/survey-kit/)
+- [Documentation](https://docs.survey-kit.com/)
