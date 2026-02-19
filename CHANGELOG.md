@@ -142,6 +142,10 @@
 - **Local Backend Development**: Added standalone Express dev server with hot-reload, concurrent template + backend dev mode (`make dev`) and `.env`-based configuration
 - **CORS Configuration**: Terraform now supports multiple allowed origins via `allowed_origins` variable with domain fallback
 
+### Core
+
+- Refactored useSurvey hook to use a directory module structure for better testability and clarity. (#25[#25](https://github.com/survey-kit/survey-kit/pull/25))
+
 ### Documentation
 
 - Updated documentation URL to [docs.survey-kit.com](https://docs.survey-kit.com/)

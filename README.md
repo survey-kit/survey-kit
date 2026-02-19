@@ -40,7 +40,7 @@ Survey-Kit boosts survey participation with:
 
 ## Configuration
 
-Surveys defined in JSON or YAML. Components and styles extensible via React props or overrides.
+Surveys defined in JSON. Components and styles extensible via React props or overrides.
 
 ## Principles
 

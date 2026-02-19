@@ -15,7 +15,8 @@ npm install @survey-kit/core
 
 ### useSurvey
 
-Main hook for managing survey state and navigation.
+Main hook for managing survey state and navigation. Internally organised as
+a directory module with co-located helper files for testability and clarity.
 
 ```typescript
 import { useSurvey } from '@survey-kit/core'
@@ -44,32 +45,75 @@ interface UseSurveyReturn {
   // Navigation flags
   isFirstPage: boolean
   isLastPage: boolean
-  isReviewPage: boolean
 
-  // Progress
-  progress: number
-  allQuestionsAnswered: boolean
-  canNavigateForward: boolean
+  // Progress (percentage values 0–100)
+  progress: number // within current group
+  stageProgress: number // across visible stages
+  groupProgress: number // within current stage
+  overallProgress: number // across all visible pages
 
   // Navigation methods
-  goToNextPage: () => void
-  goToPreviousPage: () => void
-  goToPage: (pageId: string) => boolean
+  nextPage: () => void
+  prevPage: () => void
   goToStage: (stageId: string) => void
-  goToGroup: (groupId: string) => void
   submitSurvey: () => Promise<void>
 
   // Answer management
   setAnswer: (questionId: string, value: unknown) => void
-  getAnswer: (questionId: string) => unknown
-  validateQuestion: (questionId: string) => boolean
-  validateCurrentPage: () => boolean
+  getAnswerValue: (questionId: string) => unknown
+  validateQuestion: (question: SurveyQuestion) => string[]
 
-  // Stage/Group progress
+  // Completion checks
+  isPageComplete: (pageId: string) => boolean
+  isGroupComplete: (groupId: string) => boolean
+  isStageComplete: (stageId: string) => boolean
+  getPageCompletionStatus: (pageId: string) => PageCompletionStatus
+
+  // Visibility helpers
+  getLatestAccessiblePageIndex: () => number
+  getVisiblePages: () => SurveyPage[]
+  getVisibleQuestions: (page: SurveyPage) => SurveyQuestion[]
+  getVisibleStages: () => SurveyStage[]
+  getVisibleGroups: (stage: SurveyStage) => SurveyGroup[]
+
+  // Access control
+  canNavigateToStage: (stageId: string) => boolean
+  canNavigateToGroup: (groupId: string) => boolean
+
+  // Per-entity progress (completion-based)
   getStageProgress: (stageId: string) => number
   getGroupProgress: (groupId: string) => number
 }
 ```
+
+#### Hook Architecture
+
+The `useSurvey` hook follows a **directory module** pattern. The main entry
+point (`index.ts`) contains only React orchestration — `useState`, `useEffect`,
+`useMemo`, and `useCallback` calls. All pure logic is delegated to co-located
+helper files:
+
+```
+hooks/useSurvey/
+├── index.ts          # Orchestration — wires React primitives to helpers
+├── state.ts          # Initial state, localStorage persistence, URL sync
+├── visibility.ts     # Conditional filtering of stages/groups/pages/questions
+├── navigation.ts     # Next-page resolution, skip logic, access checks
+├── completion.ts     # Page/group/stage completeness checks
+└── progress.ts       # Position-based and completion-based progress
+```
+
+| Module          | Responsibility                                                                                                                                                          |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `state.ts`      | `getInitialState`, `saveToStorage`, `updateUrlWithPage`, event dispatching, `flattenAnswers`                                                                            |
+| `visibility.ts` | `getVisibleStages`, `getVisibleGroupsForStage`, `getVisiblePagesForGroup`, `getVisibleQuestionsForPage`, `getAllVisiblePages`                                           |
+| `navigation.ts` | `resolveNextPage`, `resolveGoToStagePageIndex`, `checkCanNavigateToStage`, `checkCanNavigateToGroup`, `computeLatestAccessiblePageIndex`                                |
+| `completion.ts` | `checkPageComplete`, `checkGroupComplete`, `checkStageComplete`, `computePageCompletionStatus`                                                                          |
+| `progress.ts`   | `calculatePageProgress`, `calculateGroupProgress`, `calculateStageProgress`, `calculateOverallProgress`, `getStageProgressByCompletion`, `getGroupProgressByCompletion` |
+
+Every helper is a **pure function** (no React dependency) that can be
+unit-tested in isolation. The hook simply pipes state and derived values
+through these helpers.
 
 ---
 

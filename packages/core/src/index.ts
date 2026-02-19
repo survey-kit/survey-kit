@@ -64,4 +64,4 @@ export {
   getAllPages,
   findPageById,
   getPageLocation,
-} from './lib/migration'
+} from './lib/configUtils'
