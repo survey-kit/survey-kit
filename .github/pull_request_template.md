@@ -11,12 +11,17 @@
 
 Briefly explain the change and reason.
 
-### Tests?
+### Checklist
 
-- [ ] Yes
-- [ ] No
+If left empty, it means the change is not applicable to the checklist.
 
-### Docs Updated?
+| Completed | Not Completed | Not Needed   |
+| --------- | ------------- | ------------ |
+| Ticked    | Empty         | Bullet Point |
 
-- [ ] Yes
-- [ ] No
+- [ ] Documentation in docs folder
+- [ ] Other Markdown updates
+- [ ] Version bump in package.json
+- [ ] Changelog
+- [ ] Tested locally
+- Automated tests

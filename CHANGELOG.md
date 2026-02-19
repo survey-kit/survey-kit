@@ -146,3 +146,7 @@
 
 - Updated documentation URL to [docs.survey-kit.com](https://docs.survey-kit.com/)
 - Fix version issues with MkDocs by bumping to MkDocs 2.0 ([#24](https://github.com/survey-kit/survey-kit/pull/26))
+
+### Extra
+
+- Updated pull request template
