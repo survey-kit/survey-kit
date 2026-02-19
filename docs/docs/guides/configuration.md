@@ -1,6 +1,6 @@
 # Survey Configuration
 
-Learn how to structure surveys using JSON or YAML.
+Learn how to structure surveys using JSON.
 
 ## Hierarchy
 
@@ -277,25 +277,3 @@ Validation types:
 | `pageOrder`  | `sequential` / `free` | Must complete pages in order  |
 
 ---
-
-## YAML Format
-
-The same configuration in YAML:
-
-```yaml
-id: my-survey
-title: My Survey
-stages:
-  - id: stage-1
-    title: About You
-    groups:
-      - id: basics
-        title: Basic Information
-        pages:
-          - id: page-name
-            questions:
-              - id: name
-                type: text
-                label: What is your name?
-                requiredToNavigate: true
-```
