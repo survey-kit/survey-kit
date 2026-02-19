@@ -1,4 +1,4 @@
-.PHONY: lint lint-fix format build dev dev-all clean help docs-format docs-format-check docs-build docs-serve
+.PHONY: lint lint-fix format build dev dev-backend dev-all clean help docs-format docs-format-check docs-build docs-serve
 
 help:
 	@echo "Survey-Kit Makefile commands"
@@ -8,7 +8,8 @@ help:
 	@echo "  make lint-fix          - Fix ESLint issues on all packages"
 	@echo "  make format            - Format code with Prettier"
 	@echo "  make build             - Build all packages"
-	@echo "  make dev               - Run dev server for template package"
+	@echo "  make dev               - Run template + backend dev servers"
+	@echo "  make dev-backend       - Run backend dev server only"
 	@echo "  make dev-all           - Run dev servers for all packages"
 	@echo "  make clean             - Remove node_modules and build artifacts"
 	@echo "  make docs-format       - Format docs markdown files"
@@ -35,7 +36,12 @@ build:
 	npm run build --workspaces
 
 dev:
-	npm run dev --workspace=packages/template
+	npm run dev --workspace=packages/template & \
+	cd packages/backend && npm run dev & \
+	wait
+
+dev-backend:
+	cd packages/backend && npm run dev
 
 dev-all:
 	npm run dev --workspaces
