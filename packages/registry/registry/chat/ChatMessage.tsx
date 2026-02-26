@@ -7,10 +7,12 @@ import { ChatBubble } from './ChatBubble'
 export interface ChatQuestion {
   id: string
   label: string
-  type: 'text' | 'radio' | 'checkbox'
+  type: 'text' | 'radio' | 'checkbox' | 'emoji-slider'
   options?: Array<{ value: string; label: string }>
   required?: boolean
   description?: string
+  /** Emoji items for scale sliders, used to format the answer display. */
+  emojiItems?: Array<{ value: number; emoji: string; label?: string }>
 }
 
 /**
@@ -51,6 +53,25 @@ function formatAnswer(answer: unknown, question: ChatQuestion): string {
   if (typeof answer === 'string' && question.options) {
     const option = question.options.find((o) => o.value === answer)
     return option?.label ?? answer
+  }
+
+  // Handle emoji-slider (numeric value)
+  if (question.type === 'emoji-slider' && typeof answer === 'number') {
+    if (question.emojiItems && question.emojiItems.length > 0) {
+      // Find the matching emoji item for the current value
+      const item = question.emojiItems.find((e) => e.value === answer)
+      if (item) {
+        return `${item.emoji} ${item.label ?? answer}`
+      }
+      // Find the closest emoji item
+      const closest = question.emojiItems.reduce((prev, curr) =>
+        Math.abs(curr.value - answer) < Math.abs(prev.value - answer)
+          ? curr
+          : prev
+      )
+      return `${closest.emoji} ${answer}`
+    }
+    return String(answer)
   }
 
   return String(answer)

@@ -3,6 +3,22 @@ import { useState, useEffect } from 'react'
 import { Button } from '../primitives/button/button'
 import { Input } from '../primitives/input/input'
 import { Checkbox } from '../primitives/checkbox/checkbox'
+import type { EmojiSliderProps } from '../complex/emoji-slider/lib/types'
+
+/**
+ * EmojiSlider configuration shape (mirrors core's EmojiSliderConfig).
+ * Declared locally to keep the registry package self-contained.
+ */
+export interface ChatEmojiSliderConfig {
+  type: 'single' | 'scale'
+  emoji?: string
+  min?: number
+  max?: number
+  step?: number
+  scale?: number
+  emojis?: Array<{ value: number; emoji: string; label?: string }>
+  showLabels?: boolean
+}
 
 /**
  * Represents a question option for radio/checkbox inputs.
@@ -16,7 +32,7 @@ export interface ChatInputOption {
  * Props for the ChatInput component.
  */
 export interface ChatInputProps {
-  type: 'text' | 'radio' | 'checkbox'
+  type: 'text' | 'radio' | 'checkbox' | 'emoji-slider'
   value: unknown
   onChange: (value: unknown) => void
   onSubmit: () => void
@@ -26,6 +42,8 @@ export interface ChatInputProps {
   required?: boolean
   disabled?: boolean
   className?: string
+  EmojiSlider?: React.ComponentType<EmojiSliderProps>
+  emojiSliderConfig?: ChatEmojiSliderConfig
 }
 
 /**
@@ -47,6 +65,8 @@ export function ChatInput({
   required = false,
   disabled = false,
   className = '',
+  EmojiSlider,
+  emojiSliderConfig,
 }: ChatInputProps): React.JSX.Element {
   const [textValue, setTextValue] = useState(
     typeof value === 'string' ? value : ''
@@ -211,6 +231,78 @@ export function ChatInput({
             className="flex-1"
           >
             Confirm ({currentValues.length} selected)
+          </Button>
+          {onSkip && !required && (
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={onSkip}
+              disabled={disabled}
+            >
+              Skip
+            </Button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  // Emoji-slider input - renders the EmojiSlider component from complex registry
+  if (type === 'emoji-slider' && EmojiSlider && emojiSliderConfig) {
+    const cfg = emojiSliderConfig
+    const isScale = cfg.type === 'scale'
+
+    // Calculate min/max the same way SurveyRenderer does
+    let minValue = cfg.min
+    let maxValue = cfg.max
+    if (isScale) {
+      if (!minValue && cfg.emojis && cfg.emojis.length > 0) {
+        minValue = Math.min(...cfg.emojis.map((e) => e.value))
+      }
+      if (!maxValue) {
+        if (cfg.scale) {
+          maxValue = cfg.scale
+        } else if (cfg.emojis && cfg.emojis.length > 0) {
+          maxValue = Math.max(...cfg.emojis.map((e) => e.value))
+        } else {
+          maxValue = 5
+        }
+      }
+      if (!minValue) minValue = 1
+    } else {
+      if (minValue === undefined) minValue = 0
+      if (maxValue === undefined) maxValue = 100
+    }
+
+    const sliderValue = typeof value === 'number' ? value : (minValue ?? 0)
+
+    const sliderProps: EmojiSliderProps = {
+      value: sliderValue,
+      onChange: (v: number) => onChange(v),
+      min: minValue,
+      max: maxValue,
+      step: cfg.step ?? 1,
+      disabled,
+      ...(isScale && cfg.emojis
+        ? { emojis: cfg.emojis }
+        : cfg.emoji
+          ? { emoji: cfg.emoji }
+          : {}),
+    }
+
+    return (
+      <div
+        className={`p-4 bg-white border-t border-[var(--ons-color-grey-15)] space-y-3 ${className}`}
+      >
+        <EmojiSlider {...sliderProps} />
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            onClick={onSubmit}
+            disabled={disabled}
+            className="flex-1"
+          >
+            Confirm
           </Button>
           {onSkip && !required && (
             <Button
