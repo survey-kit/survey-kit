@@ -143,13 +143,15 @@ export function ChatInput({
           type="submit"
           disabled={disabled || (required && !textValue.trim())}
           aria-label="Send answer"
+          className="shadow-none"
         >
           Send
         </Button>
         {onSkip && !required && (
           <Button
             type="button"
-            variant="ghost"
+            variant="secondary"
+            className="shadow-none"
             onClick={onSkip}
             disabled={disabled}
           >
