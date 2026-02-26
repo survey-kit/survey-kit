@@ -109,10 +109,11 @@ export function ChatMessage({
         <ChatBubble
           variant="answer"
           onClick={onEdit}
-          className={`
-            ${onEdit ? 'group relative' : ''}
-            ${isEditing ? 'ring-2 ring-[var(--ons-color-sun-yellow)] ring-offset-2' : ''}
-          `}
+          className={
+            isEditing
+              ? 'ring-2 ring-[var(--ons-color-sun-yellow)] ring-offset-2'
+              : ''
+          }
         >
           <div className="flex items-center gap-2">
             {isEditing && (
@@ -122,11 +123,6 @@ export function ChatMessage({
             )}
             <span>{formattedAnswer}</span>
           </div>
-          {onEdit && !isEditing && (
-            <span className="ml-2 text-xs opacity-70 group-hover:opacity-100">
-              (tap to edit)
-            </span>
-          )}
         </ChatBubble>
       )}
     </div>
