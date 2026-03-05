@@ -69,25 +69,10 @@ export function ChatReviewScreen({
   className = '',
 }: ChatReviewScreenProps): React.JSX.Element {
   return (
-    <div className={`p-4 ${className}`}>
+    <div className={`${className}`}>
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--ons-color-leaf-green-tint)] mb-4">
-            <svg
-              className="w-8 h-8 text-[var(--ons-color-leaf-green)]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
+        <div className="text-center mb-6 mt-2">
           <h2 className="text-2xl font-bold text-[var(--ons-color-black)]">
             Review Your Answers
           </h2>
@@ -143,7 +128,7 @@ export function ChatReviewScreen({
                     type="button"
                     onClick={() => onEdit(question.id)}
                     className="
-                      px-3 py-1.5 rounded-lg
+                      px-3 rounded-lg
                       text-sm font-medium
                       text-[var(--ons-color-ocean-blue)]
                       hover:bg-[var(--ons-color-ocean-blue-tint)]

@@ -42,7 +42,9 @@ export function ChatBubble({
     >
       <div
         className={`
-          max-w-[85%] px-4 py-3 rounded-2xl
+          max-w-[85%] px-4 py-3 rounded-2xl 
+          shadow-sm shadow-[var(--ons-color-grey-15)]
+          border border-[var(--ons-color-grey-15)]
           ${bubbleStyles}
           ${alignmentStyles}
           ${interactiveStyles}

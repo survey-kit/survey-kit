@@ -4,6 +4,21 @@ import { useSurvey } from '../hooks/useSurvey'
 import { shouldShowQuestion } from '../lib/conditional'
 import { getAllPages } from '../lib/configUtils'
 
+/** Minimal type alias for the EmojiSlider component prop. The full implementation lives in the complex registry. */
+type EmojiSliderComponent = React.ComponentType<{
+  value: number
+  onChange: (value: number) => void
+  min?: number
+  max?: number
+  step?: number
+  emoji?: string
+  emojis?: Array<{ value: number; emoji: string; label?: string }>
+  disabled?: boolean
+  ariaLabel?: string
+  id?: string
+  className?: string
+}>
+
 /**
  * Configuration for the typing indicator delay.
  */
@@ -28,10 +43,11 @@ export interface ChatSurveyRendererProps {
       question: {
         id: string
         label: string
-        type: 'text' | 'radio' | 'checkbox'
+        type: 'text' | 'radio' | 'checkbox' | 'emoji-slider'
         options?: Array<{ value: string; label: string }>
         required?: boolean
         description?: string
+        emojiItems?: Array<{ value: number; emoji: string; label?: string }>
       }
       answer?: unknown
       isEditing?: boolean
@@ -39,7 +55,7 @@ export interface ChatSurveyRendererProps {
       className?: string
     }>
     ChatInput: React.ComponentType<{
-      type: 'text' | 'radio' | 'checkbox'
+      type: 'text' | 'radio' | 'checkbox' | 'emoji-slider'
       value: unknown
       onChange: (value: unknown) => void
       onSubmit: () => void
@@ -48,6 +64,17 @@ export interface ChatSurveyRendererProps {
       placeholder?: string
       required?: boolean
       disabled?: boolean
+      EmojiSlider?: EmojiSliderComponent
+      emojiSliderConfig?: {
+        type: 'single' | 'scale'
+        emoji?: string
+        min?: number
+        max?: number
+        step?: number
+        scale?: number
+        emojis?: Array<{ value: number; emoji: string; label?: string }>
+        showLabels?: boolean
+      }
     }>
     TypingIndicator: React.ComponentType<{
       isVisible: boolean
@@ -71,6 +98,11 @@ export interface ChatSurveyRendererProps {
       onSubmit: () => void
       isSubmitting?: boolean
     }>
+    /**
+     * Optional EmojiSlider component from the complex registry.
+     * Required to render emoji-slider question types in the chat survey.
+     */
+    EmojiSlider?: EmojiSliderComponent
   }
   onSubmit?: (answers: Record<string, unknown>) => Promise<void> | void
   typingDelay?: TypingDelayConfig
@@ -101,6 +133,7 @@ export function ChatSurveyRenderer({
     TypingIndicator,
     ChatContainer,
     ChatReviewScreen,
+    EmojiSlider,
   } = components
 
   // Use the existing survey hook for state management
@@ -340,9 +373,12 @@ export function ChatSurveyRenderer({
   }, [currentQuestionIndex, visibleQuestions.length])
 
   // Map question type to chat input type
-  const getChatInputType = (type: string): 'text' | 'radio' | 'checkbox' => {
+  const getChatInputType = (
+    type: string
+  ): 'text' | 'radio' | 'checkbox' | 'emoji-slider' => {
     if (type === 'radio') return 'radio'
     if (type === 'checkbox') return 'checkbox'
+    if (type === 'emoji-slider') return 'emoji-slider'
     return 'text'
   }
 
@@ -412,7 +448,7 @@ export function ChatSurveyRenderer({
     const reviewQuestions = visibleQuestions.map((q) => ({
       id: q.id,
       label: q.label,
-      type: getChatInputType(q.type),
+      type: getChatInputType(q.type) as 'text' | 'radio' | 'checkbox',
       options: q.options,
     }))
 
@@ -452,6 +488,8 @@ export function ChatSurveyRenderer({
             required={
               currentQuestion.required || currentQuestion.requiredToNavigate
             }
+            EmojiSlider={EmojiSlider}
+            emojiSliderConfig={currentQuestion.emojiSlider}
           />
         ) : undefined
       }
@@ -469,6 +507,7 @@ export function ChatSurveyRenderer({
               options: question.options,
               required: question.required || question.requiredToNavigate,
               description: question.description,
+              emojiItems: question.emojiSlider?.emojis,
             }}
             answer={combinedAnswers[question.id]}
             isEditing={isBeingEdited}
@@ -497,6 +536,7 @@ export function ChatSurveyRenderer({
               required:
                 currentQuestion.required || currentQuestion.requiredToNavigate,
               description: currentQuestion.description,
+              emojiItems: currentQuestion.emojiSlider?.emojis,
             }}
             answer={combinedAnswers[currentQuestion.id]}
           />

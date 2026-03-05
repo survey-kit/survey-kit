@@ -154,3 +154,21 @@
 ### Extra
 
 - Updated pull request template
+
+## Week 20 (w/c 23/02/26)
+
+### Features
+
+- **Chat UX Improvements**: Added an information icon (i in a circle) in the chat header to open a bottom drawer explaining the survey context, how answer editing works and that users are interacting with a survey (not a human or AI)  ([#28](https://github.com/survey-kit/survey-kit/pull/28))
+- **Message Bubble Simplification**: Removed repeated "(tap to edit)" text from each answer bubble to reduce visual duplication
+- **Icon Consistency**: Updated chat drawer controls to use `lucide-react` icons (`Info`, `X`)
+
+### Registry
+
+- **ChatContainer Enhancements**: Added `showInfoButton` and `infoDrawerContent` props and provided default information drawer copy in British English
+
+## Week 20 (w/c 02/03/26)
+
+### Documentation
+
+- Updated documentation to include the new information drawer and API reference links ([#28](https://github.com/survey-kit/survey-kit/pull/28))
