@@ -28,7 +28,7 @@
       },
       {
         "label": "Privacy notice",
-        "href": "/privacy"
+        "action": "showPrivacy"
       }
     ],
     "description": "All content is available under the Open Government Licence v3.0, except where otherwise stated"
