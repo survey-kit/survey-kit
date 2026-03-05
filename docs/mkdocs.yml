@@ -43,20 +43,19 @@ nav:
   - Getting Started:
       - Installation: getting-started/installation.md
       - Quick Start: getting-started/quickstart.md
-  - Guides:
-      - Survey Configuration: guides/configuration.md
+  - Building Surveys:
+      - Configuration: guides/configuration.md
       - Rendering Modes: guides/rendering-modes.md
-      - Template Demo: guides/template.md
-  - Registry:
-      - Overview: registry/index.md
-      - Chat Components: registry/chat.md
-      - Consent Gate: registry/consent-gate.md
-  - Core:
-      - Overview: core/index.md
-  - Backend: backend.md
+      - Connecting a Backend: backend.md
+      - Full Template Demo: guides/template.md
+  - Packages:
+      - Core Architecture: core/index.md
+      - Component Registry: registry/index.md
+      - Chat Experience: registry/chat.md
+      - Consent Gates: registry/consent-gate.md
   - API Reference:
-      - Core: api/core.md
-      - Registry: api/registry.md
+      - Core API: api/core.md
+      - Registry API: api/registry.md
 
 markdown_extensions:
   - admonition
