@@ -173,6 +173,8 @@
 
 - Updated documentation to include the new information drawer and API reference links ([#28](https://github.com/survey-kit/survey-kit/pull/28))
 
+- Updated documentation to include the new consent gate and API reference links ([#29](https://github.com/survey-kit/survey-kit/pull/29))
+
 ### Features
 
 - **Consent Gate**: Added a consent gate component to handle user consent for data collection ([#29](https://github.com/survey-kit/survey-kit/pull/29))
