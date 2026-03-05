@@ -50,6 +50,7 @@ nav:
   - Registry:
       - Overview: registry/index.md
       - Chat Components: registry/chat.md
+      - Consent Gate: registry/consent-gate.md
   - Core:
       - Overview: core/index.md
   - Backend: backend.md
