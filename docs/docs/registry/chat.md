@@ -60,13 +60,13 @@ Run the template with `make dev` and open `/chat-survey` to view a working examp
 
 ## Component overview
 
-| Component | Purpose |
-| --- | --- |
-| `ChatContainer` | Full-screen chat shell with header, progress, messages and footer |
-| `ChatBubble` | Individual question or answer bubble |
-| `ChatMessage` | Question plus optional answer display with edit support |
-| `ChatInput` | Input controls for active question types |
-| `TypingIndicator` | Animated typing state between messages |
-| `ChatReviewScreen` | Review-and-edit step before submission |
+| Component          | Purpose                                                           |
+| ------------------ | ----------------------------------------------------------------- |
+| `ChatContainer`    | Full-screen chat shell with header, progress, messages and footer |
+| `ChatBubble`       | Individual question or answer bubble                              |
+| `ChatMessage`      | Question plus optional answer display with edit support           |
+| `ChatInput`        | Input controls for active question types                          |
+| `TypingIndicator`  | Animated typing state between messages                            |
+| `ChatReviewScreen` | Review-and-edit step before submission                            |
 
 For complete props and API details, see [Registry API](../api/registry.md).
