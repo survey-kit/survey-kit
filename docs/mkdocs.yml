@@ -47,6 +47,11 @@ nav:
       - Survey Configuration: guides/configuration.md
       - Rendering Modes: guides/rendering-modes.md
       - Template Demo: guides/template.md
+  - Registry:
+      - Overview: registry/index.md
+      - Chat Components: registry/chat.md
+  - Core:
+      - Overview: core/index.md
   - Backend: backend.md
   - API Reference:
       - Core: api/core.md
