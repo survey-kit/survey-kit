@@ -27,10 +27,6 @@
         "action": "showCookies"
       },
       {
-        "label": "Accessibility statement",
-        "href": "/accessibility"
-      },
-      {
         "label": "Privacy notice",
         "href": "/privacy"
       }
