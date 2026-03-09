@@ -2,50 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.survey-kit.com/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/backend/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/api/core/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/api/registry/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/core/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/getting-started/installation/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/getting-started/quickstart/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/guides/configuration/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/guides/rendering-modes/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/guides/template/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/registry/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
     </url>
     <url>
          <loc>https://docs.survey-kit.com/registry/chat/</loc>
-         <lastmod>2026-03-05</lastmod>
+         <lastmod>2026-03-09</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.survey-kit.com/registry/consent-gate/</loc>
+         <lastmod>2026-03-09</lastmod>
     </url>
 </urlset>
