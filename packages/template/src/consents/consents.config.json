@@ -1,0 +1,56 @@
+{
+    "id": "privacy",
+    "title": "Privacy and personal data",
+    "description": "This survey may collect the following personal information. Please review and confirm you understand before continuing.",
+    "dataTypes": [
+        {
+            "id": "address",
+            "label": "Postal address"
+        },
+        {
+            "id": "phone",
+            "label": "Phone number"
+        },
+        {
+            "id": "dob",
+            "label": "Date of birth"
+        }
+    ],
+    "acceptButtonText": "I understand and agree",
+    "rejectButtonText": "I do not agree",
+    "noticeLinkText": "View full privacy notice",
+    "noticeBackText": "Back",
+    "rejectedTitle": "You cannot continue",
+    "rejectedDescription": "You have declined consent required for this application. You cannot proceed without your agreement.",
+    "rejectedLinkText": "Leave this site",
+    "rejectedLinkHref": "https://ons.gov.uk",
+    "noticeBlocks": [
+        {
+            "description": "This information isn't actually collected, this is just an example."
+        },
+        {
+            "title": "Full Privacy Notice",
+            "description": "This survey is being conducted as part of a research project. The information below explains how your personal data will be collected, stored and used."
+        },
+        {
+            "subtitle": "What data we collect",
+            "bulletPoints": [
+                "Postal address - used to understand geographic distribution of respondents.",
+                "Phone number - used only if follow-up contact is required.",
+                "Date of birth - used for demographic analysis."
+            ]
+        },
+        {
+            "subtitle": "How we use your data",
+            "description": "Your data will be processed in accordance with the UK General Data Protection Regulation (UK GDPR). It will be used solely for the purposes of this research and will not be shared with third parties without your explicit consent."
+        },
+        {
+            "subtitle": "Data retention",
+            "description": "Personal data will be securely stored and retained for a maximum of 12 months after the completion of the research project, after which it will be permanently deleted."
+        },
+        {
+            "subtitle": "Your rights",
+            "description": "You have the right to access, correct, or request deletion of your personal data at any time. To exercise these rights, please contact the research team."
+        }
+    ]
+}

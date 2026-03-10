@@ -25,8 +25,13 @@ import {
   useCookieConsent,
   CookieConsentProvider,
   useCookieConsentContext,
+  ConsentGate,
+  useConsent,
+  ConsentProvider,
+  useConsentContext,
   type SectionConfig,
   type CookieConsentConfig,
+  type ConsentConfig,
   // Chat components
   ChatBubble,
   ChatMessage,
@@ -49,6 +54,7 @@ import chatSurveyConfig from './surveys/survey-2.json'
 import layoutConfig from './layouts/layout.config.json'
 import sectionsConfig from './sections/sections.config.json'
 import cookieConfig from './cookies/cookies.config.json'
+import privacyConfig from './consents/consents.config.json'
 
 const components = {
   Button,
@@ -112,6 +118,7 @@ interface SurveyPageProps {
 function SurveyPage({ config, surveyId, completionRoute }: SurveyPageProps) {
   const navigate = useNavigate()
   const cookieContext = useCookieConsentContext()
+  const consentContext = useConsentContext()
   const sessionStartRef = React.useRef(initSession())
 
   const handleSurveySubmit = async (answers: Record<string, unknown>) => {
@@ -136,6 +143,8 @@ function SurveyPage({ config, surveyId, completionRoute }: SurveyPageProps) {
     } else if (actionId === 'showCookies') {
       cookieContext.showBanner()
       window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else if (actionId === 'showPrivacy') {
+      consentContext.showModal()
     }
   }
 
@@ -159,6 +168,7 @@ function SurveyPage({ config, surveyId, completionRoute }: SurveyPageProps) {
 function SectionPageWrapper({ sectionId }: { sectionId: string }) {
   const navigate = useNavigate()
   const cookieContext = useCookieConsentContext()
+  const consentContext = useConsentContext()
   const config = (sectionsConfig as SectionsConfig).sections.find(
     (s) => s.id === sectionId
   ) as SectionConfig | undefined
@@ -182,6 +192,8 @@ function SectionPageWrapper({ sectionId }: { sectionId: string }) {
     } else if (actionId === 'showCookies') {
       cookieContext.showBanner()
       window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else if (actionId === 'showPrivacy') {
+      consentContext.showModal()
     }
   }
 
@@ -231,12 +243,14 @@ function SectionPageWrapper({ sectionId }: { sectionId: string }) {
 }
 
 /**
- * Main App component with cookie consent banner
+ * Main App component with cookie consent banner and generic consent gate.
  */
 function App() {
+  const navigate = useNavigate()
   const consent = useCookieConsent(
     (cookieConfig as CookieConsentConfig).categories
   )
+  const privacyAuth = useConsent('privacy')
 
   // Context value for child components
   const cookieContextValue = {
@@ -245,69 +259,131 @@ function App() {
     hasConsent: consent.hasConsent,
   }
 
+  const consentContextValue = {
+    status: privacyAuth.status,
+    shouldShowGate: privacyAuth.shouldShowGate,
+    accept: privacyAuth.accept,
+    reject: privacyAuth.reject,
+    reset: privacyAuth.reset,
+    showModal: privacyAuth.showModal,
+    hideModal: privacyAuth.hideModal,
+  }
+
   return (
-    <BrowserRouter>
-      <CookieConsentProvider value={cookieContextValue}>
-        {/* Cookie consent banner - shown at top when needed */}
-        {consent.isLoaded && consent.shouldShowBanner && (
-          <CookieConsent
-            config={cookieConfig as CookieConsentConfig}
-            onAcceptAll={consent.acceptAll}
-            onRejectAll={consent.rejectAll}
-            onSavePreferences={consent.saveGranular}
+    <CookieConsentProvider value={cookieContextValue}>
+      <ConsentProvider value={consentContextValue}>
+        {/* Privacy consent gate — must interact before continuing or if explicitly shown */}
+        {privacyAuth.isLoaded && privacyAuth.shouldShowGate && (
+          <ConsentGate
+            config={privacyConfig as ConsentConfig}
+            status={privacyAuth.status}
+            onAccept={() => {
+              privacyAuth.accept()
+              navigate('/')
+            }}
+            onReject={() => {
+              privacyAuth.reject()
+            }}
+            onCancel={
+              privacyAuth.status !== 'pending'
+                ? privacyAuth.hideModal
+                : undefined
+            }
           />
         )}
 
-        <Routes>
-          <Route path="/" element={<SectionPageWrapper sectionId="intro" />} />
-          <Route
-            path="/login"
-            element={<SectionPageWrapper sectionId="login" />}
-          />
+        {/* Privacy rejected — static blocked page (if not currently re-reviewing) */}
+        {privacyAuth.isLoaded &&
+          privacyAuth.status === 'rejected' &&
+          !privacyAuth.shouldShowGate && (
+            <ConsentGate
+              config={privacyConfig as ConsentConfig}
+              status={privacyAuth.status}
+              onAccept={privacyAuth.accept}
+              onReject={privacyAuth.reject}
+              onCancel={undefined}
+              onReReview={privacyAuth.reset}
+            />
+          )}
 
-          {/* Survey 1: Technology Inventory (3 stages) */}
-          <Route
-            path="/survey-1/*"
-            element={
-              <SurveyPage
-                config={surveyConfig1 as unknown as SurveyConfig}
-                surveyId="survey-1"
-                completionRoute="/complete-1"
-              />
-            }
-          />
-          <Route
-            path="/complete-1"
-            element={<SectionPageWrapper sectionId="complete-1" />}
-          />
+        {/* Normal app — only rendered once privacy consent is accepted (and not currently re-reviewing) */}
+        {privacyAuth.isLoaded &&
+          privacyAuth.status === 'accepted' &&
+          !privacyAuth.shouldShowGate && (
+            <>
+              {/* Cookie consent banner - shown at top when needed */}
+              {consent.isLoaded && consent.shouldShowBanner && (
+                <CookieConsent
+                  config={cookieConfig as CookieConsentConfig}
+                  onAcceptAll={consent.acceptAll}
+                  onRejectAll={consent.rejectAll}
+                  onSavePreferences={consent.saveGranular}
+                />
+              )}
 
-          {/* Survey 2: Feedback (all optional) */}
-          <Route
-            path="/survey-2/*"
-            element={
-              <SurveyPage
-                config={surveyConfig2 as unknown as SurveyConfig}
-                surveyId="survey-2"
-                completionRoute="/complete-2"
-              />
-            }
-          />
-          <Route
-            path="/complete-2"
-            element={<SectionPageWrapper sectionId="complete-2" />}
-          />
+              <Routes>
+                <Route
+                  path="/"
+                  element={<SectionPageWrapper sectionId="intro" />}
+                />
+                <Route
+                  path="/login"
+                  element={<SectionPageWrapper sectionId="login" />}
+                />
 
-          <Route
-            path="/sign-out"
-            element={<SectionPageWrapper sectionId="sign-out" />}
-          />
+                {/* Survey 1: Technology Inventory (3 stages) */}
+                <Route
+                  path="/survey-1/*"
+                  element={
+                    <SurveyPage
+                      config={surveyConfig1 as unknown as SurveyConfig}
+                      surveyId="survey-1"
+                      completionRoute="/complete-1"
+                    />
+                  }
+                />
+                <Route
+                  path="/complete-1"
+                  element={<SectionPageWrapper sectionId="complete-1" />}
+                />
 
-          {/* Chat Survey Demo */}
-          <Route path="/chat-survey" element={<ChatSurveyPage />} />
-        </Routes>
-      </CookieConsentProvider>
+                {/* Survey 2: Feedback (all optional) */}
+                <Route
+                  path="/survey-2/*"
+                  element={
+                    <SurveyPage
+                      config={surveyConfig2 as unknown as SurveyConfig}
+                      surveyId="survey-2"
+                      completionRoute="/complete-2"
+                    />
+                  }
+                />
+                <Route
+                  path="/complete-2"
+                  element={<SectionPageWrapper sectionId="complete-2" />}
+                />
+
+                <Route
+                  path="/sign-out"
+                  element={<SectionPageWrapper sectionId="sign-out" />}
+                />
+
+                {/* Chat Survey Demo */}
+                <Route path="/chat-survey" element={<ChatSurveyPage />} />
+              </Routes>
+            </>
+          )}
+      </ConsentProvider>
+    </CookieConsentProvider>
+  )
+}
+
+function Root() {
+  return (
+    <BrowserRouter>
+      <App />
     </BrowserRouter>
   )
 }
 
-export default App
+export default Root
