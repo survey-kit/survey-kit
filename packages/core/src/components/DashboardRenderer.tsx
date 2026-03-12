@@ -18,7 +18,7 @@ export function DashboardRenderer({
   const Card = components.Card || (({ children }: any) => <div>{children}</div>)
 
   return (
-    <div className="flex flex-col gap-8 w-full">
+    <div className="flex flex-col w-full">
       <Heading level="h1" className="mb-4">
         {title}
       </Heading>
@@ -56,7 +56,7 @@ export function DashboardRenderer({
               return (
                 <Card
                   key={chart.id}
-                  className="p-4 flex flex-col gap-2 border relative overflow-hidden h-[400px]"
+                  className="p-4 flex flex-col gap-2 border rounded-md relative overflow-hidden h-[400px]"
                 >
                   <Heading level="h3" className="text-lg font-medium">
                     {chart.title}
