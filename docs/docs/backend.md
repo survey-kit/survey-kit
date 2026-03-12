@@ -66,16 +66,37 @@ Submits a survey response.
 
 `GET /api/surveys/{surveyId}/responses`
 
-Retrieves all responses for a specific survey (administrative use only).
+Retrieves all raw responses for a specific survey (administrative use only).
+
+### Analytics Aggregation
+
+`GET /api/admin/analytics?surveyId={surveyId}`
+
+Returns aggregated analytics data for a specific survey, used primarily by the Admin Dashboard. This endpoint supports cross-tabulation filtering based on survey responses.
+
+**Filtering:**
+
+You can filter results by appending survey question IDs and their desired values as query parameters.
+
+**Example:**
+To view analytics for respondents who answered "In House" for the question with ID `developed`:
+
+`GET /api/admin/analytics?surveyId=survey-1&developed=in_house`
+
+The backend handles both simple values and object-based answer structures (e.g., `{ value: "..." }`) when applying these filters. Multiple filters can be combined, and results must match all criteria (AND logic).
 
 ## Environment Variables
 
 Ensure the following environment variables are configured:
 
-| Variable              | Description                                       |
-| :-------------------- | :------------------------------------------------ |
-| `DYNAMODB_TABLE_NAME` | The name of the DynamoDB table.                   |
-| `ALLOWED_ORIGINS`     | Comma-separated list of allowed origins for CORS. |
+| Variable               | Description                                                                             |
+| :--------------------- | :-------------------------------------------------------------------------------------- |
+| `DYNAMODB_TABLE_NAME`  | The name of the DynamoDB table. (e.g. `sk-template-dev-responses`)                      |
+| `AWS_REGION`           | AWS region where DynamoDB and Cognito are deployed. (e.g. `eu-west-2`)                  |
+| `COGNITO_USER_POOL_ID` | AWS Cognito User Pool ID used for login. (e.g. `eu-west-2_XXXXXXXXX`)                   |
+| `AWS_PROFILE`          | AWS named profile for CLI access (after `aws sso login --profile <profile>`).           |
+| `PORT`                 | Local server port for backend (e.g. `3001`).                                            |
+| `ALLOWED_ORIGINS`      | Comma-separated list of allowed origins for CORS (`*` allows all, use for development). |
 
 ## Deployment
 
