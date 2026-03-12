@@ -53,6 +53,7 @@ nav:
       - Core Architecture: core/index.md
       - Component Registry: registry/index.md
       - Chat Experience: registry/chat.md
+      - Dashboard Components: registry/dashboard.md
       - Consent Gates: registry/consent-gate.md
   - API Reference:
       - Core API: api/core.md

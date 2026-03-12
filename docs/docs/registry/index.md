@@ -9,6 +9,7 @@ The `@survey-kit/registry` package provides pre-built, accessible UI components 
 - Complex: richer components such as progress bars, panels, blocked pages and cookie consent
 - Chat: conversational survey components for message-style interfaces
 - Sections: standalone section pages for intro, sign-in and completion routes
+- Dashboard: administrative analytics components including charts and dynamic filters
 
 ## Chat components
 
