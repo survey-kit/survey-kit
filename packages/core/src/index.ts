@@ -24,6 +24,8 @@ export type {
   DashboardConfig,
   DashboardGroup,
   ChartConfig,
+  DashboardFilter,
+  DashboardFilterConfig,
 } from './types/dashboard'
 
 export type {
@@ -71,4 +73,5 @@ export {
   getAllPages,
   findPageById,
   getPageLocation,
+  extractFilterableQuestions,
 } from './lib/configUtils'

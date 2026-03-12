@@ -12,9 +12,22 @@ export interface DashboardGroup {
   charts: ChartConfig[]
 }
 
+export interface DashboardFilter {
+  questionId: string
+  value: string | string[]
+}
+
+export interface DashboardFilterConfig {
+  id: string
+  label: string
+  type: 'select' | 'multiselect'
+  options: { label: string; value: string }[]
+}
+
 export interface DashboardConfig {
   id: string
   title: string
   allowedRoles: string[]
   groups: DashboardGroup[]
+  filters?: DashboardFilterConfig[]
 }
