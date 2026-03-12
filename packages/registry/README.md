@@ -8,8 +8,9 @@ The registry package provides pre-built, accessible React components for buildin
 
 - **Primitives** – Button, Input, Heading, Card, Checkbox
 - **Layout** – Header, Footer, Sidebar, Wrapper, Stage Tabs, Main Content
-- **Complex** – Progress Bar, Score Card, Blocked Page, Emoji Slider, Panel
+- **Complex** – Progress Bar, Score Card, Blocked Page, Emoji Slider, Panel, Filter Sidebar, Cookie Consent
 - **Chat** – ChatContainer, ChatBubble, ChatMessage, ChatInput, TypingIndicator, ChatReviewScreen
+- **Dashboard** – TrendLineChart, DropoffBarChart for administrative analytics
 - **Sections** – SectionPage for intro/completion screens
 - **Form controls** – Dropdown, Select components
 
@@ -80,6 +81,7 @@ function MyComponent() {
 - `ScaleEmojiSlider` – Scale-based emoji slider variant
 - `Panel` – Panel container component
 - `CookieConsent` – Cookie consent component
+- `FilterSidebar` – Side navigation for dynamic dashboard filtering
 
 ### Chat Components
 
@@ -106,6 +108,14 @@ import {
 - `Dropdown` / `Select` – Dropdown select component (Radix UI based)
 - `SimpleDropdown` – Simplified dropdown API for survey renderer
 - `DropdownTrigger`, `DropdownContent`, `DropdownItem`, `DropdownValue` – Dropdown sub-components
+
+### Dashboard Controls
+
+Administrative analytics and filtering components:
+
+- `FilterSidebar` – Dynamic sidebar for cross-tabulation filtering
+- `TrendLineChart` – Visualise response trends over time
+- `DropoffBarChart` – Visualise survey drop-off rates by stage
 
 ### Sections
 

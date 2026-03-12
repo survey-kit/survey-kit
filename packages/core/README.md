@@ -6,13 +6,14 @@ Core survey engine for rendering surveys from JSON configuration.
 
 The core package provides the essential logic and components for building surveys:
 
-- **Survey renderers** – `SurveyRenderer` (form-based) and `ChatSurveyRenderer` (conversational)
+- **Survey renderers** – `SurveyRenderer` (form-based), `ChatSurveyRenderer` (conversational), and `DashboardRenderer` (analytics)
 - **Layout renderer** – `LayoutRenderer` handles page layout, sidebar, and navigation
 - **State management** – `useSurvey` hook for survey state, navigation, validation, and progress
-- **Type definitions** – TypeScript types for survey and layout configuration
+- **Type definitions** – TypeScript types for survey, layout, and dashboard configuration
 - **Validation** – Built-in validation with cross-question support
 - **Conditional logic** – Show/hide questions and pages based on answers
 - **Navigation** – Configurable navigation rules (sequential or free-form)
+- **Dynamic Filtering** – Utilities to extract filterable dimensions from survey configurations
 
 ## Features
 
@@ -165,6 +166,7 @@ const {
 
 - **`SurveyRenderer`** – Traditional form-based survey renderer
 - **`ChatSurveyRenderer`** – Chat/messaging-style survey renderer
+- **`DashboardRenderer`** – Administrative dashboard renderer for analytics charts
 - **`LayoutRenderer`** – Wrapper component for survey layout (header, footer, sidebar)
 
 ### Conditional Logic Utilities
@@ -188,6 +190,7 @@ const {
 - `getAllPages` – Get all pages from a survey config
 - `findPageById` – Find a page by ID
 - `getPageLocation` – Get the location of a page (stage, group, page)
+- `extractFilterableQuestions` – Extract categorical questions for dashboard filtering
 
 ## Key Exports
 
@@ -206,6 +209,7 @@ const {
 - `SurveyConfig`, `SurveyPage`, `SurveyQuestion`, `SurveyStage`, `SurveyGroup`
 - `SurveyState`, `QuestionAnswer`, `QuestionType`
 - `LayoutConfig`, `SectionConfig`, `SectionLayout`
+- `DashboardConfig`, `DashboardFilter`, `DashboardFilterConfig`
 - `ValidationRule`, `Condition`, `ConditionalLogic`
 
 ### Utilities
