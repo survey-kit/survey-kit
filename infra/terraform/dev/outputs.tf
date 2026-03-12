@@ -47,3 +47,13 @@ output "ecr_repository_url" {
   description = "ECR repository URL for Lambda container image"
   value       = aws_ecr_repository.lambda.repository_url
 }
+
+output "cognito_user_pool_id" {
+  description = "ID of the Cognito User Pool for Admins"
+  value       = aws_cognito_user_pool.admin_pool.id
+}
+
+output "cognito_user_pool_client_id" {
+  description = "ID of the Cognito User Pool Client for Admins"
+  value       = aws_cognito_user_pool_client.admin_client.id
+}
