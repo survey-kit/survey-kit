@@ -242,6 +242,25 @@ const consent = useCookieConsent(categories)
 />
 ```
 
+### FilterSidebar
+
+Side navigation for applying filters to the Admin Dashboard.
+
+```tsx
+import { FilterSidebar } from '@survey-kit/registry'
+;<FilterSidebar
+  filters={dashboardFilters}
+  activeFilters={activeFilters}
+  onFilterChange={setFilters}
+/>
+```
+
+| Prop             | Type                      | Description                          |
+| ---------------- | ------------------------- | ------------------------------------ |
+| `filters`        | `DashboardFilterConfig[]` | List of available filter dimensions. |
+| `activeFilters`  | `DashboardFilter[]`       | Currently active filters.            |
+| `onFilterChange` | `(filters) => void`       | Callback when filters are modified.  |
+
 ---
 
 ## Chat
@@ -341,6 +360,30 @@ import { SectionPage } from '@survey-kit/registry'
   onNavigate={handleNavigate}
   onAction={handleAction}
 />
+```
+
+---
+
+## Charts
+
+Visualization components for administrative dashboards.
+
+### TrendLineChart
+
+Displays survey response trends over time.
+
+```tsx
+import { TrendLineChart } from '@survey-kit/registry'
+;<TrendLineChart data={trendData} />
+```
+
+### DropoffBarChart
+
+Visualises response drop-off rates at different survey stages.
+
+```tsx
+import { DropoffBarChart } from '@survey-kit/registry'
+;<DropoffBarChart data={dropoffData} />
 ```
 
 ---
