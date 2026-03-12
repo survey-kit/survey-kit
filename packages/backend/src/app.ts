@@ -4,6 +4,7 @@
  */
 import express from 'express'
 import surveyRoutes from './routes/surveys.js'
+import adminRoutes from './routes/admin.js'
 
 const app = express()
 
@@ -37,6 +38,9 @@ app.get('/api/health', (req, res) => {
 
 // Survey routes
 app.use('/api/surveys', surveyRoutes)
+
+// Admin routes
+app.use('/api/admin', adminRoutes)
 
 // 404 handler
 app.use((req, res) => {
