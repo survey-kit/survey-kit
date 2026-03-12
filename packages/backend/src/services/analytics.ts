@@ -1,9 +1,32 @@
 // This is extremely specific for our survey and survey-1
 import { getResponsesBySurvey } from './dynamodb.js'
 
-export async function aggregateAnalytics(surveyId: string) {
+export async function aggregateAnalytics(
+  surveyId: string,
+  filters?: Record<string, string | string[]>
+) {
   // 1. Fetch live raw responses from DynamoDB
-  const responses = await getResponsesBySurvey(surveyId)
+  let responses = await getResponsesBySurvey(surveyId)
+
+  // Apply filters if they exist
+  if (filters && Object.keys(filters).length > 0 && responses) {
+    responses = responses.filter((r) => {
+      // Must match ALL filters
+      return Object.entries(filters).every(([questionId, filterValue]) => {
+        const answer = r.answers[questionId]
+        if (answer === undefined || answer === null) return false
+
+        const actualValue = typeof answer === 'object' && answer !== null && 'value' in answer 
+          ? (answer as any).value 
+          : answer
+
+        if (Array.isArray(filterValue)) {
+          return filterValue.includes(actualValue as string)
+        }
+        return actualValue === filterValue
+      })
+    })
+  }
 
   // Default structure if empty
   if (!responses || responses.length === 0) {

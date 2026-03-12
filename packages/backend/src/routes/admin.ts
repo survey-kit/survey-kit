@@ -8,10 +8,13 @@ const router = Router()
 // Live Analytics Endpoint from DynamoDB
 router.get('/analytics', authenticateAdmin, async (req, res) => {
   try {
-    const surveyId = (req.query.surveyId as string) || 'survey-1'
+    const { surveyId = 'survey-1', ...filters } = req.query as Record<
+      string,
+      string | string[]
+    >
 
     // Calls the dynamodb aggregate underlying getResponsesBySurvey function directly
-    const liveData = await aggregateAnalytics(surveyId)
+    const liveData = await aggregateAnalytics(surveyId as string, filters)
 
     res.json({
       success: true,
