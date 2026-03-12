@@ -43,3 +43,6 @@ export * from '../registry/chat'
 
 // Export utilities
 export { cn } from '../lib/utils'
+
+// Export charts
+export * from '../registry/charts/AdminCharts'
