@@ -21,6 +21,12 @@ export type {
 } from './types/survey'
 
 export type {
+  DashboardConfig,
+  DashboardGroup,
+  ChartConfig,
+} from './types/dashboard'
+
+export type {
   LayoutConfig,
   HeaderConfig,
   FooterConfig,
@@ -44,6 +50,7 @@ export {
   type ChatSurveyRendererProps,
   type TypingDelayConfig,
 } from './components/ChatSurveyRenderer'
+export { DashboardRenderer } from './components/DashboardRenderer'
 
 // Export hooks
 export { useSurvey } from './hooks/useSurvey'
