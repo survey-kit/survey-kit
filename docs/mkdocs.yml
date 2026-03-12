@@ -48,6 +48,7 @@ nav:
       - Rendering Modes: guides/rendering-modes.md
       - Connecting a Backend: backend.md
       - Full Template Demo: guides/template.md
+      - Infrastructure Guide: guides/infrastructure.md
   - Packages:
       - Core Architecture: core/index.md
       - Component Registry: registry/index.md
