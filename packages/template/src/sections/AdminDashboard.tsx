@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { DashboardRenderer } from '@survey-kit/core'
+import {
+  DashboardRenderer,
+  DashboardFilter,
+  extractFilterableQuestions,
+} from '@survey-kit/core'
 import {
   Heading,
   Card,
   TrendLineChart,
   DropoffBarChart,
   Button,
+  FilterSidebar,
 } from '@survey-kit/registry'
 import dashboardConfig from '../dashboards/dashboard.config.json'
+import surveyConfig from '../surveys/survey-1.json'
 import { fetchAdminAnalytics } from '../services/analytics'
 import { removeAuthToken } from '../services/auth'
 
@@ -24,15 +30,17 @@ const chartComponents = {
  * Fetches and displays analytics data using the configured charts.
  */
 export function AdminDashboard() {
+  const dynamicFilters = extractFilterableQuestions(surveyConfig as any)
   const [data, setData] = useState<Record<string, any> | null>(null)
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState(true)
+  const [filters, setFilters] = useState<DashboardFilter[]>([])
   const navigate = useNavigate()
 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true)
-      const result = await fetchAdminAnalytics()
+      const result = await fetchAdminAnalytics(filters)
 
       if (result.success) {
         setData(result.data)
@@ -50,7 +58,7 @@ export function AdminDashboard() {
     }
 
     loadData()
-  }, [navigate])
+  }, [navigate, filters])
 
   const handleLogout = () => {
     removeAuthToken()
@@ -77,8 +85,14 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="flex-1 max-w-7xl mx-auto w-full p-6 flex flex-col gap-6">
-      <div className="w-full">
+    <div className="flex-1 max-w-7xl mx-auto w-full p-6 flex flex-col md:flex-row gap-6 relative">
+      <FilterSidebar
+        filters={dynamicFilters}
+        activeFilters={filters}
+        onFilterChange={setFilters}
+      />
+
+      <div className="flex-1 w-full min-w-0">
         {data && (
           <DashboardRenderer
             config={dashboardConfig as any}
