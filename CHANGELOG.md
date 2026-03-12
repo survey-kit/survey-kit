@@ -186,3 +186,28 @@
 ### Template
 
 - **Consent Gate**: Added consent gate component to handle user consent for data collection ([#29](https://github.com/survey-kit/survey-kit/pull/29))
+
+## Week 21 (w/c 09/03/26)
+
+### Features
+
+- **Admin Dashboard**: Implemented administrative dashboard for survey analytics.
+- **Dynamic Filtering**: Added a cross-tabulation filtering system that automatically extracts filterable dimensions from survey JSON configurations.
+- **Cognito Authentication**: Integrated AWS Cognito for administrative access to the dashboard.
+- **Analytics Service**: Enhanced the backend service to support query-based filtering and statistical aggregation.
+
+### Core
+
+- **Dashboard Metadata**: Added `DashboardConfig` and `DashboardFilter` types.
+- **Filter Extraction**: Created `extractFilterableQuestions` utility for dynamic UI generation.
+- **Dashboard Renderer**: Added a new renderer for administrative data visualization.
+
+### Registry
+
+- **Filter Sidebar**: Created a vertical sidebar component for managing dynamic dashboard filters.
+- **Admin Charts**: Added `TrendLineChart` and `DropoffBarChart` components for data visualisation.
+
+### Infrastructure
+
+- **Cognito Integration**: Added Terraform modules and backend configuration for AWS Cognito User Pools.
+- **Documentation**: Added guides for backend filtering, API references and infrastructure setup.
