@@ -28,7 +28,6 @@ export async function aggregateAnalytics(
     })
   }
 
-  // Default structure if empty
   if (!responses || responses.length === 0) {
     return {
       summary: [
@@ -38,6 +37,7 @@ export async function aggregateAnalytics(
       ],
       trends: [],
       dropoffsByStage: [],
+      responses: [],
     }
   }
 
@@ -131,5 +131,6 @@ export async function aggregateAnalytics(
       dropoffsByStage.length > 0
         ? dropoffsByStage
         : [{ stage: 'None', counts: 0 }],
+    responses,
   }
 }
