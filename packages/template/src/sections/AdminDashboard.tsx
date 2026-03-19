@@ -4,6 +4,7 @@ import {
   DashboardRenderer,
   DashboardFilter,
   extractFilterableQuestions,
+  getQuestionLabelMap,
 } from '@survey-kit/core'
 import {
   Heading,
@@ -12,6 +13,7 @@ import {
   DropoffBarChart,
   Button,
   FilterSidebar,
+  ResponseList,
 } from '@survey-kit/registry'
 import dashboardConfig from '../dashboards/dashboard.config.json'
 import surveyConfig from '../surveys/survey-1.json'
@@ -92,13 +94,24 @@ export function AdminDashboard() {
         onFilterChange={setFilters}
       />
 
-      <div className="flex-1 w-full min-w-0">
+      <div className="flex-1 w-full min-w-0 flex flex-col gap-8">
         {data && (
           <DashboardRenderer
             config={dashboardConfig as any}
             components={chartComponents}
             data={data}
           />
+        )}
+        {data?.responses && (
+          <section className="flex flex-col gap-4">
+            <Heading level="h2" className="text-xl">
+              All Responses
+            </Heading>
+            <ResponseList
+              responses={data.responses}
+              questionLabels={getQuestionLabelMap(surveyConfig as any)}
+            />
+          </section>
         )}
       </div>
     </div>
