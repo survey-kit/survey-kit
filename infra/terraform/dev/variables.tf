@@ -64,3 +64,8 @@ variable "allowed_origins" {
   type        = list(string)
   default     = []
 }
+
+variable "cognito_user_pool_id" {
+  description = "AWS Cognito User Pool ID for admins"
+  type        = string
+}

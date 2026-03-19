@@ -122,6 +122,7 @@ resource "aws_lambda_function" "api" {
     variables = {
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.survey_responses.name
       ALLOWED_ORIGINS     = length(var.allowed_origins) > 0 ? join(",", var.allowed_origins) : "https://${var.domain_name}"
+      COGNITO_USER_POOL_ID = var.cognito_user_pool_id
     }
   }
 
