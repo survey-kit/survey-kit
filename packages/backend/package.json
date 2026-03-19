@@ -6,7 +6,6 @@
     "main": "dist/index.js",
     "scripts": {
         "build": "node esbuild.config.js",
-        "deploy": "bash scripts/deploy-lambda.sh",
         "dev": "node esbuild.config.js --dev",
         "test": "vitest",
         "lint": "eslint src --ext .ts",

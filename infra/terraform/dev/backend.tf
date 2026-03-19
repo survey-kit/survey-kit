@@ -108,12 +108,13 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
   policy = data.aws_iam_policy_document.dynamodb_access.json
 }
 
-# Lambda function using container image
+# Lambda function using container image (arm64 for M-series Mac native builds)
 resource "aws_lambda_function" "api" {
   function_name = "${var.bucket_name}-api"
   role          = aws_iam_role.lambda_role.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.lambda.repository_url}:latest"
+  image_uri     = "${aws_ecr_repository.lambda.repository_url}:${var.lambda_image_tag}"
+  architectures = ["arm64"]
   timeout       = 30
   memory_size   = 256
 
