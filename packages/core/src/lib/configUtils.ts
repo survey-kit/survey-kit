@@ -141,3 +141,24 @@ export function extractFilterableQuestions(
 
   return filters
 }
+
+/**
+ * Builds a map of question IDs to their labels from a survey configuration.
+ * @param config Survey configuration
+ * @returns Record mapping questionId to label (falls back to id if label is missing)
+ */
+export function getQuestionLabelMap(
+  config: SurveyConfig
+): Record<string, string> {
+  const map: Record<string, string> = {}
+  const pages = getAllPages(config)
+
+  for (const page of pages) {
+    if (!page.questions) continue
+    for (const question of page.questions) {
+      map[question.id] = question.label ?? question.id
+    }
+  }
+
+  return map
+}

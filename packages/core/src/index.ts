@@ -74,4 +74,5 @@ export {
   findPageById,
   getPageLocation,
   extractFilterableQuestions,
+  getQuestionLabelMap,
 } from './lib/configUtils'
