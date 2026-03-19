@@ -39,7 +39,7 @@ export function FilterSidebar({
   }
 
   return (
-    <Card className="w-64 flex-shrink-0 p-4 sticky top-6 self-start border rounded-md h-auto">
+    <Card className="w-64 flex-shrink-0 p-4 sm:sticky top-6 self-start border rounded-md h-auto">
       <div className="flex items-center justify-between mb-2">
         <Heading level="h3" className="text-lg">
           Filters
