@@ -1,6 +1,8 @@
 import { getAuthToken, removeAuthToken } from './auth'
 import { DashboardFilter } from '@survey-kit/core'
 
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 /**
  * Fetches the analytics data required for the administrator dashboard.
  * Requires a valid authentication token to authorise the request.
@@ -13,7 +15,7 @@ export const fetchAdminAnalytics = async (filters?: DashboardFilter[]) => {
   if (!token) return { success: false, error: 'Not authenticated' }
 
   try {
-    let url = '/api/admin/analytics'
+    let url = `${API_URL}/api/admin/analytics`
     if (filters && filters.length > 0) {
       const params = new URLSearchParams()
       filters.forEach((f) => {
