@@ -211,3 +211,11 @@
 
 - **Cognito Integration**: Added Terraform modules and backend configuration for AWS Cognito User Pools.
 - **Documentation**: Added guides for backend filtering, API references and infrastructure setup.
+
+## Week 21 (w/c 16/03/26)
+
+### Features
+
+- **Admin Dashboard**: Expanded the admin dashboard to include a list of all responses and a detailed view of a response.
+
+All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
