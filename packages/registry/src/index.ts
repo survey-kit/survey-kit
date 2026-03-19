@@ -47,3 +47,4 @@ export { cn } from '../lib/utils'
 
 // Export charts
 export * from '../registry/charts/AdminCharts'
+export * from '../registry/charts/ResponseList'
