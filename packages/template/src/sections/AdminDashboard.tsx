@@ -87,7 +87,7 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="flex-1 max-w-7xl mx-auto w-full p-6 flex flex-col md:flex-row gap-6 relative">
+    <div className="flex-1 w-full p-6 flex flex-col md:flex-row gap-6 relative">
       <FilterSidebar
         filters={dynamicFilters}
         activeFilters={filters}
