@@ -65,6 +65,12 @@ variable "allowed_origins" {
   default     = []
 }
 
+variable "lambda_image_tag" {
+  description = "ECR image tag for Lambda (change to force Lambda to pull new image)"
+  type        = string
+  default     = "latest"
+}
+
 variable "cognito_user_pool_id" {
   description = "AWS Cognito User Pool ID for admins"
   type        = string
