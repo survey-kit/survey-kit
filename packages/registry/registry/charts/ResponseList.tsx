@@ -26,10 +26,13 @@ function getAnswerValue(answer: unknown): unknown {
 function formatDate(iso: string): string {
   try {
     const d = new Date(iso)
-    return d.toLocaleString(undefined, {
-      dateStyle: 'medium',
-      timeStyle: 'short',
+    const dateStr = d.toLocaleDateString(undefined, { dateStyle: 'medium' })
+    const timeStr = d.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
     })
+    return `${dateStr}, ${timeStr}`
   } catch {
     return iso
   }
