@@ -191,6 +191,7 @@ const {
 - `findPageById` – Find a page by ID
 - `getPageLocation` – Get the location of a page (stage, group, page)
 - `extractFilterableQuestions` – Extract categorical questions for dashboard filtering
+- `getQuestionLabelMap` – Build a map of question IDs to labels for displaying response data
 
 ## Key Exports
 
@@ -215,7 +216,7 @@ const {
 ### Utilities
 
 - Conditional logic: `shouldShowQuestion`, `shouldShowPage`, `shouldShowGroup`, `shouldShowStage`, `evaluateCondition`, `evaluateConditions`
-- Config utilities: `normaliseSurveyConfig`, `getAllPages`, `findPageById`, `getPageLocation`
+- Config utilities: `normaliseSurveyConfig`, `getAllPages`, `findPageById`, `getPageLocation`, `extractFilterableQuestions`, `getQuestionLabelMap`
 
 ## Requirements
 

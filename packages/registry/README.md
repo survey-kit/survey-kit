@@ -10,7 +10,7 @@ The registry package provides pre-built, accessible React components for buildin
 - **Layout** – Header, Footer, Sidebar, Wrapper, Stage Tabs, Main Content
 - **Complex** – Progress Bar, Score Card, Blocked Page, Emoji Slider, Panel, Filter Sidebar, Cookie Consent
 - **Chat** – ChatContainer, ChatBubble, ChatMessage, ChatInput, TypingIndicator, ChatReviewScreen
-- **Dashboard** – TrendLineChart, DropoffBarChart for administrative analytics
+- **Dashboard** – TrendLineChart, DropoffBarChart, ResponseList, ResponseDetailPanel for administrative analytics and response viewing
 - **Sections** – SectionPage for intro/completion screens
 - **Form controls** – Dropdown, Select components
 
@@ -116,6 +116,9 @@ Administrative analytics and filtering components:
 - `FilterSidebar` – Dynamic sidebar for cross-tabulation filtering
 - `TrendLineChart` – Visualise response trends over time
 - `DropoffBarChart` – Visualise survey drop-off rates by stage
+- `ResponseList` – Searchable list of survey responses with expandable detail panel
+- `ResponseCard` – Individual response card (completion status, preview, click to view details)
+- `ResponseDetailPanel` – Slide-in panel showing full response answers
 
 ### Sections
 
