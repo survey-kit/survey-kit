@@ -1,5 +1,11 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+} from 'react-router-dom'
 import { submitSurveyResponse, initSession } from './services/api'
 import {
   Button,
@@ -55,6 +61,9 @@ import layoutConfig from './layouts/layout.config.json'
 import sectionsConfig from './sections/sections.config.json'
 import cookieConfig from './cookies/cookies.config.json'
 import privacyConfig from './consents/consents.config.json'
+import { AdminLogin } from './sections/AdminLogin'
+import { AdminDashboard } from './sections/AdminDashboard'
+import { getAuthToken, removeAuthToken } from './services/auth'
 
 const components = {
   Button,
@@ -106,6 +115,62 @@ function ChatSurveyPage() {
       onSubmit={handleSubmit}
       typingDelay={{ min: 600, max: 1200 }}
     />
+  )
+}
+
+function AdminRoute({ children }: { children: React.ReactNode }) {
+  const token = getAuthToken()
+  if (!token) {
+    return <Navigate to="/admin/login" replace />
+  }
+  return <>{children}</>
+}
+
+// Wrapper for Admin views to share the same Header/Footer as Survey pages
+function AdminLayoutWrapper({
+  children,
+  headerActions,
+}: {
+  children: React.ReactNode
+  headerActions?: React.ReactNode
+}) {
+  const cookieContext = useCookieConsentContext()
+  const consentContext = useConsentContext()
+
+  const handleLayoutAction = (actionId: string) => {
+    if (actionId === 'showCookies') {
+      cookieContext.showBanner()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else if (actionId === 'showPrivacy') {
+      consentContext.showModal()
+    }
+  }
+
+  const headerConfig = (layoutConfig as LayoutConfig).header
+  const footerConfig = (layoutConfig as LayoutConfig).footer
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      {headerConfig?.enabled && (
+        <Header
+          variant="primary"
+          size="lg"
+          logoSmall={headerConfig.logo?.small}
+          logoLarge={headerConfig.logo?.large}
+          actions={headerActions || []}
+        />
+      )}
+      <main className="flex-1 flex flex-col">{children}</main>
+      {footerConfig?.enabled && (
+        <Footer
+          logoSmall={footerConfig.logo?.small}
+          logoLarge={footerConfig.logo?.large}
+          links={footerConfig.links}
+          description={footerConfig.description}
+          onAction={handleLayoutAction}
+        />
+      )}
+    </div>
   )
 }
 
@@ -366,6 +431,39 @@ function App() {
                 <Route
                   path="/sign-out"
                   element={<SectionPageWrapper sectionId="sign-out" />}
+                />
+
+                {/* Admin Routes */}
+                <Route
+                  path="/admin/login"
+                  element={
+                    <AdminLayoutWrapper>
+                      <AdminLogin />
+                    </AdminLayoutWrapper>
+                  }
+                />
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <AdminRoute>
+                      <AdminLayoutWrapper
+                        headerActions={
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              removeAuthToken()
+                              navigate('/admin/login')
+                            }}
+                          >
+                            Log Out
+                          </Button>
+                        }
+                      >
+                        <AdminDashboard />
+                      </AdminLayoutWrapper>
+                    </AdminRoute>
+                  }
                 />
 
                 {/* Chat Survey Demo */}

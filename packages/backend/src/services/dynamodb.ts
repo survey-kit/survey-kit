@@ -24,7 +24,8 @@ export async function createResponse(
   answers: Record<string, unknown>,
   metadata: Partial<ResponseMetadata> = {}
 ): Promise<SurveyResponse> {
-  const timestamp = new Date().toISOString()
+  const overrideTime = (metadata as any).createdAtOverride
+  const timestamp = overrideTime ? new Date(overrideTime).toISOString() : new Date().toISOString()
   const responseId = uuidv4()
 
   const response: SurveyResponse = {
@@ -35,13 +36,14 @@ export async function createResponse(
     answers,
     metadata: {
       gdprConsent: metadata.gdprConsent ?? false,
-      ...(metadata.gdprConsent && {
-        userAgent: metadata.userAgent,
-        completionTime: metadata.completionTime,
-        sessionId: metadata.sessionId,
-      }),
     },
     createdAt: timestamp,
+  }
+
+  if (metadata.gdprConsent) {
+    if (metadata.userAgent !== undefined) response.metadata.userAgent = metadata.userAgent;
+    if (metadata.completionTime !== undefined) response.metadata.completionTime = metadata.completionTime;
+    if (metadata.sessionId !== undefined) response.metadata.sessionId = metadata.sessionId;
   }
 
   await docClient.send(

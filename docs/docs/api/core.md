@@ -185,6 +185,41 @@ import { LayoutRenderer, SurveyRenderer } from '@survey-kit/core'
 </LayoutRenderer>
 ```
 
+### DashboardRenderer
+
+Renderer for administrative dashboards, supporting various chart types.
+
+```tsx
+import { DashboardRenderer } from '@survey-kit/core'
+import {
+  TrendLineChart,
+  DropoffBarChart,
+  Card,
+  Heading,
+} from '@survey-kit/registry'
+
+const components = {
+  TrendLineChart,
+  DropoffBarChart,
+  Card,
+  Heading,
+}
+
+;<DashboardRenderer
+  config={dashboardConfig}
+  data={analyticsData}
+  components={components}
+/>
+```
+
+**Props:**
+
+| Prop         | Type                  | Required | Description                    |
+| ------------ | --------------------- | -------- | ------------------------------ |
+| `config`     | `DashboardConfig`     | Yes      | Dashboard layout configuration |
+| `data`       | `Record<string, any>` | Yes      | Analytics data to display      |
+| `components` | `object`              | Yes      | Chart components from registry |
+
 ---
 
 ## Types
@@ -283,6 +318,42 @@ type QuestionType =
   | 'emoji-slider'
 ```
 
+### DashboardConfig
+
+Configuration for the administrative dashboard.
+
+```typescript
+interface DashboardConfig {
+  id: string
+  title: string
+  groups: DashboardGroup[]
+}
+```
+
+### DashboardFilter
+
+Represents an active filter applied to the dashboard.
+
+```typescript
+interface DashboardFilter {
+  questionId: string
+  value: string | string[]
+}
+```
+
+### DashboardFilterConfig
+
+Configuration for a filterable dimension on the dashboard.
+
+```typescript
+interface DashboardFilterConfig {
+  id: string
+  label: string
+  type: 'select' | 'multiselect'
+  options: { label: string; value: string }[]
+}
+```
+
 ---
 
 ## Utilities
@@ -314,4 +385,7 @@ import {
 
 // Get all pages from a config
 const pages = getAllPages(config)
+
+// Extract filterable questions from a survey config
+const filters = extractFilterableQuestions(surveyConfig)
 ```

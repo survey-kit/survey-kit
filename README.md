@@ -33,10 +33,12 @@ Survey-Kit boosts survey participation with:
 
 - Full TypeScript support
 - Mobile optimised, responsive design
-- Built-in validation
-- Progress tracking
-- Easily customisable
-- React 19, Vite, Tailwind CSS
+- **Admin Dashboard** – Integrated analytics with dynamic cross-tabulation filtering
+- **Secure Authentication** – Built-in support for AWS Cognito administrative login
+- **Infrastructure as Code** – Terraform modules for serverless AWS deployment (S3, CloudFront, Lambda, DynamoDB, Cognito)
+- Built-in validation and conditional logic
+- Progress tracking and answer persistence
+- React 19, Vite, Tailwind CSS 4
 
 ## Configuration
 

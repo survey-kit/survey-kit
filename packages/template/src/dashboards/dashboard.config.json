@@ -1,0 +1,25 @@
+{
+  "id": "admin-dashboard",
+  "title": "Survey Admin Dashboard",
+  "allowedRoles": ["admin", "researcher"],
+  "groups": [
+    {
+      "id": "group-overview",
+      "title": "Overview",
+      "charts": [
+        {
+          "id": "chart-trends",
+          "type": "TrendLineChart",
+          "title": "Response Trends",
+          "dataKey": "trends"
+        },
+        {
+          "id": "chart-dropoffs",
+          "type": "DropoffBarChart",
+          "title": "Drop-offs by Stage",
+          "dataKey": "dropoffsByStage"
+        }
+      ]
+    }
+  ]
+}

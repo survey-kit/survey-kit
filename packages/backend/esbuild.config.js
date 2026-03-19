@@ -10,7 +10,7 @@ const buildOptions = {
   bundle: true,
   platform: 'node',
   target: 'node20',
-  format: 'esm',
+  format: isDev ? 'esm' : 'cjs',
   outfile: isDev ? 'dist/server.js' : 'dist/index.js',
   sourcemap: true,
   minify: !isWatch && !isDev,
@@ -20,10 +20,11 @@ const buildOptions = {
         // AWS SDK v3 is available in Lambda runtime
         '@aws-sdk/*',
       ],
-  banner: {
-    // Required for ESM compatibility with some CommonJS modules
-    js: "import { createRequire } from 'module'; const require = createRequire(import.meta.url);",
-  },
+  ...(isDev && {
+    banner: {
+      js: "import { createRequire } from 'module'; const require = createRequire(import.meta.url);",
+    },
+  }),
 }
 
 if (isDev) {

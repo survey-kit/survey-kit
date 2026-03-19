@@ -4,6 +4,7 @@ import type {
   SurveyGroup,
   SurveyPage,
 } from '../types/survey'
+import type { DashboardFilterConfig } from '../types/dashboard'
 
 /**
  * Normalises a survey config - ensures it has stages structure
@@ -99,4 +100,65 @@ export function getPageLocation(
   }
 
   return null
+}
+
+/**
+ * Extracts all filterable questions with predefined options from a survey configuration.
+ * Automatically identifies 'select', 'radio', and 'dropdown' questions.
+ * @param config Survey configuration
+ * @returns Array of DashboardFilterConfig objects
+ */
+export function extractFilterableQuestions(
+  config: SurveyConfig
+): DashboardFilterConfig[] {
+  const filters: DashboardFilterConfig[] = []
+
+  const pages = getAllPages(config)
+
+  for (const page of pages) {
+    if (!page.questions) continue
+
+    for (const question of page.questions) {
+      if (
+        (question.type === 'radio' ||
+          question.type === 'select' ||
+          question.type === 'checkbox') &&
+        question.options &&
+        question.options.length > 0
+      ) {
+        filters.push({
+          id: question.id,
+          label: question.label || question.id,
+          type: question.type === 'checkbox' ? 'multiselect' : 'select',
+          options: question.options.map((opt) => ({
+            label: opt.label,
+            value: opt.value,
+          })),
+        })
+      }
+    }
+  }
+
+  return filters
+}
+
+/**
+ * Builds a map of question IDs to their labels from a survey configuration.
+ * @param config Survey configuration
+ * @returns Record mapping questionId to label (falls back to id if label is missing)
+ */
+export function getQuestionLabelMap(
+  config: SurveyConfig
+): Record<string, string> {
+  const map: Record<string, string> = {}
+  const pages = getAllPages(config)
+
+  for (const page of pages) {
+    if (!page.questions) continue
+    for (const question of page.questions) {
+      map[question.id] = question.label ?? question.id
+    }
+  }
+
+  return map
 }

@@ -108,12 +108,13 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
   policy = data.aws_iam_policy_document.dynamodb_access.json
 }
 
-# Lambda function using container image
+# Lambda function using container image (arm64 for M-series Mac native builds)
 resource "aws_lambda_function" "api" {
   function_name = "${var.bucket_name}-api"
   role          = aws_iam_role.lambda_role.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.lambda.repository_url}:latest"
+  image_uri     = "${aws_ecr_repository.lambda.repository_url}:${var.lambda_image_tag}"
+  architectures = ["arm64"]
   timeout       = 30
   memory_size   = 256
 
@@ -121,6 +122,7 @@ resource "aws_lambda_function" "api" {
     variables = {
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.survey_responses.name
       ALLOWED_ORIGINS     = length(var.allowed_origins) > 0 ? join(",", var.allowed_origins) : "https://${var.domain_name}"
+      COGNITO_USER_POOL_ID = var.cognito_user_pool_id
     }
   }
 
@@ -138,9 +140,9 @@ resource "aws_apigatewayv2_api" "api" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["https://${var.domain_name}"]
+    allow_origins = length(var.allowed_origins) > 0 ? var.allowed_origins : ["https://${var.domain_name}"]
     allow_methods = ["GET", "POST", "OPTIONS"]
-    allow_headers = ["Content-Type"]
+    allow_headers = ["Content-Type", "Authorization"]
     max_age       = 300
   }
 
