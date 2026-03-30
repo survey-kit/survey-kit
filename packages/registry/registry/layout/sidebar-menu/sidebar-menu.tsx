@@ -73,21 +73,27 @@ export const SidebarMenu = React.forwardRef<HTMLDivElement, SidebarMenuProps>(
             <div className="space-y-1">
               {items.map((item) => {
                 const IconComponent = item.icon
+                const lockedComplete =
+                  Boolean(item.disabled) && item.completionStatus === 'complete'
                 return (
                   <button
                     key={item.id}
+                    type="button"
                     onClick={() => {
                       if (!item.disabled && item.onClick) {
                         item.onClick()
                         onOpenChange?.(false)
                       }
                     }}
-                    disabled={item.disabled}
+                    disabled={Boolean(item.disabled) && !lockedComplete}
+                    aria-disabled={item.disabled}
                     className={cn(
                       'w-full flex items-center gap-2 rounded px-3 py-2 text-sm',
                       'transition-colors text-left',
                       item.disabled
-                        ? 'cursor-not-allowed opacity-50'
+                        ? lockedComplete
+                          ? 'cursor-not-allowed text-gray-900'
+                          : 'cursor-not-allowed opacity-50'
                         : 'cursor-pointer',
                       item.active
                         ? 'bg-ocean-blue/10 text-ocean-blue'

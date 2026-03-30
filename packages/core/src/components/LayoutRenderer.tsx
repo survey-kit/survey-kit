@@ -27,6 +27,18 @@ import type {
 
 const STORAGE_KEY_PREFIX = 'survey-kit-'
 
+/** Stored answers use `{ value }` wrappers; validation expects flat questionId → value. */
+const flattenSurveyAnswers = (
+  answers: Record<string, { value: unknown }>
+): Record<string, unknown> =>
+  Object.entries(answers).reduce(
+    (acc, [key, wrapped]) => {
+      acc[key] = wrapped?.value
+      return acc
+    },
+    {} as Record<string, unknown>
+  )
+
 // Helper function to get survey answers from localStorage
 const getSurveyAnswers = (
   surveyId: string
@@ -51,14 +63,7 @@ const isPageComplete = (
   config: SurveyConfig,
   answers: Record<string, { value: unknown }>
 ): boolean => {
-  // Flatten answers for conditional logic
-  const flattenedAnswers = Object.entries(answers).reduce(
-    (acc, [key, answer]) => {
-      acc[key] = answer.value
-      return acc
-    },
-    {} as Record<string, unknown>
-  )
+  const flattenedAnswers = flattenSurveyAnswers(answers)
 
   // Find page in stages/groups
   const page = findPageById(config, pageId)
@@ -72,7 +77,7 @@ const isPageComplete = (
   for (const question of visibleQuestions) {
     if (question.requiredToNavigate) {
       const answer = answers[question.id]?.value
-      if (!isValidForNavigation(question, answer, answers)) {
+      if (!isValidForNavigation(question, answer, flattenedAnswers)) {
         return false
       }
     }
@@ -91,14 +96,7 @@ const getPageCompletionStatus = (
   const page = findPageById(config, pageId)
   if (!page) return 'empty'
 
-  // Flatten answers for conditional logic
-  const flattenedAnswers = Object.entries(answers).reduce(
-    (acc, [key, answer]) => {
-      acc[key] = answer.value
-      return acc
-    },
-    {} as Record<string, unknown>
-  )
+  const flattenedAnswers = flattenSurveyAnswers(answers)
 
   // Get visible questions for this page
   const visibleQuestions = page.questions.filter((question: SurveyQuestion) =>
@@ -122,7 +120,8 @@ const getPageCompletionStatus = (
 
     // Check if answer is valid (not just exists, but passes validation)
     const isValid =
-      hasAnswer && validateQuestion(question, answer, answers).length === 0
+      hasAnswer &&
+      validateQuestion(question, answer, flattenedAnswers).length === 0
 
     if (hasAnswer) {
       hasAnyAnswer = true
@@ -161,14 +160,7 @@ const getLatestAccessiblePageIndex = (
   config: SurveyConfig,
   answers: Record<string, { value: unknown }>
 ): number => {
-  // Flatten answers for conditional logic
-  const flattenedAnswers = Object.entries(answers).reduce(
-    (acc, [key, answer]) => {
-      acc[key] = answer.value
-      return acc
-    },
-    {} as Record<string, unknown>
-  )
+  const flattenedAnswers = flattenSurveyAnswers(answers)
 
   // Get all pages (flattened from stages/groups or legacy pages)
   const allPages = getAllPages(config)
@@ -471,14 +463,10 @@ export function LayoutRenderer({
     }
   }, [surveyConfig?.id])
 
-  // Flatten answers for conditional logic (convert from { value: ... } to flat structure)
-  const flattenedAnswers = useMemo(() => {
-    const flat: Record<string, unknown> = {}
-    Object.entries(surveyAnswers).forEach(([key, answer]) => {
-      flat[key] = answer.value
-    })
-    return flat
-  }, [surveyAnswers])
+  const flattenedAnswers = useMemo(
+    () => flattenSurveyAnswers(surveyAnswers),
+    [surveyAnswers]
+  )
 
   // Calculate overall progress from visible pages
   const overallProgress = useMemo(() => {
@@ -1114,6 +1102,10 @@ export function LayoutRenderer({
                     ? getGroupChildrenItems(groupId)
                     : []
 
+                  /** Completed pages/groups may be temporarily non-clickable while an earlier step is invalid; keep full contrast. */
+                  const lockedComplete =
+                    item.disabled && item.completionStatus === 'complete'
+
                   // Render group item with menu when collapsed
                   const itemContent = (
                     <div
@@ -1144,7 +1136,9 @@ export function LayoutRenderer({
                         'flex items-center gap-2 rounded transition-colors',
                         sidebarCollapsed ? 'justify-center p-2' : 'p-2',
                         item.disabled
-                          ? 'cursor-not-allowed opacity-50'
+                          ? lockedComplete
+                            ? 'cursor-not-allowed'
+                            : 'cursor-not-allowed opacity-50'
                           : 'cursor-pointer',
                         item.active && !item.disabled
                           ? 'border-ocean-blue border-1 bg-ocean-blue/10'
