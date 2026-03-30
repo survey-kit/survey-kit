@@ -3,16 +3,16 @@
     {
       "id": "intro",
       "path": "/",
-      "title": "Technology Inventory Survey",
-      "subtitle": "Help us understand your project's technology stack",
-      "body": "This survey collects information about your project in 3 stages:<br/><br/>1. Project Overview: Basic project information<br/>2. Technology Stack: Languages, hosting and infrastructure<br/>3. Tools & Collaboration: Development and communication tools<br/><br/>After completing the main survey, you'll have the option to provide feedback.",
+      "title": "General form showcase",
+      "subtitle": "Explore question types, validation, and navigation",
+      "body": "This demo walks through a multi-stage form built with Survey Kit.<br/><br/>After you finish, you can optionally try the same ideas in a chat-style flow.",
       "layout": {
         "header": true,
         "footer": true
       },
       "buttons": [
         {
-          "label": "Get Started",
+          "label": "Get started",
           "to": "/survey-1",
           "variant": "default"
         }
@@ -21,39 +21,21 @@
     {
       "id": "complete-1",
       "path": "/complete-1",
-      "title": "Technology Inventory Complete!",
+      "title": "Main form complete",
       "subtitle": "Thank you for your responses",
-      "body": "Your project information has been saved.<br/><br/>Would you like to provide feedback on your survey experience? This is optional and helps us improve.",
+      "body": "Your answers from the standard layout have been saved.<br/><br/>If you would like to continue, you can open the optional chat-style survey. You can also finish here.",
       "layout": {
         "header": true,
         "footer": true
       },
       "buttons": [
         {
-          "label": "Continue",
-          "to": "/survey-2",
-          "variant": "default"
-        }
-      ]
-    },
-    {
-      "id": "complete-1",
-      "path": "/complete-1",
-      "title": "Technology Inventory Complete!",
-      "subtitle": "Thank you for your responses",
-      "body": "Your project information has been saved.<br/><br/>Would you like to provide feedback on your survey experience? This is optional and helps us improve.",
-      "layout": {
-        "header": true,
-        "footer": true
-      },
-      "buttons": [
-        {
-          "label": "Provide Feedback",
-          "to": "/survey-2",
+          "label": "Continue to chat survey",
+          "to": "/chat-survey",
           "variant": "default"
         },
         {
-          "label": "Skip & Finish",
+          "label": "Skip and finish",
           "to": "/complete-2",
           "variant": "outline"
         }
@@ -62,16 +44,16 @@
     {
       "id": "complete-2",
       "path": "/complete-2",
-      "title": "All Done!",
-      "subtitle": "Thank you for completing the survey",
-      "body": "Your responses have been recorded and will help us better understand the technology landscape across projects.",
+      "title": "All done",
+      "subtitle": "Thank you for taking part",
+      "body": "Your responses have been recorded.",
       "layout": {
         "header": true,
         "footer": true
       },
       "buttons": [
         {
-          "label": "Return Home",
+          "label": "Return home",
           "to": "/",
           "variant": "default"
         }
