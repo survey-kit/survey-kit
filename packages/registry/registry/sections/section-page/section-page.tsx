@@ -133,7 +133,7 @@ export function SectionPage({
     >
       <Card
         className={cn(
-          'w-full max-w-lg p-6 sm:p-8 md:p-10',
+          'w-full max-w-xl p-6 sm:p-8 md:p-10',
           isHorizontalImage && 'max-w-3xl',
           config.image?.position === 'background' &&
             'bg-background/95 backdrop-blur-sm',

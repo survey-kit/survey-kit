@@ -1,7 +1,7 @@
 {
-  "id": "technology-inventory-survey",
-  "title": "Technology Inventory",
-  "description": "Complete information about your project's technology stack",
+  "id": "survey-kit-showcase",
+  "title": "General form showcase",
+  "description": "Demonstrates question types, validation, conditional visibility, branching, and layout behaviour. Content is generic and not tied to any particular data-collection topic.",
   "showQuestionNumbers": true,
   "navigation": {
     "stageOrder": "sequential",
@@ -10,242 +10,216 @@
   },
   "progress": {
     "showOverall": true,
-    "showPerStage": true,
+    "showPerStage": false,
     "showPerGroup": false,
     "showPerPage": false,
-    "location": ["sidebar"]
+    "location": ["header", "sidebar"]
   },
   "stages": [
     {
-      "id": "stage-project-overview",
-      "title": "Project Overview",
-      "description": "Basic project information",
+      "id": "stage-basics",
+      "title": "Basics",
+      "description": "Common field types and validation helpers",
+      "icon": "FileText",
       "groups": [
         {
-          "id": "group-project-details",
-          "title": "Project Details",
-          "description": "Basic project information",
-          "icon": "FileText",
+          "id": "group-inputs",
+          "title": "Text and structured inputs",
+          "description": "Uses the registry Input component for text-like types",
+          "icon": "Type",
           "pages": [
             {
-              "id": "page-project-name",
-              "title": "Project Name",
-              "icon": "Tag",
-              "description": "What is your project called?",
+              "id": "page-primary-contact",
+              "title": "Primary contact",
+              "icon": "User",
+              "description": "Text, email, number, and date fields with basic validation",
               "questions": [
                 {
-                  "id": "project_name",
+                  "id": "respondent_name",
                   "type": "text",
-                  "label": "What is the full name of your project?",
-                  "placeholder": "e.g., Survey Kit",
+                  "label": "Display name",
+                  "placeholder": "How should we refer to you?",
                   "required": true,
                   "requiredToNavigate": true,
                   "validation": [
                     {
                       "type": "min",
-                      "value": 3,
-                      "message": "Project name must be at least 3 characters"
+                      "value": 2,
+                      "message": "Please enter at least 2 characters"
+                    },
+                    {
+                      "type": "max",
+                      "value": 80,
+                      "message": "Please keep this under 80 characters"
                     }
                   ]
                 },
                 {
-                  "id": "project_short",
-                  "type": "text",
-                  "label": "Project short name or acronym",
-                  "placeholder": "e.g., SK",
-                  "description": "A short identifier for your project",
+                  "id": "primary_email",
+                  "type": "email",
+                  "label": "Primary email",
+                  "placeholder": "you@example.com",
+                  "description": "Used for pattern validation (email input type)",
                   "required": true,
-                  "requiredToNavigate": true
-                }
-              ]
-            },
-            {
-              "id": "page-programme",
-              "title": "Programme",
-              "icon": "Briefcase",
-              "description": "Which programme does this project belong to?",
-              "questions": [
-                {
-                  "id": "programme_name",
-                  "type": "text",
-                  "label": "Programme name",
-                  "placeholder": "e.g., Survey Kit Programme",
-                  "required": true,
-                  "requiredToNavigate": true
+                  "requiredToNavigate": true,
+                  "validation": [
+                    {
+                      "type": "pattern",
+                      "value": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+                      "message": "Enter a valid email address"
+                    }
+                  ]
                 },
                 {
-                  "id": "programme_short",
-                  "type": "text",
-                  "label": "Programme short name or acronym",
-                  "placeholder": "e.g., SKP",
+                  "id": "team_size",
+                  "type": "number",
+                  "label": "Approximate team size",
+                  "placeholder": "e.g. 12",
+                  "required": false,
+                  "description": "Optional numeric field"
+                },
+                {
+                  "id": "review_date",
+                  "type": "date",
+                  "label": "Preferred follow-up date",
                   "required": false
                 }
               ]
             },
             {
-              "id": "page-description",
-              "title": "Description",
+              "id": "page-narrative-cross-validation",
+              "title": "Long text and cross-field rules",
               "icon": "AlignLeft",
-              "description": "Describe your project",
               "questions": [
                 {
-                  "id": "description",
+                  "id": "context_notes",
                   "type": "textarea",
-                  "label": "Project description",
-                  "placeholder": "Briefly describe what this project does...",
-                  "description": "Provide a brief overview of the project's purpose and goals",
+                  "label": "Additional context",
+                  "placeholder": "Anything else we should know?",
+                  "description": "Native textarea styling in the survey renderer",
+                  "required": false
+                },
+                {
+                  "id": "confirm_email",
+                  "type": "email",
+                  "label": "Confirm primary email",
+                  "placeholder": "Re-enter the same email",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "validation": [
+                    {
+                      "type": "crossQuestion",
+                      "questionId": "primary_email",
+                      "operator": "equals",
+                      "message": "Must match the primary email above"
+                    }
+                  ]
+                },
+                {
+                  "id": "window_start",
+                  "type": "date",
+                  "label": "Availability window start",
                   "required": true,
                   "requiredToNavigate": true
+                },
+                {
+                  "id": "window_end",
+                  "type": "date",
+                  "label": "Availability window end",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "validation": [
+                    {
+                      "type": "dateRange",
+                      "questionId": "window_start",
+                      "operator": "greaterThanOrEqual",
+                      "message": "End date must be on or after the start date"
+                    }
+                  ]
+                },
+                {
+                  "id": "budget_low",
+                  "type": "number",
+                  "label": "Budget range — lower bound (thousands)",
+                  "required": true,
+                  "requiredToNavigate": true
+                },
+                {
+                  "id": "budget_high",
+                  "type": "number",
+                  "label": "Budget range — upper bound (thousands)",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "validation": [
+                    {
+                      "type": "numberRange",
+                      "questionId": "budget_low",
+                      "operator": "greaterThanOrEqual",
+                      "message": "Upper bound must be greater than or equal to the lower bound"
+                    }
+                  ]
                 }
               ]
             }
           ]
         },
         {
-          "id": "group-project-status",
-          "title": "Project Status",
-          "description": "Current status and ownership",
-          "icon": null,
+          "id": "group-choice-controls",
+          "title": "Choice controls",
+          "description": "Radio, checkbox, and select use registry Checkbox and SimpleDropdown",
+          "icon": "ListChecks",
           "pages": [
             {
-              "id": "page-stage",
-              "title": "Development Stage",
-              "icon": "GitBranch",
-              "description": "What stage is your project in?",
+              "id": "page-single-and-multi",
+              "title": "Selection patterns",
+              "icon": "CircleDot",
               "questions": [
                 {
-                  "id": "stage",
+                  "id": "preferred_channel",
                   "type": "radio",
-                  "label": "What is the current stage of your project?",
+                  "label": "Preferred contact channel",
                   "required": true,
                   "requiredToNavigate": true,
                   "options": [
+                    { "label": "Email", "value": "email" },
+                    { "label": "Phone", "value": "phone" },
+                    { "label": "In person", "value": "in_person" }
+                  ]
+                },
+                {
+                  "id": "interests",
+                  "type": "checkbox",
+                  "label": "Which topics should we include? (multi-select)",
+                  "description": "Checkbox answers drive array-based conditions elsewhere",
+                  "required": false,
+                  "options": [
                     {
-                      "label": "Discovery",
-                      "value": "discovery"
+                      "label": "Documentation",
+                      "value": "docs",
+                      "description": "Unlocks an optional group later"
                     },
                     {
-                      "label": "Alpha",
-                      "value": "alpha"
+                      "label": "Training",
+                      "value": "training"
                     },
                     {
-                      "label": "Beta",
-                      "value": "beta"
-                    },
-                    {
-                      "label": "Development",
-                      "value": "development"
-                    },
-                    {
-                      "label": "Live / Production",
-                      "value": "production"
-                    },
-                    {
-                      "label": "Retirement",
-                      "value": "retirement"
+                      "label": "Community events",
+                      "value": "events"
                     }
                   ]
                 },
                 {
-                  "id": "developed",
-                  "type": "radio",
-                  "label": "How is this project developed?",
+                  "id": "region",
+                  "type": "select",
+                  "label": "Region",
                   "required": true,
                   "requiredToNavigate": true,
                   "options": [
-                    {
-                      "label": "In House",
-                      "value": "in_house"
-                    },
-                    {
-                      "label": "Outsourced",
-                      "value": "outsourced"
-                    },
-                    {
-                      "label": "Mixed (In House + Outsourced)",
-                      "value": "mixed"
-                    },
-                    {
-                      "label": "Open Source",
-                      "value": "open_source"
-                    },
-                    {
-                      "label": "COTS (Commercial Off-The-Shelf)",
-                      "value": "cots"
-                    }
+                    { "label": "North", "value": "north" },
+                    { "label": "South", "value": "south" },
+                    { "label": "East", "value": "east" },
+                    { "label": "West", "value": "west" }
                   ]
-                },
-                {
-                  "id": "outsourced_partner",
-                  "type": "text",
-                  "label": "Who is the outsourced development partner?",
-                  "placeholder": "e.g. ONS",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "developed",
-                        "operator": "equals",
-                        "value": "outsourced"
-                      },
-                      {
-                        "questionId": "developed",
-                        "operator": "equals",
-                        "value": "mixed"
-                      }
-                    ],
-                    "logic": "OR"
-                  }
-                }
-              ]
-            },
-            {
-              "id": "page-contacts",
-              "title": "Contacts",
-              "icon": "Users",
-              "description": "Who are the key contacts?",
-              "questions": [
-                {
-                  "id": "technical_contact",
-                  "type": "email",
-                  "label": "Technical Contact email",
-                  "placeholder": "technical.lead@survey-kit.com",
-                  "description": "Primary technical contact for this project",
-                  "required": true,
-                  "requiredToNavigate": true
-                },
-                {
-                  "id": "delivery_manager",
-                  "type": "email",
-                  "label": "Delivery Manager email",
-                  "placeholder": "delivery.manager@survey-kit.com",
-                  "description": "Primary delivery/project manager",
-                  "required": true,
-                  "requiredToNavigate": true
-                }
-              ]
-            },
-            {
-              "id": "page-dependencies",
-              "title": "Dependencies",
-              "icon": "Link",
-              "description": "Project dependencies",
-              "questions": [
-                {
-                  "id": "project_dependencies",
-                  "type": "textarea",
-                  "label": "What other projects does this project depend on?",
-                  "placeholder": "List project names, one per line...",
-                  "description": "Leave blank if there are no dependencies",
-                  "required": false
-                },
-                {
-                  "id": "listed_as_dependency",
-                  "type": "textarea",
-                  "label": "Which projects list this as a dependency?",
-                  "placeholder": "List project names, one per line...",
-                  "description": "Leave blank if unknown or none",
-                  "required": false
                 }
               ]
             }
@@ -254,67 +228,152 @@
       ]
     },
     {
-      "id": "stage-technology-stack",
-      "title": "Technology Stack",
-      "description": "Languages, frameworks, and infrastructure",
+      "id": "stage-sliders",
+      "title": "Emoji sliders",
+      "description": "Single and scale configurations for EmojiSlider",
+      "icon": "Smile",
       "groups": [
         {
-          "id": "group-languages",
-          "title": "Programming Languages",
-          "description": "Languages used in this project",
-          "icon": "Terminal",
+          "id": "group-emoji-fields",
+          "title": "Sentiment controls",
+          "icon": "SlidersHorizontal",
           "pages": [
             {
-              "id": "page-main-language",
-              "title": "Primary Language",
-              "icon": "Code2",
-              "description": "What is the main programming language?",
+              "id": "page-emoji-single",
+              "title": "Single-emoji slider",
               "questions": [
                 {
-                  "id": "language_main",
-                  "type": "select",
-                  "label": "Primary programming language",
+                  "id": "mood_single",
+                  "type": "emoji-slider",
+                  "label": "Overall mood (single emoji track)",
+                  "required": false,
+                  "emojiSlider": {
+                    "type": "single",
+                    "emoji": "😊",
+                    "min": 0,
+                    "max": 100,
+                    "step": 5
+                  }
+                }
+              ]
+            },
+            {
+              "id": "page-emoji-scale",
+              "title": "Labeled scale",
+              "questions": [
+                {
+                  "id": "mood_scale",
+                  "type": "emoji-slider",
+                  "label": "Agreement scale",
+                  "description": "Scale type maps to multiple emoji positions",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "emojiSlider": {
+                    "type": "scale",
+                    "scale": 5,
+                    "showLabels": true,
+                    "emojis": [
+                      {
+                        "value": 1,
+                        "emoji": "😠",
+                        "label": "Strongly disagree"
+                      },
+                      { "value": 2, "emoji": "🙁", "label": "Disagree" },
+                      { "value": 3, "emoji": "😐", "label": "Neutral" },
+                      { "value": 4, "emoji": "🙂", "label": "Agree" },
+                      { "value": 5, "emoji": "😄", "label": "Strongly agree" }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-question-conditionals",
+      "title": "Question-level logic",
+      "description": "Visibility with AND, OR, equals, and notEquals",
+      "icon": "GitBranch",
+      "groups": [
+        {
+          "id": "group-format-branching",
+          "title": "Branching inputs",
+          "pages": [
+            {
+              "id": "page-response-depth",
+              "title": "How much detail?",
+              "questions": [
+                {
+                  "id": "response_depth",
+                  "type": "radio",
+                  "label": "How detailed should the next questions be?",
                   "required": true,
                   "requiredToNavigate": true,
                   "options": [
-                    {
-                      "label": "Java",
-                      "value": "java"
-                    },
-                    {
-                      "label": "Python",
-                      "value": "python"
-                    },
-                    {
-                      "label": "JavaScript",
-                      "value": "javascript"
-                    },
-                    {
-                      "label": "TypeScript",
-                      "value": "typescript"
-                    },
-                    {
-                      "label": "Go",
-                      "value": "go"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
+                    { "label": "Brief", "value": "brief" },
+                    { "label": "Standard", "value": "standard" },
+                    { "label": "In depth", "value": "deep" }
                   ]
+                }
+              ]
+            },
+            {
+              "id": "page-follow-ups-format",
+              "title": "Conditional follow-ups",
+              "questions": [
+                {
+                  "id": "deep_dive_notes",
+                  "type": "textarea",
+                  "label": "In-depth explanation",
+                  "description": "Shown only when you chose In depth",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "conditional": {
+                    "conditions": [
+                      {
+                        "questionId": "response_depth",
+                        "operator": "equals",
+                        "value": "deep"
+                      }
+                    ]
+                  }
                 },
                 {
-                  "id": "language_main_other",
+                  "id": "brief_or_standard_tip",
                   "type": "text",
-                  "label": "Please specify your primary language",
-                  "placeholder": "e.g. Ruby, Kotlin, Rust",
-                  "required": true,
+                  "label": "Quick supplement",
+                  "description": "Shown when depth is Brief OR Standard (OR logic)",
+                  "placeholder": "Optional short note",
+                  "required": false,
+                  "conditional": {
+                    "logic": "OR",
+                    "conditions": [
+                      {
+                        "questionId": "response_depth",
+                        "operator": "equals",
+                        "value": "brief"
+                      },
+                      {
+                        "questionId": "response_depth",
+                        "operator": "equals",
+                        "value": "standard"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "not_deep_comment",
+                  "type": "text",
+                  "label": "Anything to add when not using in-depth mode?",
+                  "required": false,
                   "conditional": {
                     "conditions": [
                       {
-                        "questionId": "language_main",
-                        "operator": "equals",
-                        "value": "other"
+                        "questionId": "response_depth",
+                        "operator": "notEquals",
+                        "value": "deep"
                       }
                     ]
                   }
@@ -322,103 +381,56 @@
               ]
             },
             {
-              "id": "page-other-languages",
-              "title": "Other Languages",
-              "icon": "Layers",
-              "description": "Additional languages used",
+              "id": "page-two-part-triggers",
+              "title": "Two-part trigger",
               "questions": [
                 {
-                  "id": "language_others",
-                  "type": "checkbox",
-                  "label": "What other languages are used?",
-                  "description": "Select all that apply",
+                  "id": "consent_followup_a",
+                  "type": "radio",
+                  "label": "May we contact you about outcomes?",
+                  "required": true,
+                  "requiredToNavigate": true,
                   "options": [
-                    {
-                      "label": "Java",
-                      "value": "java"
-                    },
-                    {
-                      "label": "Python",
-                      "value": "python"
-                    },
-                    {
-                      "label": "JavaScript",
-                      "value": "javascript"
-                    },
-                    {
-                      "label": "TypeScript",
-                      "value": "typescript"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
+                    { "label": "Yes", "value": "yes" },
+                    { "label": "No", "value": "no" }
                   ]
                 },
                 {
-                  "id": "language_others_other",
-                  "type": "textarea",
-                  "label": "Please specify the other languages used",
-                  "placeholder": "e.g. Go, HCL, SQL, Shell/Bash",
+                  "id": "consent_followup_b",
+                  "type": "radio",
+                  "label": "May we include anonymised quotes?",
                   "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "language_others",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "Yes", "value": "yes" },
+                    { "label": "No", "value": "no" }
+                  ]
                 }
               ]
             },
             {
-              "id": "page-frameworks",
-              "title": "Frameworks",
-              "icon": "Boxes",
-              "description": "Frameworks and libraries",
+              "id": "page-and-gate",
+              "title": "Combined requirement",
               "questions": [
                 {
-                  "id": "language_frameworks",
-                  "type": "checkbox",
-                  "label": "Which frameworks and libraries are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "Spring Boot",
-                      "value": "spring_boot"
-                    },
-                    {
-                      "label": "React",
-                      "value": "react"
-                    },
-                    {
-                      "label": "Angular",
-                      "value": "angular"
-                    },
-                    {
-                      "label": "Vue.js",
-                      "value": "vuejs"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "language_frameworks_other",
+                  "id": "dual_opt_in_detail",
                   "type": "textarea",
-                  "label": "Please specify the other frameworks used",
-                  "placeholder": "e.g. Next.js, Django, Express.js, .NET Core",
+                  "label": "Tell us how to reach you for both follow-ups",
+                  "description": "Visible only when both prior answers are Yes (AND)",
                   "required": true,
+                  "requiredToNavigate": true,
                   "conditional": {
+                    "logic": "AND",
                     "conditions": [
                       {
-                        "questionId": "language_frameworks",
+                        "questionId": "consent_followup_a",
                         "operator": "equals",
-                        "value": "other"
+                        "value": "yes"
+                      },
+                      {
+                        "questionId": "consent_followup_b",
+                        "operator": "equals",
+                        "value": "yes"
                       }
                     ]
                   }
@@ -426,343 +438,214 @@
               ]
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "id": "stage-structure-and-navigation",
+      "title": "Structure and navigation",
+      "description": "Optional group, conditional page, skip logic, and static next routes",
+      "icon": "Map",
+      "groups": [
         {
-          "id": "group-hosting",
-          "title": "Hosting & Cloud",
-          "description": "Where is the project hosted?",
-          "icon": "Cloud",
+          "id": "group-structure-preamble",
+          "title": "Preamble",
           "pages": [
             {
-              "id": "page-hosting",
-              "title": "Hosting",
-              "icon": "Globe",
-              "description": "Where is your project hosted?",
+              "id": "page-bonus-enrollment",
+              "title": "Optional extension",
               "questions": [
                 {
-                  "id": "hosted",
+                  "id": "enroll_bonus_stage",
                   "type": "radio",
-                  "label": "Where is this project hosted?",
+                  "label": "Would you like to complete a short extra stage at the end?",
                   "required": true,
                   "requiredToNavigate": true,
                   "options": [
-                    {
-                      "label": "Cloud",
-                      "value": "cloud"
-                    },
-                    {
-                      "label": "On-Premise",
-                      "value": "on_premise"
-                    },
-                    {
-                      "label": "Hybrid (Cloud + On-Premise)",
-                      "value": "hybrid"
-                    },
-                    {
-                      "label": "Not Applicable",
-                      "value": "na"
-                    }
+                    { "label": "Yes", "value": "yes" },
+                    { "label": "No", "value": "no" }
                   ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-docs-follow-up",
+          "title": "Documentation path",
+          "description": "Entire group is visible when Documentation was ticked earlier",
+          "icon": "BookOpen",
+          "conditional": {
+            "conditions": [
+              {
+                "questionId": "interests",
+                "operator": "equals",
+                "value": "docs"
+              }
+            ]
+          },
+          "pages": [
+            {
+              "id": "page-doc-focus",
+              "title": "Documentation preferences",
+              "questions": [
+                {
+                  "id": "doc_format",
+                  "type": "select",
+                  "label": "Preferred reference format",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "PDF handbooks", "value": "pdf" },
+                    { "label": "Web articles", "value": "web" },
+                    { "label": "Video walkthroughs", "value": "video" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-page-visibility",
+          "title": "Page visibility",
+          "pages": [
+            {
+              "id": "page-region-gate",
+              "title": "Region context",
+              "description": "The next page is visible only if you chose East as your region in the Basics section.",
+              "questions": [
+                {
+                  "id": "region_context_ack",
+                  "type": "text",
+                  "label": "Optional: notes that apply to any region",
+                  "required": false
                 }
               ]
             },
             {
-              "id": "page-cloud-provider",
-              "title": "Cloud Provider",
-              "icon": "CloudCog",
-              "description": "Which cloud platforms are used?",
+              "id": "page-east-overlay",
+              "title": "East region overlay",
+              "description": "This page appears only when Region = East",
               "conditional": {
                 "conditions": [
                   {
-                    "questionId": "hosted",
-                    "operator": "notEquals",
-                    "value": "on_premise"
-                  },
-                  {
-                    "questionId": "hosted",
-                    "operator": "notEquals",
-                    "value": "na"
+                    "questionId": "region",
+                    "operator": "equals",
+                    "value": "east"
                   }
-                ],
-                "logic": "AND"
+                ]
               },
               "questions": [
                 {
-                  "id": "architectures",
-                  "type": "checkbox",
-                  "label": "Which cloud platforms/architectures are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "Google Cloud Platform (GCP)",
-                      "value": "gcp"
-                    },
-                    {
-                      "label": "Amazon Web Services (AWS)",
-                      "value": "aws"
-                    },
-                    {
-                      "label": "Microsoft Azure",
-                      "value": "azure"
-                    },
-                    {
-                      "label": "Heroku",
-                      "value": "heroku"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "architectures_other",
+                  "id": "east_specific_note",
                   "type": "textarea",
-                  "label": "Please specify the other cloud platforms used",
-                  "placeholder": "e.g. Digital Ocean, Hetzner, Vercel",
+                  "label": "Notes specific to the East region",
+                  "required": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-branching-demo",
+          "title": "Skip and merge routes",
+          "pages": [
+            {
+              "id": "page-branch-start",
+              "title": "Branch start",
+              "nextPageId": "page-branch-merge",
+              "questions": [
+                {
+                  "id": "branch_intro",
+                  "type": "radio",
+                  "label": "This page uses nextPageId to jump ahead, skipping an intermediate page",
                   "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "architectures",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "Continue with jump", "value": "jump" }
+                  ]
                 }
               ]
             },
             {
-              "id": "page-infrastructure",
-              "title": "Infrastructure Tools",
-              "icon": "Container",
-              "description": "Container and orchestration tools",
+              "id": "page-branch-skipped",
+              "title": "Skipped surface",
+              "description": "You only see this if you navigated backwards or landed here directly",
               "questions": [
                 {
-                  "id": "infrastructure",
-                  "type": "checkbox",
-                  "label": "What infrastructure technologies are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "Docker",
-                      "value": "docker"
-                    },
-                    {
-                      "label": "Kubernetes",
-                      "value": "kubernetes"
-                    },
-                    {
-                      "label": "AWS Lambda",
-                      "value": "aws_lambda"
-                    },
-                    {
-                      "label": "Terraform",
-                      "value": "terraform"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "infrastructure_other",
-                  "type": "textarea",
-                  "label": "Please specify the other infrastructure tools used",
-                  "placeholder": "e.g. Cloud Run, AWS ECS, Azure Functions, Ansible",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "infrastructure",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "group-data",
-          "title": "Data & Storage",
-          "description": "Databases and data stores",
-          "icon": "Database",
-          "pages": [
-            {
-              "id": "page-datastores",
-              "title": "Data Stores",
-              "icon": "HardDrive",
-              "description": "What data stores are used?",
-              "questions": [
-                {
-                  "id": "datastores",
-                  "type": "checkbox",
-                  "label": "Which data stores are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "PostgreSQL",
-                      "value": "postgresql"
-                    },
-                    {
-                      "label": "MySQL",
-                      "value": "mysql"
-                    },
-                    {
-                      "label": "MongoDB",
-                      "value": "mongodb"
-                    },
-                    {
-                      "label": "AWS DynamoDB",
-                      "value": "dynamodb"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "datastores_other",
-                  "type": "textarea",
-                  "label": "Please specify the other data stores used",
-                  "placeholder": "e.g. Firestore, Redis, Elasticsearch, S3",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "datastores",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "group-devops",
-          "title": "DevOps & Source Control",
-          "description": "CI/CD and source control",
-          "icon": "GitBranch",
-          "pages": [
-            {
-              "id": "page-source-control",
-              "title": "Source Control",
-              "icon": "GitFork",
-              "description": "How is source code managed?",
-              "questions": [
-                {
-                  "id": "source_control",
-                  "type": "radio",
-                  "label": "What source control system is used?",
-                  "required": true,
-                  "requiredToNavigate": true,
-                  "options": [
-                    {
-                      "label": "GitHub",
-                      "value": "github"
-                    },
-                    {
-                      "label": "GitLab",
-                      "value": "gitlab"
-                    },
-                    {
-                      "label": "Bitbucket",
-                      "value": "bitbucket"
-                    },
-                    {
-                      "label": "Azure DevOps",
-                      "value": "azure_devops"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "source_control_other",
+                  "id": "skipped_page_marker",
                   "type": "text",
-                  "label": "Please specify your source control system",
-                  "placeholder": "e.g., Mercurial, Perforce",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "source_control",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "repo",
-                  "type": "textarea",
-                  "label": "Repository URLs",
-                  "placeholder": "https://github.com/org/project-name\nhttps://github.com/org/another-repo",
-                  "description": "Enter repository URLs, one per line",
+                  "label": "If you can read this, you reached the middle of the branch",
                   "required": false
                 }
               ]
             },
             {
-              "id": "page-cicd",
-              "title": "CI/CD",
-              "icon": "Workflow",
-              "description": "Continuous Integration and Deployment",
+              "id": "page-branch-merge",
+              "title": "Merge point",
               "questions": [
                 {
-                  "id": "cicd",
-                  "type": "checkbox",
-                  "label": "What CI/CD tools are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "GitHub Actions",
-                      "value": "github_actions"
-                    },
-                    {
-                      "label": "Concourse",
-                      "value": "concourse"
-                    },
-                    {
-                      "label": "Jenkins",
-                      "value": "jenkins"
-                    },
-                    {
-                      "label": "GitLab CI/CD",
-                      "value": "gitlab_ci"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "cicd_other",
-                  "type": "textarea",
-                  "label": "Please specify the other CI/CD tools used",
-                  "placeholder": "e.g. CircleCI, Azure Pipelines, ArgoCD",
+                  "id": "merge_ack",
+                  "type": "radio",
+                  "label": "The prior page jumped straight here via nextPageId",
                   "required": true,
-                  "conditional": {
+                  "requiredToNavigate": true,
+                  "options": [{ "label": "Understood", "value": "ok" }]
+                }
+              ]
+            },
+            {
+              "id": "page-skip-logic",
+              "title": "Answer-triggered skip",
+              "questions": [
+                {
+                  "id": "skip_middle_section",
+                  "type": "radio",
+                  "label": "Skip the very next page?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "Stay on the full path", "value": "no" },
+                    { "label": "Skip ahead", "value": "yes" }
+                  ],
+                  "skipLogic": {
+                    "logic": "AND",
                     "conditions": [
                       {
-                        "questionId": "cicd",
+                        "questionId": "skip_middle_section",
                         "operator": "equals",
-                        "value": "other"
+                        "value": "yes"
                       }
-                    ]
+                    ],
+                    "nextPageId": "page-after-skip"
                   }
+                }
+              ]
+            },
+            {
+              "id": "page-skip-middle",
+              "title": "Middle hop",
+              "description": "Bypassed when you choose Skip ahead",
+              "questions": [
+                {
+                  "id": "middle_only_field",
+                  "type": "text",
+                  "label": "Only filled if you did not skip",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "id": "page-after-skip",
+              "title": "After the optional skip",
+              "questions": [
+                {
+                  "id": "skip_flow_complete",
+                  "type": "radio",
+                  "label": "Navigation demo complete — continue to submission",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [{ "label": "Finish", "value": "done" }]
                 }
               ]
             }
@@ -771,476 +654,32 @@
       ]
     },
     {
-      "id": "stage-tools-collaboration",
-      "title": "Tools & Collaboration",
-      "description": "Development and communication tools",
+      "id": "stage-bonus",
+      "title": "Extra stage",
+      "description": "Stage-level conditional — only offered when you opted in earlier",
+      "icon": "Sparkles",
+      "conditional": {
+        "conditions": [
+          {
+            "questionId": "enroll_bonus_stage",
+            "operator": "equals",
+            "value": "yes"
+          }
+        ]
+      },
       "groups": [
         {
-          "id": "group-editors",
-          "title": "Code Editors",
-          "description": "Development environments",
-          "icon": "Code",
+          "id": "group-bonus-only",
+          "title": "Bonus prompts",
           "pages": [
             {
-              "id": "page-code-editors",
-              "title": "Code Editors",
-              "icon": "FileCode",
-              "description": "What code editors does your team use?",
+              "id": "page-bonus-feedback",
+              "title": "Final thoughts",
               "questions": [
                 {
-                  "id": "code_editors",
-                  "type": "checkbox",
-                  "label": "Which code editors/IDEs are used?",
-                  "description": "Select all that apply",
-                  "required": true,
-                  "requiredToNavigate": true,
-                  "options": [
-                    {
-                      "label": "Visual Studio Code",
-                      "value": "vscode"
-                    },
-                    {
-                      "label": "JetBrains IntelliJ IDEA",
-                      "value": "intellij"
-                    },
-                    {
-                      "label": "PyCharm",
-                      "value": "pycharm"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "code_editors_other",
-                  "type": "text",
-                  "label": "Please specify your editor(s)",
-                  "placeholder": "e.g., Webstorm, Sublime, Vim",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "code_editors",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            {
-              "id": "page-project-tools",
-              "title": "Project Management",
-              "icon": "Kanban",
-              "description": "Project management tools",
-              "questions": [
-                {
-                  "id": "project_tools",
-                  "type": "checkbox",
-                  "label": "What project management tools are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "Jira",
-                      "value": "jira"
-                    },
-                    {
-                      "label": "Trello",
-                      "value": "trello"
-                    },
-                    {
-                      "label": "GitHub Projects",
-                      "value": "github_projects"
-                    },
-                    {
-                      "label": "Notion",
-                      "value": "notion"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "project_tools_other",
+                  "id": "bonus_reflection",
                   "type": "textarea",
-                  "label": "Please specify the other project management tools used",
-                  "placeholder": "e.g. Asana, Monday.com, Linear, Azure Boards",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "project_tools",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "group-communication",
-          "title": "Communication",
-          "description": "How does your team communicate?",
-          "icon": "MessageSquare",
-          "pages": [
-            {
-              "id": "page-communication",
-              "title": "Communication Tools",
-              "icon": "MessagesSquare",
-              "description": "Team communication channels",
-              "questions": [
-                {
-                  "id": "communication",
-                  "type": "checkbox",
-                  "label": "What communication tools does your team use?",
-                  "description": "Select all that apply",
-                  "required": true,
-                  "requiredToNavigate": true,
-                  "options": [
-                    {
-                      "label": "Microsoft Teams",
-                      "value": "teams"
-                    },
-                    {
-                      "label": "Slack",
-                      "value": "slack"
-                    },
-                    {
-                      "label": "Email",
-                      "value": "email"
-                    },
-                    {
-                      "label": "Google Meet",
-                      "value": "google_meet"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "communication_other",
-                  "type": "textarea",
-                  "label": "Please specify the other communication tools used",
-                  "placeholder": "e.g. Zoom, Discord, WhatsApp",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "communication",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            {
-              "id": "page-collaboration",
-              "title": "Collaboration Tools",
-              "icon": "Share2",
-              "description": "Collaboration and version control",
-              "questions": [
-                {
-                  "id": "collaboration",
-                  "type": "checkbox",
-                  "label": "What collaboration tools are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "GitHub",
-                      "value": "github"
-                    },
-                    {
-                      "label": "Git",
-                      "value": "git"
-                    },
-                    {
-                      "label": "Google Workspace",
-                      "value": "google_workspace"
-                    },
-                    {
-                      "label": "Microsoft 365",
-                      "value": "microsoft_365"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "collaboration_other",
-                  "type": "textarea",
-                  "label": "Please specify the other collaboration tools used",
-                  "placeholder": "e.g. Miro, Figma, Confluence",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "collaboration",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "group-documentation",
-          "title": "Documentation",
-          "description": "Documentation and design tools",
-          "icon": "BookOpen",
-          "pages": [
-            {
-              "id": "page-documentation-tools",
-              "title": "Documentation Tools",
-              "icon": "FileText",
-              "description": "Where is documentation stored?",
-              "questions": [
-                {
-                  "id": "documentation_tools",
-                  "type": "checkbox",
-                  "label": "What documentation tools are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "Confluence",
-                      "value": "confluence"
-                    },
-                    {
-                      "label": "Notion",
-                      "value": "notion"
-                    },
-                    {
-                      "label": "GitHub Wiki",
-                      "value": "github_wiki"
-                    },
-                    {
-                      "label": "README files",
-                      "value": "readme"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "documentation_tools_other",
-                  "type": "textarea",
-                  "label": "Please specify the other documentation tools used",
-                  "placeholder": "e.g. GitBook, Google Docs, SharePoint",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "documentation_tools",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "documentation_url",
-                  "type": "text",
-                  "label": "Primary documentation URL",
-                  "placeholder": "https://github.com/org/project-docs",
-                  "description": "Link to main documentation (optional)",
-                  "required": false
-                }
-              ]
-            },
-            {
-              "id": "page-design-tools",
-              "title": "Design Tools",
-              "icon": "Palette",
-              "description": "UI/UX and diagramming tools",
-              "questions": [
-                {
-                  "id": "ui_tools",
-                  "type": "checkbox",
-                  "label": "What UI/UX design tools are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "Figma",
-                      "value": "figma"
-                    },
-                    {
-                      "label": "Sketch",
-                      "value": "sketch"
-                    },
-                    {
-                      "label": "Adobe XD",
-                      "value": "adobe_xd"
-                    },
-                    {
-                      "label": "None",
-                      "value": "none"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "ui_tools_other",
-                  "type": "textarea",
-                  "label": "Please specify the other UI/UX tools used",
-                  "placeholder": "e.g. InVision, Framer, Canva",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "ui_tools",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "diagram_tools",
-                  "type": "checkbox",
-                  "label": "What diagramming tools are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "Draw.io",
-                      "value": "drawio"
-                    },
-                    {
-                      "label": "Lucidchart",
-                      "value": "lucidchart"
-                    },
-                    {
-                      "label": "Miro",
-                      "value": "miro"
-                    },
-                    {
-                      "label": "Visio",
-                      "value": "visio"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "diagram_tools_other",
-                  "type": "textarea",
-                  "label": "Please specify the other diagramming tools used",
-                  "placeholder": "e.g. PlantUML, Mermaid, Excalidraw",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "diagram_tools",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "group-operations",
-          "title": "Operations",
-          "description": "Incident management and operations",
-          "icon": "Shield",
-          "pages": [
-            {
-              "id": "page-incident-management",
-              "title": "Incident Management",
-              "icon": "AlertTriangle",
-              "description": "How are incidents managed?",
-              "questions": [
-                {
-                  "id": "incident_management",
-                  "type": "checkbox",
-                  "label": "What incident management tools are used?",
-                  "description": "Select all that apply",
-                  "options": [
-                    {
-                      "label": "ServiceNow",
-                      "value": "servicenow"
-                    },
-                    {
-                      "label": "PagerDuty",
-                      "value": "pagerduty"
-                    },
-                    {
-                      "label": "Jira Service Management",
-                      "value": "jira_sm"
-                    },
-                    {
-                      "label": "None",
-                      "value": "none"
-                    },
-                    {
-                      "label": "Other",
-                      "value": "other"
-                    }
-                  ]
-                },
-                {
-                  "id": "incident_management_other",
-                  "type": "textarea",
-                  "label": "Please specify the other incident management tools used",
-                  "placeholder": "e.g. Opsgenie, Zendesk, Statuspage",
-                  "required": true,
-                  "conditional": {
-                    "conditions": [
-                      {
-                        "questionId": "incident_management",
-                        "operator": "equals",
-                        "value": "other"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            {
-              "id": "page-additional",
-              "title": "Additional Information",
-              "icon": "MoreHorizontal",
-              "description": "Any other information",
-              "questions": [
-                {
-                  "id": "miscellaneous",
-                  "type": "textarea",
-                  "label": "Any additional tools or information?",
-                  "placeholder": "List any other tools or relevant details...",
-                  "description": "Optional - anything else we should know about",
-                  "required": false
-                },
-                {
-                  "id": "publishing_target",
-                  "type": "text",
-                  "label": "Publishing target (if applicable)",
-                  "placeholder": "e.g., ons.gov.uk, internal only",
-                  "description": "Where does this project publish to?",
+                  "label": "What felt clearest or most useful in this flow?",
                   "required": false
                 }
               ]

@@ -55,8 +55,7 @@ import {
   type SectionsConfig,
 } from '@survey-kit/core'
 import surveyConfig1 from './surveys/survey-1.json'
-import surveyConfig2 from './surveys/survey-2.json'
-import chatSurveyConfig from './surveys/survey-2.json'
+import chatSurveyConfig from './surveys/chat-survey.json'
 import layoutConfig from './layouts/layout.config.json'
 import sectionsConfig from './sections/sections.config.json'
 import cookieConfig from './cookies/cookies.config.json'
@@ -412,17 +411,6 @@ function App() {
                   element={<SectionPageWrapper sectionId="complete-1" />}
                 />
 
-                {/* Survey 2: Feedback (all optional) */}
-                <Route
-                  path="/survey-2/*"
-                  element={
-                    <SurveyPage
-                      config={surveyConfig2 as unknown as SurveyConfig}
-                      surveyId="survey-2"
-                      completionRoute="/complete-2"
-                    />
-                  }
-                />
                 <Route
                   path="/complete-2"
                   element={<SectionPageWrapper sectionId="complete-2" />}

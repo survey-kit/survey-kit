@@ -1,11 +1,11 @@
 {
-  "favicon": "/branding_kit/Favicon/ONS-symbol_digital.svg",
+  "favicon": "/branding_kit/favicon.png",
   "header": {
     "enabled": true,
     "organization": "Office for National Statistics",
     "logo": {
-      "small": "/branding_kit/Favicon/ONS-symbol_digital_WHITE.svg",
-      "large": "/branding_kit/SVG/Landscape/English/ONS_Logo_Digital_White_Landscape_English_RGB.svg"
+      "small": "/branding_kit/favicon.png",
+      "large": "/branding_kit/landscape_white.png"
     }
   },
   "main": {
@@ -18,8 +18,8 @@
   "footer": {
     "enabled": true,
     "logo": {
-      "small": "/branding_kit/Favicon/ONS-symbol_digital.svg",
-      "large": "/branding_kit/SVG/Landscape/English/ONS_Logo_Digital_Black_Landscape_English_RGB.svg"
+      "small": "/branding_kit/favicon.png",
+      "large": "/branding_kit/landscape_black.png"
     },
     "links": [
       {
@@ -31,6 +31,6 @@
         "action": "showPrivacy"
       }
     ],
-    "description": "All content is available under the Open Government Licence v3.0, except where otherwise stated"
+    "description": "All content is available under the MIT License, except where otherwise stated"
   }
 }
