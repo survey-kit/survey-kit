@@ -219,3 +219,12 @@
 - **Admin Dashboard**: Expanded the admin dashboard to include a list of all responses and a detailed view of a response.
 
 All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
+
+## Week 22 (w/c 23/03/26)
+
+## Week 23 (w/c 30/03/26)
+
+### Features
+
+- Possibility that having ONS branding may conflict with copyright laws. Default to having SurveyKit branding instead and don't use the Tech Audit Tool data survey details, just demonstrate each functionality. Removed branding and updated survey-1.
+- Fixed issue with flattened lists. ([#32](https://github.com/survey-kit/survey-kit/pull/32))
