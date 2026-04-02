@@ -10,6 +10,9 @@
     "packages/template"
   ],
   "scripts": {
+    "test": "npm run test -w packages/template",
+    "test:watch": "npm run test:watch -w packages/template",
+    "test:coverage": "npm run test:coverage -w packages/template",
     "dev": "npm run dev --workspaces",
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces",
