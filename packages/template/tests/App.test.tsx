@@ -1,0 +1,175 @@
+/**
+ * Integration tests for the main app router (default export wraps `App` in `BrowserRouter`).
+ *
+ * Initial URL for each test is set via `setAppTestInitialRoute` in `tests/helpers/app-memory-route.ts`
+ * using paths from `tests/template-routes.ts` (keep in sync with `src/App.tsx`).
+ */
+
+import React from 'react'
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeAll,
+  beforeEach,
+  afterEach,
+} from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import '@testing-library/jest-dom/vitest'
+import Root from '../src/App'
+import { fetchAdminAnalytics } from '../src/services/analytics'
+import { templateRoutes } from './template-routes'
+import {
+  getAppTestInitialRoute,
+  resetAppTestInitialRoute,
+  setAppTestInitialRoute,
+} from './helpers/app-memory-route'
+
+vi.mock('../src/services/api', () => ({
+  initSession: vi.fn().mockReturnValue(Date.now()),
+  submitSurveyResponse: vi.fn().mockResolvedValue({ success: true }),
+}))
+
+vi.mock('../src/services/analytics', () => ({
+  fetchAdminAnalytics: vi.fn(),
+}))
+
+beforeAll(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  })
+})
+
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('react-router-dom')>()
+  return {
+    ...actual,
+    BrowserRouter: ({ children }: { children: React.ReactNode }) =>
+      React.createElement(
+        actual.MemoryRouter,
+        {
+          initialEntries: [getAppTestInitialRoute()],
+        },
+        children
+      ),
+  }
+})
+
+describe('App Router Integration', () => {
+  beforeEach(() => {
+    window.localStorage.removeItem('adminToken')
+    window.localStorage.setItem(
+      'survey_kit_consent_privacy',
+      JSON.stringify({ status: 'accepted', timestamp: Date.now() })
+    )
+    setAppTestInitialRoute(templateRoutes.home)
+    vi.mocked(fetchAdminAnalytics).mockReset()
+  })
+
+  afterEach(() => {
+    resetAppTestInitialRoute()
+  })
+
+  it('renders the index layout (get started page) by default', async () => {
+    setAppTestInitialRoute(templateRoutes.home)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/Get started/i)).toBeInTheDocument()
+    })
+  })
+
+  it('navigates to survey-1 when Get started is clicked', async () => {
+    setAppTestInitialRoute(templateRoutes.home)
+    render(<Root />)
+
+    const startBtn = await screen.findByRole('button', { name: /Get started/i })
+    await userEvent.click(startBtn)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: 'Primary contact' })
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('renders chat-survey when requested', async () => {
+    setAppTestInitialRoute(templateRoutes.chatSurvey)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Technology Survey')).toBeInTheDocument()
+    })
+  })
+
+  it('renders completion screen when requested', async () => {
+    setAppTestInitialRoute(templateRoutes.complete1)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Main form complete')).toBeInTheDocument()
+    })
+  })
+
+  it('shows the admin login page', async () => {
+    setAppTestInitialRoute(templateRoutes.adminLogin)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: /^Admin Login$/i })
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('shows the admin dashboard when an auth token is present', async () => {
+    window.localStorage.setItem('adminToken', 'test-token')
+    vi.mocked(fetchAdminAnalytics).mockResolvedValue({
+      success: true,
+      data: {},
+    })
+
+    setAppTestInitialRoute(templateRoutes.adminDashboard)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(screen.queryByText('Loading dashboard...')).not.toBeInTheDocument()
+    })
+    expect(
+      screen.getByRole('heading', { name: /Survey Admin Dashboard/i })
+    ).toBeInTheDocument()
+  })
+
+  describe('privacy consent gate', () => {
+    beforeEach(() => {
+      window.localStorage.removeItem('survey_kit_consent_privacy')
+    })
+
+    it('shows a blocked state after the user rejects privacy terms', async () => {
+      const user = userEvent.setup()
+      setAppTestInitialRoute(templateRoutes.home)
+      render(<Root />)
+
+      const rejectBtn = await screen.findByRole('button', {
+        name: /I do not agree/i,
+      })
+      await user.click(rejectBtn)
+
+      await waitFor(() => {
+        expect(screen.getByText(/You cannot continue/i)).toBeInTheDocument()
+      })
+    })
+  })
+})
