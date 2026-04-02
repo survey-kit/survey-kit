@@ -24,4 +24,4 @@ If left empty, it means the change is not applicable to the checklist.
 - [ ] Version bump in package.json
 - [ ] Changelog
 - [ ] Tested locally
-- Automated tests
+- [ ] Unit and integration tests
