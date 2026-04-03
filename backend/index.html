@@ -1366,14 +1366,16 @@
 <p><code>GET /api/surveys/{surveyId}/responses</code></p>
 <p>Retrieves all raw responses for a specific survey (administrative use only).</p>
 <h3 id="analytics-aggregation">Analytics Aggregation<a class="headerlink" href="#analytics-aggregation" title="Permanent link">&para;</a></h3>
-<p><code>GET /api/admin/analytics?surveyId={surveyId}</code></p>
-<p>Returns aggregated analytics data for a specific survey, used primarily by the Admin Dashboard. This endpoint supports cross-tabulation filtering based on survey responses.</p>
+<p><code>GET /api/admin/analytics</code></p>
+<p>Returns aggregated analytics data for the Admin Dashboard. The <code>surveyId</code> query parameter is <strong>optional</strong>: when present, scope results to that survey; when omitted, the template treats the request as “all surveys”—ensure your deployment matches that behaviour.</p>
+<p><strong>Example (scoped):</strong></p>
+<p><code>GET /api/admin/analytics?surveyId=survey-1</code></p>
 <p><strong>Filtering:</strong></p>
-<p>You can filter results by appending survey question IDs and their desired values as query parameters.</p>
+<p>You can combine optional <code>surveyId</code> with survey question IDs and values as further query parameters. Results must match all supplied criteria (AND logic).</p>
 <p><strong>Example:</strong>
 To view analytics for respondents who answered "In House" for the question with ID <code>developed</code>:</p>
 <p><code>GET /api/admin/analytics?surveyId=survey-1&amp;developed=in_house</code></p>
-<p>The backend handles both simple values and object-based answer structures (e.g., <code>{ value: "..." }</code>) when applying these filters. Multiple filters can be combined, and results must match all criteria (AND logic).</p>
+<p>The backend handles both simple values and object-based answer structures (e.g., <code>{ value: "..." }</code>) when applying these filters.</p>
 <h2 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h2>
 <p>Ensure the following environment variables are configured:</p>
 <table>

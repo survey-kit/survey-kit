@@ -964,6 +964,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#survey-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Survey scope
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1201,6 +1212,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#survey-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Survey scope
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1257,6 +1279,16 @@
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">/&gt;</span>
 </code></pre></div>
 <p>This ensures that your dashboards are always in sync with your survey design, automatically updating whenever you add or modify questions in your survey configuration.</p>
+<h2 id="survey-scope">Survey scope<a class="headerlink" href="#survey-scope" title="Permanent link">&para;</a></h2>
+<p>The template’s <code>dashboards/dashboard.config.json</code> may define a top-level <code>surveyFilter</code> (<code>label</code> plus <code>options</code> with <code>value</code> and <code>label</code>). <code>DashboardRenderer</code> then shows a dropdown under the dashboard title. Your app should map the selected <code>value</code> to the <code>surveyId</code> query parameter on <code>GET /api/admin/analytics</code>. Use an empty string for <code>value</code> for an “all surveys” option—the template omits <code>surveyId</code> in that case. Add or adjust options whenever you introduce new surveys; each <code>value</code> should match the id your API expects.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">&quot;surveyFilter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Survey&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;options&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;All surveys&quot;</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;survey-1&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Main survey&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</code></pre></div>
 
 
 

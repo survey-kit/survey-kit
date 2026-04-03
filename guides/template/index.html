@@ -1430,7 +1430,7 @@ Survey-Kit's capabilities.</p>
 </tr>
 <tr>
 <td><code>surveys/chat-survey.json</code></td>
-<td>Chat-style technology preferences</td>
+<td>Chat-style technology preferences; submissions use this file’s <code>id</code> (e.g. <code>chat-demo</code>) when <code>VITE_API_URL</code> is set, same idea as the form survey</td>
 </tr>
 </tbody>
 </table>
@@ -1467,6 +1467,14 @@ Survey-Kit's capabilities.</p>
 <td><code>/complete-2</code></td>
 <td>Completion page for survey 2</td>
 </tr>
+<tr>
+<td><code>/admin/login</code></td>
+<td>Administrator sign-in (Cognito)</td>
+</tr>
+<tr>
+<td><code>/admin/dashboard</code></td>
+<td>Analytics dashboard (authenticated)</td>
+</tr>
 </tbody>
 </table>
 <h3 id="configuration-files">Configuration Files<a class="headerlink" href="#configuration-files" title="Permanent link">&para;</a></h3>
@@ -1489,6 +1497,10 @@ Survey-Kit's capabilities.</p>
 <tr>
 <td><code>cookies/cookies.config.json</code></td>
 <td>Cookie consent categories</td>
+</tr>
+<tr>
+<td><code>dashboards/dashboard.config.json</code></td>
+<td>Admin chart layout and optional <code>surveyFilter</code> scope</td>
 </tr>
 </tbody>
 </table>
