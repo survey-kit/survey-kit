@@ -218,13 +218,13 @@ const components = {
 
 **Props:**
 
-| Prop                     | Type                     | Required | Description                                                                                    |
-| ------------------------ | ------------------------ | -------- | ---------------------------------------------------------------------------------------------- |
-| `config`                 | `DashboardConfig`        | Yes      | Dashboard layout configuration                                                                 |
-| `data`                   | `Record<string, any>`    | Yes      | Analytics data to display                                                                       |
-| `components`             | `object`                 | Yes      | Chart components from registry (include `SimpleDropdown` when using `config.surveyFilter`)       |
-| `surveyFilterValue`      | `string`                 | No       | Current survey scope; matches `surveyFilter.options[].value` (often `''` for all surveys)       |
-| `onSurveyFilterChange`   | `(value: string) => void`| No       | Called when the scope changes; omit with `surveyFilter` if you do not want the control rendered |
+| Prop                   | Type                      | Required | Description                                                                                     |
+| ---------------------- | ------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `config`               | `DashboardConfig`         | Yes      | Dashboard layout configuration                                                                  |
+| `data`                 | `Record<string, any>`     | Yes      | Analytics data to display                                                                       |
+| `components`           | `object`                  | Yes      | Chart components from registry (include `SimpleDropdown` when using `config.surveyFilter`)      |
+| `surveyFilterValue`    | `string`                  | No       | Current survey scope; matches `surveyFilter.options[].value` (often `''` for all surveys)       |
+| `onSurveyFilterChange` | `(value: string) => void` | No       | Called when the scope changes; omit with `surveyFilter` if you do not want the control rendered |
 
 ---
 
