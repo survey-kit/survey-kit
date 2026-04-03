@@ -228,3 +228,11 @@ All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
 
 - Possibility that having ONS branding may conflict with copyright laws. Default to having SurveyKit branding instead and don't use the Tech Audit Tool data survey details, just demonstrate each functionality. Removed branding and updated survey-1.
 - Fixed issue with flattened lists. ([#32](https://github.com/survey-kit/survey-kit/pull/32))
+
+### Technical
+
+- **Automated testing (template)**: Vitest with jsdom, React Testing Library and axe; unit tests for validation and conditional logic; integration tests for JSON-driven form and chat surveys, app routing, consent and admin flows (with mocked APIs where needed); workspace `npm test` / coverage scripts; Node 25 localStorage workaround on test runs ([#33](https://github.com/survey-kit/survey-kit/pull/33))
+
+### Core
+
+- **SurveyRenderer**: Associated labels with controls (`htmlFor` / `id`) and normalised empty values on text, textarea and select fields for accessibility and stable controlled inputs ([#33](https://github.com/survey-kit/survey-kit/pull/33))

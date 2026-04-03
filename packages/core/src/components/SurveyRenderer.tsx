@@ -102,6 +102,12 @@ export function SurveyRenderer({
     const value = survey.getAnswerValue(question.id)
     const errorId = `${question.id}-error`
     const hasError = Boolean(survey.state.errors[question.id])
+    const textInputId = `${question.id}-input`
+    const textareaId = `${question.id}-textarea`
+    const selectId = `${question.id}-select`
+
+    const stringFieldValue =
+      value == null ? '' : String(value as string | number)
 
     switch (question.type) {
       case 'text':
@@ -110,7 +116,7 @@ export function SurveyRenderer({
       case 'date':
         return (
           <div key={question.id} className="space-y-2">
-            <label className="block text-sm font-medium">
+            <label className="block text-sm font-medium" htmlFor={textInputId}>
               {question.label}
               {(question.required || question.requiredToNavigate) && (
                 <span className="text-red-500">*</span>
@@ -121,9 +127,10 @@ export function SurveyRenderer({
             )}
             {Input && (
               <Input
+                id={textInputId}
                 type={question.type}
                 placeholder={question.placeholder}
-                value={value as string}
+                value={stringFieldValue}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   survey.setAnswer(question.id, e.target.value)
                 }
@@ -148,7 +155,7 @@ export function SurveyRenderer({
       case 'textarea':
         return (
           <div key={question.id} className="space-y-2">
-            <label className="block text-sm font-medium">
+            <label className="block text-sm font-medium" htmlFor={textareaId}>
               {question.label}
               {(question.required || question.requiredToNavigate) && (
                 <span className="text-red-500">*</span>
@@ -158,8 +165,9 @@ export function SurveyRenderer({
               <p className="text-sm text-gray-500">{question.description}</p>
             )}
             <textarea
+              id={textareaId}
               placeholder={question.placeholder}
-              value={value as string}
+              value={stringFieldValue}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 survey.setAnswer(question.id, e.target.value)
               }
@@ -184,7 +192,7 @@ export function SurveyRenderer({
       case 'select':
         return (
           <div key={question.id} className="space-y-2">
-            <label className="block text-sm font-medium">
+            <label className="block text-sm font-medium" htmlFor={selectId}>
               {question.label}
               {(question.required || question.requiredToNavigate) && (
                 <span className="text-red-500">*</span>
@@ -195,7 +203,8 @@ export function SurveyRenderer({
             )}
             {Dropdown && (
               <Dropdown
-                value={value as string}
+                id={selectId}
+                value={value == null ? '' : (value as string)}
                 onChange={(val: string) => survey.setAnswer(question.id, val)}
                 options={question.options || []}
                 aria-invalid={hasError}
