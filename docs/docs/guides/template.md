@@ -27,30 +27,33 @@ Opens at `http://localhost:5173`
 
 ### Example Surveys
 
-| File                       | Description                             |
-| -------------------------- | --------------------------------------- |
-| `surveys/survey-1.json`    | Multi-stage technology inventory survey |
-| `surveys/survey-2.json`    | Optional feedback survey                |
-| `surveys/chat-survey.json` | Chat-style technology preferences       |
+| File                       | Description                                                                                                                                     |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `surveys/survey-1.json`    | Multi-stage technology inventory survey                                                                                                         |
+| `surveys/survey-2.json`    | Optional feedback survey                                                                                                                        |
+| `surveys/chat-survey.json` | Chat-style technology preferences; submissions use this file’s `id` (e.g. `chat-demo`) when `VITE_API_URL` is set, same idea as the form survey |
 
 ### Routes
 
-| Path           | Description                   |
-| -------------- | ----------------------------- |
-| `/`            | Landing page                  |
-| `/survey-1/*`  | Form-based multi-stage survey |
-| `/survey-2/*`  | Form-based feedback survey    |
-| `/chat-survey` | Chat-style survey demo        |
-| `/complete-1`  | Completion page for survey 1  |
-| `/complete-2`  | Completion page for survey 2  |
+| Path               | Description                         |
+| ------------------ | ----------------------------------- |
+| `/`                | Landing page                        |
+| `/survey-1/*`      | Form-based multi-stage survey       |
+| `/survey-2/*`      | Form-based feedback survey          |
+| `/chat-survey`     | Chat-style survey demo              |
+| `/complete-1`      | Completion page for survey 1        |
+| `/complete-2`      | Completion page for survey 2        |
+| `/admin/login`     | Administrator sign-in (Cognito)     |
+| `/admin/dashboard` | Analytics dashboard (authenticated) |
 
 ### Configuration Files
 
-| File                            | Purpose                               |
-| ------------------------------- | ------------------------------------- |
-| `layouts/layout.config.json`    | Header, sidebar, footer configuration |
-| `sections/sections.config.json` | Intro and completion page content     |
-| `cookies/cookies.config.json`   | Cookie consent categories             |
+| File                               | Purpose                                              |
+| ---------------------------------- | ---------------------------------------------------- |
+| `layouts/layout.config.json`       | Header, sidebar, footer configuration                |
+| `sections/sections.config.json`    | Intro and completion page content                    |
+| `cookies/cookies.config.json`      | Cookie consent categories                            |
+| `dashboards/dashboard.config.json` | Admin chart layout and optional `surveyFilter` scope |
 
 ---
 

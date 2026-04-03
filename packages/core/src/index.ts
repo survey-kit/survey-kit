@@ -26,6 +26,8 @@ export type {
   ChartConfig,
   DashboardFilter,
   DashboardFilterConfig,
+  DashboardSurveyFilterConfig,
+  DashboardSurveyFilterOption,
 } from './types/dashboard'
 
 export type {

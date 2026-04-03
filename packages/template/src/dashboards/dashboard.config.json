@@ -2,6 +2,14 @@
   "id": "admin-dashboard",
   "title": "Survey Admin Dashboard",
   "allowedRoles": ["admin", "researcher"],
+  "surveyFilter": {
+    "label": "Survey",
+    "options": [
+      { "value": "", "label": "All surveys" },
+      { "value": "survey-1", "label": "Survey 1 — showcase" },
+      { "value": "chat-survey", "label": "Chat survey" }
+    ]
+  },
   "groups": [
     {
       "id": "group-overview",

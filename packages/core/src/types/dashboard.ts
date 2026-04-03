@@ -11,6 +11,15 @@ export interface DashboardGroup {
   title: string
   charts: ChartConfig[]
 }
+export interface DashboardSurveyFilterOption {
+  value: string
+  label: string
+}
+
+export interface DashboardSurveyFilterConfig {
+  label: string
+  options: DashboardSurveyFilterOption[]
+}
 
 export interface DashboardFilter {
   questionId: string
@@ -30,4 +39,5 @@ export interface DashboardConfig {
   allowedRoles: string[]
   groups: DashboardGroup[]
   filters?: DashboardFilterConfig[]
+  surveyFilter?: DashboardSurveyFilterConfig
 }

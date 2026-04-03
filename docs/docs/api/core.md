@@ -144,7 +144,7 @@ import { SurveyRenderer } from '@survey-kit/core'
 
 ### ChatSurveyRenderer
 
-Chat-style survey renderer with messaging UI.
+Chat-style survey renderer with messaging UI. The renderer does not call your API by itself: implement `onSubmit` the same way as for `SurveyRenderer` (e.g. persist answers to your backend).
 
 ```tsx
 import { ChatSurveyRenderer } from '@survey-kit/core'
@@ -158,12 +158,12 @@ import { ChatSurveyRenderer } from '@survey-kit/core'
 
 **Props:**
 
-| Prop          | Type                | Required | Description                 |
-| ------------- | ------------------- | -------- | --------------------------- |
-| `config`      | `SurveyConfig`      | Yes      | Survey configuration        |
-| `components`  | `object`            | Yes      | Chat UI components          |
-| `onSubmit`    | `(answers) => void` | Yes      | Submission callback         |
-| `typingDelay` | `{ min, max }`      | No       | Typing indicator delay (ms) |
+| Prop          | Type                | Required | Description                                                                 |
+| ------------- | ------------------- | -------- | --------------------------------------------------------------------------- |
+| `config`      | `SurveyConfig`      | Yes      | Survey configuration                                                        |
+| `components`  | `object`            | Yes      | Chat UI components                                                          |
+| `onSubmit`    | `(answers) => void` | Yes      | Submission handler—your code persists answers (no built-in network request) |
+| `typingDelay` | `{ min, max }`      | No       | Typing indicator delay (ms)                                                 |
 
 ### LayoutRenderer
 
@@ -187,7 +187,7 @@ import { LayoutRenderer, SurveyRenderer } from '@survey-kit/core'
 
 ### DashboardRenderer
 
-Renderer for administrative dashboards, supporting various chart types.
+Renderer for administrative dashboards, supporting various chart types. When `config.surveyFilter` is set, pass `SimpleDropdown` in `components` and wire `surveyFilterValue` / `onSurveyFilterChange`; the survey scope control appears only if both `surveyFilter` and `onSurveyFilterChange` are provided.
 
 ```tsx
 import { DashboardRenderer } from '@survey-kit/core'
@@ -196,6 +196,7 @@ import {
   DropoffBarChart,
   Card,
   Heading,
+  SimpleDropdown,
 } from '@survey-kit/registry'
 
 const components = {
@@ -203,22 +204,27 @@ const components = {
   DropoffBarChart,
   Card,
   Heading,
+  SimpleDropdown,
 }
 
 ;<DashboardRenderer
   config={dashboardConfig}
   data={analyticsData}
   components={components}
+  surveyFilterValue={selectedSurveyId}
+  onSurveyFilterChange={setSelectedSurveyId}
 />
 ```
 
 **Props:**
 
-| Prop         | Type                  | Required | Description                    |
-| ------------ | --------------------- | -------- | ------------------------------ |
-| `config`     | `DashboardConfig`     | Yes      | Dashboard layout configuration |
-| `data`       | `Record<string, any>` | Yes      | Analytics data to display      |
-| `components` | `object`              | Yes      | Chart components from registry |
+| Prop                   | Type                      | Required | Description                                                                                     |
+| ---------------------- | ------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `config`               | `DashboardConfig`         | Yes      | Dashboard layout configuration                                                                  |
+| `data`                 | `Record<string, any>`     | Yes      | Analytics data to display                                                                       |
+| `components`           | `object`                  | Yes      | Chart components from registry (include `SimpleDropdown` when using `config.surveyFilter`)      |
+| `surveyFilterValue`    | `string`                  | No       | Current survey scope; matches `surveyFilter.options[].value` (often `''` for all surveys)       |
+| `onSurveyFilterChange` | `(value: string) => void` | No       | Called when the scope changes; omit with `surveyFilter` if you do not want the control rendered |
 
 ---
 
@@ -326,7 +332,30 @@ Configuration for the administrative dashboard.
 interface DashboardConfig {
   id: string
   title: string
+  allowedRoles: string[]
   groups: DashboardGroup[]
+  filters?: DashboardFilterConfig[]
+  surveyFilter?: DashboardSurveyFilterConfig
+}
+```
+
+Use an option with `value: ''` when you want an “all surveys” scope (the template omits `surveyId` on the analytics request for that case).
+
+### DashboardSurveyFilterOption
+
+```typescript
+interface DashboardSurveyFilterOption {
+  value: string
+  label: string
+}
+```
+
+### DashboardSurveyFilterConfig
+
+```typescript
+interface DashboardSurveyFilterConfig {
+  label: string
+  options: DashboardSurveyFilterOption[]
 }
 ```
 

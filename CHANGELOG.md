@@ -241,3 +241,10 @@ All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
 
 - When on chat survey, if a user on mobile inputs in an input box, the page will auto scroll. This PR removes that wrong auto scroll function.
 - When on a new chat survey, a consent gate is shown and if accepted it redirects back to default (url.com/) now it redirects back to the chat survey (url.com/chat-survey) ([#34](https://github.com/survey-kit/survey-kit/pull/34))
+
+[Pull Request #35](https://github.com/survey-kit/survey-kit/pull/35):
+
+- **DashboardRenderer**: Survey filter UI + `surveyFilter` / related types on `DashboardConfig`.
+- **Template**: Chat survey submits via `submitSurveyResponse` (same pattern as survey-1).
+- **Admin dashboard**: Survey scope dropdown from `surveyFilter` in dashboard config; analytics supports optional `surveyId` (all surveys when omitted).
+- **Docs**: API/core, registry dashboard, backend analytics, template guide and chat guide updates for submit and survey scope.
