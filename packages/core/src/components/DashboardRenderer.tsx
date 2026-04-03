@@ -5,23 +5,70 @@ export interface DashboardRendererProps {
   config: DashboardConfig
   components: Record<string, React.ElementType>
   data: Record<string, any> // The analytics data from the API
+  surveyFilterValue?: string
+  onSurveyFilterChange?: (value: string) => void
 }
 
 export function DashboardRenderer({
   config,
   components,
   data,
+  surveyFilterValue = '',
+  onSurveyFilterChange,
 }: DashboardRendererProps) {
-  const { title, groups } = config
+  const { title, groups, surveyFilter } = config
   const Heading =
     components.Heading || (({ children }: any) => <h2>{children}</h2>)
   const Card = components.Card || (({ children }: any) => <div>{children}</div>)
+  const SimpleDropdown =
+    components.SimpleDropdown ||
+    ((props: {
+      value?: string
+      onChange?: (v: string) => void
+      options?: { label: string; value: string }[]
+      'aria-label'?: string
+      className?: string
+    }) => (
+      <select
+        value={props.value ?? ''}
+        onChange={(e) => props.onChange?.(e.target.value)}
+        aria-label={props['aria-label']}
+        className={props.className}
+      >
+        {(props.options || []).map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    ))
 
   return (
     <div className="flex flex-col w-full">
       <Heading level="h1" className="mb-4">
         {title}
       </Heading>
+
+      {surveyFilter &&
+        onSurveyFilterChange &&
+        surveyFilter.options.length > 0 && (
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4 mb-6">
+            <span className="text-sm font-medium text-foreground whitespace-nowrap">
+              {surveyFilter.label}
+            </span>
+            <SimpleDropdown
+              value={surveyFilterValue}
+              onChange={onSurveyFilterChange}
+              options={surveyFilter.options.map((o) => ({
+                label: o.label,
+                value: o.value,
+              }))}
+              placeholder=""
+              aria-label={surveyFilter.label}
+              className="sm:max-w-xs"
+            />
+          </div>
+        )}
 
       {groups.map((group) => (
         <section key={group.id} className="flex flex-col gap-4">
