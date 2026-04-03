@@ -10,14 +10,19 @@ const API_URL = import.meta.env.VITE_API_URL || ''
  * @param filters Optional array of global filters to apply to the analytics query.
  * @returns A promise resolving to the analytics data or an error state.
  */
-export const fetchAdminAnalytics = async (filters?: DashboardFilter[]) => {
+export const fetchAdminAnalytics = async (
+  filters?: DashboardFilter[],
+  surveyId?: string
+) => {
   const token = getAuthToken()
   if (!token) return { success: false, error: 'Not authenticated' }
 
   try {
-    let url = `${API_URL}/api/admin/analytics`
+    const params = new URLSearchParams()
+    if (surveyId) {
+      params.set('surveyId', surveyId)
+    }
     if (filters && filters.length > 0) {
-      const params = new URLSearchParams()
       filters.forEach((f) => {
         if (Array.isArray(f.value)) {
           f.value.forEach((v: string) => params.append(f.questionId, v))
@@ -25,11 +30,11 @@ export const fetchAdminAnalytics = async (filters?: DashboardFilter[]) => {
           params.append(f.questionId, f.value)
         }
       })
-      const queryString = params.toString()
-      if (queryString) {
-        url += `?${queryString}`
-      }
     }
+    const queryString = params.toString()
+    const url = queryString
+      ? `${API_URL}/api/admin/analytics?${queryString}`
+      : `${API_URL}/api/admin/analytics`
 
     const response = await fetch(url, {
       headers: {

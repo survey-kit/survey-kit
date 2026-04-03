@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   DashboardRenderer,
@@ -14,9 +14,11 @@ import {
   Button,
   FilterSidebar,
   ResponseList,
+  SimpleDropdown,
 } from '@survey-kit/registry'
 import dashboardConfig from '../dashboards/dashboard.config.json'
 import surveyConfig from '../surveys/survey-1.json'
+import chatSurveyConfig from '../surveys/chat-survey.json'
 import { fetchAdminAnalytics } from '../services/analytics'
 import { removeAuthToken } from '../services/auth'
 
@@ -25,6 +27,7 @@ const chartComponents = {
   Card,
   TrendLineChart,
   DropoffBarChart,
+  SimpleDropdown,
 }
 
 /**
@@ -32,17 +35,43 @@ const chartComponents = {
  * Fetches and displays analytics data using the configured charts.
  */
 export function AdminDashboard() {
-  const dynamicFilters = extractFilterableQuestions(surveyConfig as any)
+  const [surveyFilter, setSurveyFilter] = useState('')
+  const filterSourceConfig = useMemo(() => {
+    if (surveyFilter === 'chat-demo') {
+      return chatSurveyConfig
+    }
+    return surveyConfig
+  }, [surveyFilter])
+  const dynamicFilters = extractFilterableQuestions(filterSourceConfig as any)
+  const questionLabels = useMemo(() => {
+    const showcase = getQuestionLabelMap(surveyConfig as any)
+    const chat = getQuestionLabelMap(chatSurveyConfig as any)
+    if (surveyFilter === 'chat-demo') {
+      return chat
+    }
+    if (surveyFilter === '') {
+      return { ...chat, ...showcase }
+    }
+    return showcase
+  }, [surveyFilter])
   const [data, setData] = useState<Record<string, any> | null>(null)
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<DashboardFilter[]>([])
   const navigate = useNavigate()
 
+  const handleSurveyFilterChange = (value: string) => {
+    setFilters([])
+    setSurveyFilter(value)
+  }
+
   useEffect(() => {
     const loadData = async () => {
       setLoading(true)
-      const result = await fetchAdminAnalytics(filters)
+      const result = await fetchAdminAnalytics(
+        filters,
+        surveyFilter || undefined
+      )
 
       if (result.success) {
         setData(result.data)
@@ -60,7 +89,7 @@ export function AdminDashboard() {
     }
 
     loadData()
-  }, [navigate, filters])
+  }, [navigate, filters, surveyFilter])
 
   const handleLogout = () => {
     removeAuthToken()
@@ -100,6 +129,8 @@ export function AdminDashboard() {
             config={dashboardConfig as any}
             components={chartComponents}
             data={data}
+            surveyFilterValue={surveyFilter}
+            onSurveyFilterChange={handleSurveyFilterChange}
           />
         )}
         {data?.responses && (
@@ -109,7 +140,7 @@ export function AdminDashboard() {
             </Heading>
             <ResponseList
               responses={data.responses}
-              questionLabels={getQuestionLabelMap(surveyConfig as any)}
+              questionLabels={questionLabels}
             />
           </section>
         )}
