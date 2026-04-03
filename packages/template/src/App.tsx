@@ -341,10 +341,7 @@ function App() {
           <ConsentGate
             config={privacyConfig as ConsentConfig}
             status={privacyAuth.status}
-            onAccept={() => {
-              privacyAuth.accept()
-              navigate('/')
-            }}
+            onAccept={privacyAuth.accept}
             onReject={() => {
               privacyAuth.reject()
             }}
