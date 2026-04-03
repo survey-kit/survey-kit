@@ -100,16 +100,29 @@ const chatComponents = {
  */
 function ChatSurveyPage() {
   const navigate = useNavigate()
+  const cookieContext = useCookieConsentContext()
+  const sessionStartRef = React.useRef(initSession())
+  const chatConfig = chatSurveyConfig as unknown as SurveyConfig
 
   const handleSubmit = async (answers: Record<string, unknown>) => {
-    console.log('Chat survey submitted with answers:', answers)
+    const result = await submitSurveyResponse({
+      surveyId: chatConfig.id,
+      answers,
+      sessionStartTime: sessionStartRef.current,
+      hasAnalyticsConsent: cookieContext.hasConsent('analytics'),
+    })
+
+    if (!result.success) {
+      console.warn('Chat survey submission failed:', result.error)
+    }
+
     localStorage.clear()
     navigate('/')
   }
 
   return (
     <ChatSurveyRenderer
-      config={chatSurveyConfig as unknown as SurveyConfig}
+      config={chatConfig}
       components={chatComponents}
       onSubmit={handleSubmit}
       typingDelay={{ min: 600, max: 1200 }}
