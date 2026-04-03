@@ -70,20 +70,24 @@ Retrieves all raw responses for a specific survey (administrative use only).
 
 ### Analytics Aggregation
 
-`GET /api/admin/analytics?surveyId={surveyId}`
+`GET /api/admin/analytics`
 
-Returns aggregated analytics data for a specific survey, used primarily by the Admin Dashboard. This endpoint supports cross-tabulation filtering based on survey responses.
+Returns aggregated analytics data for the Admin Dashboard. The `surveyId` query parameter is **optional**: when present, scope results to that survey; when omitted, the template treats the request as “all surveys”—ensure your deployment matches that behaviour.
+
+**Example (scoped):**
+
+`GET /api/admin/analytics?surveyId=survey-1`
 
 **Filtering:**
 
-You can filter results by appending survey question IDs and their desired values as query parameters.
+You can combine optional `surveyId` with survey question IDs and values as further query parameters. Results must match all supplied criteria (AND logic).
 
 **Example:**
 To view analytics for respondents who answered "In House" for the question with ID `developed`:
 
 `GET /api/admin/analytics?surveyId=survey-1&developed=in_house`
 
-The backend handles both simple values and object-based answer structures (e.g., `{ value: "..." }`) when applying these filters. Multiple filters can be combined, and results must match all criteria (AND logic).
+The backend handles both simple values and object-based answer structures (e.g., `{ value: "..." }`) when applying these filters.
 
 ## Environment Variables
 

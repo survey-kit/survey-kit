@@ -56,7 +56,7 @@ export function ChatSurveyPage({ surveyConfig, handleSubmit }) {
 }
 ```
 
-Run the template with `make dev` and open `/chat-survey` to view a working example.
+Run the template with `make dev` and open `/chat-survey` to view a working example; with `VITE_API_URL` set, the template wires `onSubmit` through the same submit helper as the form survey so responses reach your backend.
 
 ## Component overview
 

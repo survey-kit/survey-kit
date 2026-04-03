@@ -37,3 +37,17 @@ const filters = extractFilterableQuestions(surveyConfig)
 ```
 
 This ensures that your dashboards are always in sync with your survey design, automatically updating whenever you add or modify questions in your survey configuration.
+
+## Survey scope
+
+The template’s `dashboards/dashboard.config.json` may define a top-level `surveyFilter` (`label` plus `options` with `value` and `label`). `DashboardRenderer` then shows a dropdown under the dashboard title. Your app should map the selected `value` to the `surveyId` query parameter on `GET /api/admin/analytics`. Use an empty string for `value` for an “all surveys” option—the template omits `surveyId` in that case. Add or adjust options whenever you introduce new surveys; each `value` should match the id your API expects.
+
+```json
+"surveyFilter": {
+  "label": "Survey",
+  "options": [
+    { "value": "", "label": "All surveys" },
+    { "value": "survey-1", "label": "Main survey" }
+  ]
+}
+```
