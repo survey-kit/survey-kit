@@ -85,6 +85,7 @@ export interface ChatSurveyRendererProps {
       children: React.ReactNode
       progress?: number
       title?: string
+      autoScrollKey?: string
     }>
     ChatReviewScreen: React.ComponentType<{
       questions: Array<{
@@ -444,6 +445,25 @@ export function ChatSurveyRenderer({
     (editingQuestionId || // Always show input when editing
       (!isTyping && showingQuestionId === currentQuestion?.id))
 
+  // Stable while typing so ChatContainer does not auto-scroll on every keystroke (iOS).
+  const chatAutoScrollKey = useMemo(() => {
+    return [
+      displayedAnsweredQuestions.map((q) => q.id).join('|'),
+      String(currentQuestionIndex),
+      String(isTyping),
+      showingQuestionId ?? '',
+      editingQuestionId ?? '',
+      currentQuestion?.id ?? '',
+    ].join(':')
+  }, [
+    displayedAnsweredQuestions,
+    currentQuestionIndex,
+    isTyping,
+    showingQuestionId,
+    editingQuestionId,
+    currentQuestion?.id,
+  ])
+
   if (shouldShowReview) {
     const reviewQuestions = visibleQuestions.map((q) => ({
       id: q.id,
@@ -453,7 +473,7 @@ export function ChatSurveyRenderer({
     }))
 
     return (
-      <ChatContainer title={config.title} progress={100}>
+      <ChatContainer title={config.title} progress={100} autoScrollKey="review">
         <ChatReviewScreen
           questions={reviewQuestions}
           answers={combinedAnswers}
@@ -471,6 +491,7 @@ export function ChatSurveyRenderer({
     <ChatContainer
       title={config.title}
       progress={progress}
+      autoScrollKey={chatAutoScrollKey}
       footer={
         shouldShowInput ? (
           <ChatInput

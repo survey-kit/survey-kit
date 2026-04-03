@@ -236,3 +236,8 @@ All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
 ### Core
 
 - **SurveyRenderer**: Associated labels with controls (`htmlFor` / `id`) and normalised empty values on text, textarea and select fields for accessibility and stable controlled inputs ([#33](https://github.com/survey-kit/survey-kit/pull/33))
+
+### Bug Fixes
+
+- When on chat survey, if a user on mobile inputs in an input box, the page will auto scroll. This PR removes that wrong auto scroll function.
+- When on a new chat survey, a consent gate is shown and if accepted it redirects back to default (url.com/) now it redirects back to the chat survey (url.com/chat-survey) ([#34](https://github.com/survey-kit/survey-kit/pull/34))
