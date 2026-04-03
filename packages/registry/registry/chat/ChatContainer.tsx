@@ -14,6 +14,12 @@ export interface ChatContainerProps {
   className?: string
   showInfoButton?: boolean
   infoDrawerContent?: React.ReactNode
+  /**
+   * When set, the messages pane scrolls to the bottom only when this value changes
+   * (avoids re-scrolling on every parent re-render, e.g. each keystroke in chat input).
+   * When omitted, scroll follows `children` changes (legacy behaviour).
+   */
+  autoScrollKey?: string
 }
 
 /**
@@ -29,17 +35,25 @@ export function ChatContainer({
   className = '',
   showInfoButton = true,
   infoDrawerContent,
+  autoScrollKey,
 }: ChatContainerProps): React.JSX.Element {
-  const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-  // Auto-scroll to bottom when children change
+  // Prefer stable key so typing in the footer does not re-trigger scroll (iOS keyboard jank).
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [children])
+    if (autoScrollKey === undefined) return
+    const el = messagesContainerRef.current
+    if (!el) return
+    el.scrollTop = el.scrollHeight
+  }, [autoScrollKey])
+
+  useEffect(() => {
+    if (autoScrollKey !== undefined) return
+    const el = messagesContainerRef.current
+    if (!el) return
+    el.scrollTop = el.scrollHeight
+  }, [children, autoScrollKey])
 
   const defaultDrawerContent = (
     <div className="space-y-4 text-[var(--ons-color-black)]">
@@ -120,7 +134,6 @@ export function ChatContainer({
         "
       >
         <div className="max-w-2xl mx-auto space-y-4">{children}</div>
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Footer (input area) */}
