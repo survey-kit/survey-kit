@@ -133,7 +133,7 @@ export function SectionPage({
     >
       <Card
         className={cn(
-          'w-full max-w-xl p-6 sm:p-8 md:p-10',
+          'w-full p-6 sm:p-8 md:p-10',
           isHorizontalImage && 'max-w-3xl',
           config.image?.position === 'background' &&
             'bg-background/95 backdrop-blur-sm',
@@ -170,7 +170,7 @@ export function SectionPage({
           {/* Content */}
           <div
             className={cn(
-              'flex flex-col gap-4 text-center',
+              'flex flex-col gap-4 text-center sm:text-left',
               isHorizontalImage && 'md:w-1/2 md:text-left'
             )}
           >
@@ -226,7 +226,7 @@ export function SectionPage({
             )}
 
             {config.buttons && config.buttons.length > 0 && (
-              <div className="flex flex-col sm:flex-row gap-3 mt-4 justify-center sm:justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 mt-4 justify-center sm:justify-start">
                 {config.buttons.map((button, index) => (
                   <Button
                     key={index}
