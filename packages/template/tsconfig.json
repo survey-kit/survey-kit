@@ -21,6 +21,6 @@
       "@core/*": ["../core/src/*"]
     }
   },
-  "include": ["src", "tests"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

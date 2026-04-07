@@ -15,6 +15,7 @@ import {
   getAllPages,
   findPageById,
 } from '../lib/configUtils'
+import { setDocumentFavicon } from '../lib/documentFavicon'
 import type { LayoutConfig } from '../types/layout'
 import type {
   SurveyConfig,
@@ -257,17 +258,8 @@ export function LayoutRenderer({
   onPageChange,
   currentPageId,
 }: LayoutRendererProps): React.JSX.Element {
-  // Set favicon if configured
   useEffect(() => {
-    if (layoutConfig.favicon && typeof document !== 'undefined') {
-      let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement
-      if (!link) {
-        link = document.createElement('link')
-        link.rel = 'icon'
-        document.getElementsByTagName('head')[0].appendChild(link)
-      }
-      link.href = layoutConfig.favicon
-    }
+    setDocumentFavicon(layoutConfig.favicon)
   }, [layoutConfig.favicon])
   const {
     Header,

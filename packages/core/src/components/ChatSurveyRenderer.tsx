@@ -3,6 +3,7 @@ import type { SurveyConfig, SurveyQuestion, SurveyPage } from '../types/survey'
 import { useSurvey } from '../hooks/useSurvey'
 import { shouldShowQuestion } from '../lib/conditional'
 import { getAllPages } from '../lib/configUtils'
+import { setDocumentFavicon } from '../lib/documentFavicon'
 
 /** Minimal type alias for the EmojiSlider component prop. The full implementation lives in the complex registry. */
 type EmojiSliderComponent = React.ComponentType<{
@@ -107,6 +108,7 @@ export interface ChatSurveyRendererProps {
   }
   onSubmit?: (answers: Record<string, unknown>) => Promise<void> | void
   typingDelay?: TypingDelayConfig
+  favicon?: string
 }
 
 /**
@@ -127,6 +129,7 @@ export function ChatSurveyRenderer({
   components,
   onSubmit,
   typingDelay = { min: 500, max: 1500 },
+  favicon,
 }: ChatSurveyRendererProps): React.JSX.Element {
   const {
     ChatMessage,
@@ -136,6 +139,10 @@ export function ChatSurveyRenderer({
     ChatReviewScreen,
     EmojiSlider,
   } = components
+
+  useEffect(() => {
+    setDocumentFavicon(favicon)
+  }, [favicon])
 
   // Use the existing survey hook for state management
   const survey = useSurvey({ config, onSubmit })

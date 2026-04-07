@@ -248,3 +248,14 @@ All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
 - **Template**: Chat survey submits via `submitSurveyResponse` (same pattern as survey-1).
 - **Admin dashboard**: Survey scope dropdown from `surveyFilter` in dashboard config; analytics supports optional `surveyId` (all surveys when omitted).
 - **Docs**: API/core, registry dashboard, backend analytics, template guide and chat guide updates for submit and survey scope.
+
+## Week 24 (w/c 06/04/26)
+
+[Pull Request #36](https://github.com/survey-kit/survey-kit/pull/36):
+
+- **Dashboard**: Collapsible filter sidebar and sidebar width adjustments.
+- **Core**: Shared `setDocumentFavicon` helper for setting the document favicon.
+- **Registry**: Chat layout tidy-up (less duplicate CSS, improved mobile padding on the chatbox); `ChatInput` uses a single primary control (Skip when optional and empty, Send otherwise; required empty state shows disabled Send).
+- **Template**: `ChatSurveyPage` takes `completionRoute` from the route (same pattern as `SurveyPage`); default view shows chat and admin shortcuts; section page styles adjusted for different viewports.
+- **Docs**: Chat and template guides updated for post-submit navigation via `completionRoute`.
+- **Tooling**: `make prepare` for Husky hooks; package version bumps; Vercel deployment fix.

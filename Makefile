@@ -61,3 +61,5 @@ docs-build:
 docs-serve:
 	cd docs && mkdocs serve
 
+prepare:
+	make format && make lint && make docs-format

@@ -23,7 +23,7 @@ The chat layout includes:
 ## Example
 
 ```tsx
-import { ChatSurveyRenderer } from '@survey-kit/core'
+import { ChatSurveyRenderer, type SurveyConfig } from '@survey-kit/core'
 import {
   ChatBubble,
   ChatMessage,
@@ -44,19 +44,25 @@ const chatComponents = {
   EmojiSlider,
 }
 
-export function ChatSurveyPage({ surveyConfig, handleSubmit }) {
+export function ChatSurveyPage({
+  surveyConfig,
+  onSubmit,
+}: {
+  surveyConfig: SurveyConfig
+  onSubmit: (answers: Record<string, unknown>) => void | Promise<void>
+}) {
   return (
     <ChatSurveyRenderer
       config={surveyConfig}
       components={chatComponents}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       typingDelay={{ min: 600, max: 1200 }}
     />
   )
 }
 ```
 
-Run the template with `make dev` and open `/chat-survey` to view a working example; with `VITE_API_URL` set, the template wires `onSubmit` through the same submit helper as the form survey so responses reach your backend.
+Run the template with `make dev` and open `/chat-survey` for a working example. With `VITE_API_URL` set, `onSubmit` uses the same submit helper as the form survey so responses reach your backend. Post-submit navigation is not handled by `ChatSurveyRenderer`: in the template, pass `completionRoute` on `ChatSurveyPage` from your `<Route>` in `App.tsx`, matching `SurveyPage`.
 
 ## Component overview
 
