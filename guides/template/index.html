@@ -1425,10 +1425,6 @@ Survey-Kit's capabilities.</p>
 <td>Multi-stage technology inventory survey</td>
 </tr>
 <tr>
-<td><code>surveys/survey-2.json</code></td>
-<td>Optional feedback survey</td>
-</tr>
-<tr>
 <td><code>surveys/chat-survey.json</code></td>
 <td>Chat-style technology preferences; submissions use this file’s <code>id</code> (e.g. <code>chat-demo</code>) when <code>VITE_API_URL</code> is set, same idea as the form survey</td>
 </tr>
@@ -1452,10 +1448,6 @@ Survey-Kit's capabilities.</p>
 <td>Form-based multi-stage survey</td>
 </tr>
 <tr>
-<td><code>/survey-2/*</code></td>
-<td>Form-based feedback survey</td>
-</tr>
-<tr>
 <td><code>/chat-survey</code></td>
 <td>Chat-style survey demo</td>
 </tr>
@@ -1465,7 +1457,7 @@ Survey-Kit's capabilities.</p>
 </tr>
 <tr>
 <td><code>/complete-2</code></td>
-<td>Completion page for survey 2</td>
+<td>Completion page for chat survey</td>
 </tr>
 <tr>
 <td><code>/admin/login</code></td>
@@ -1501,6 +1493,10 @@ Survey-Kit's capabilities.</p>
 <tr>
 <td><code>dashboards/dashboard.config.json</code></td>
 <td>Admin chart layout and optional <code>surveyFilter</code> scope</td>
+</tr>
+<tr>
+<td><code>consents/consents.config.json</code></td>
+<td>Consent categories</td>
 </tr>
 </tbody>
 </table>
@@ -1543,9 +1539,17 @@ Survey-Kit's capabilities.</p>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>│   ├── surveys/             # Survey JSON configs
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>│   ├── layouts/             # Layout configuration
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>│   ├── sections/            # Section page configs
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>│   └── cookies/             # Cookie consent config
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>├── package.json
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>└── vite.config.ts
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>│   ├── cookies/             # Cookie consent config
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>│   └── consents/            # Consent categories config
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>│   ├── dashboards/          # Admin chart layout and optional `surveyFilter` scope
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>│   ├── services/            # API services
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>├── tests/                   # Unit tests
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>|   ├── helpers/             # Test helpers
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>|   ├── unit/                # Unit tests
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>|   ├── App.test.tsx         # App test
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>|   ├── chat-survey.test.tsx # Chat survey test
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>|   ├── survey-1.test.tsx    # Survey 1 test
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>|   └── setup.ts             # Test utils
 </code></pre></div>
 <hr />
 <h2 id="using-as-a-starting-point">Using as a Starting Point<a class="headerlink" href="#using-as-a-starting-point" title="Permanent link">&para;</a></h2>
@@ -1558,7 +1562,7 @@ Survey-Kit's capabilities.</p>
 <li>Modify routes in <code>App.tsx</code></li>
 <li>Deploy to your platform</li>
 </ol>
-<p>The template works with Vercel, Netlify, or any static hosting.</p>
+<p>The template works with Vercel, Netlify or any static hosting.</p>
 
 
 
