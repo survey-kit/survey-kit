@@ -96,10 +96,14 @@ const chatComponents = {
   EmojiSlider,
 }
 
+interface ChatSurveyPageProps {
+  completionRoute: string
+}
+
 /**
  * Chat survey page component that renders a chat-style survey.
  */
-function ChatSurveyPage() {
+function ChatSurveyPage({ completionRoute }: ChatSurveyPageProps) {
   const navigate = useNavigate()
   const cookieContext = useCookieConsentContext()
   const sessionStartRef = React.useRef(initSession())
@@ -118,7 +122,7 @@ function ChatSurveyPage() {
     }
 
     localStorage.clear()
-    navigate('/')
+    navigate(completionRoute)
   }
 
   return (
@@ -471,7 +475,10 @@ function App() {
                 />
 
                 {/* Chat Survey Demo */}
-                <Route path="/chat-survey" element={<ChatSurveyPage />} />
+                <Route
+                  path="/chat-survey"
+                  element={<ChatSurveyPage completionRoute="/complete-2" />}
+                />
               </Routes>
             </>
           )}
