@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { DashboardFilter, DashboardFilterConfig } from '@survey-kit/core'
 import { Card, Heading, Button } from '@survey-kit/registry'
 import { SimpleDropdown } from '../../layout/dropdown/simple-dropdown'
@@ -13,6 +15,8 @@ export function FilterSidebar({
   activeFilters,
   onFilterChange,
 }: FilterSidebarProps) {
+  const [collapsed, setCollapsed] = useState(false)
+
   if (!filters || filters.length === 0) return null
 
   const handleFilterChange = (questionId: string, value: string) => {
@@ -39,16 +43,28 @@ export function FilterSidebar({
   }
 
   return (
-    <Card className="w-64 flex-shrink-0 p-4 sm:sticky top-6 self-start border rounded-md h-auto">
-      <div className="flex items-center justify-between mb-2">
-        <Heading level="h3" className="text-lg">
-          Filters
-        </Heading>
+    <Card className="w-full md:w-80 flex-shrink-0 p-4 md:sticky top-6 self-start border rounded-md h-auto">
+      <div className="flex items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={() => setCollapsed((c) => !c)}
+          className="flex flex-1 min-w-0 items-center justify-between gap-1.5 rounded-md text-left -ml-1 px-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+          aria-expanded={!collapsed}
+          aria-controls="filter-sidebar-controls"
+        >
+          <Heading level="h3" className="text-lg">
+            Filters
+          </Heading>
+          <ChevronDown
+            className={`h-4 w-4 shrink-0 text-gray-500 transition-transform ${collapsed ? '-rotate-90' : ''}`}
+            aria-hidden
+          />
+        </button>
         {activeFilters.length > 0 && (
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs text-gray-500 hover:text-red-500 h-auto p-1"
+            className="text-xs text-gray-500 hover:text-red-500 h-auto p-1 shrink-0"
             onClick={handleClearFilters}
           >
             Clear
@@ -56,7 +72,11 @@ export function FilterSidebar({
         )}
       </div>
 
-      <div className="flex flex-col gap-6 p-2 max-h-[700px] overflow-y-scroll">
+      <div
+        id="filter-sidebar-controls"
+        className="flex flex-col gap-6 p-2 max-h-[700px] overflow-y-scroll"
+        hidden={collapsed}
+      >
         {filters.map((filter) => {
           const active = activeFilters.find((f) => f.questionId === filter.id)
           const options = [
