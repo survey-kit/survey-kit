@@ -3,18 +3,28 @@
     {
       "id": "intro",
       "path": "/",
-      "title": "General form showcase",
-      "subtitle": "Explore question types, validation, and navigation",
-      "body": "This demo walks through a multi-stage form built with Survey Kit.<br/><br/>After you finish, you can optionally try the same ideas in a chat-style flow.",
+      "title": "Survey Kit Demo",
+      "subtitle": "Explore question types, validation and navigation",
+      "body": "Try the Default Survey or the Chat Survey, or view the Admin Dashboard.",
       "layout": {
         "header": true,
         "footer": true
       },
       "buttons": [
         {
-          "label": "Get started",
+          "label": "Default Survey",
           "to": "/survey-1",
           "variant": "default"
+        },
+        {
+          "label": "Chat Survey",
+          "to": "/chat-survey",
+          "variant": "secondary"
+        },
+        {
+          "label": "Admin Dashboard",
+          "to": "/admin/dashboard",
+          "variant": "outline"
         }
       ]
     },
