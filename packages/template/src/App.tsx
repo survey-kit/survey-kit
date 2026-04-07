@@ -50,6 +50,7 @@ import {
   SurveyRenderer,
   LayoutRenderer,
   ChatSurveyRenderer,
+  setDocumentFavicon,
   type SurveyConfig,
   type LayoutConfig,
   type SectionsConfig,
@@ -126,6 +127,7 @@ function ChatSurveyPage() {
       components={chatComponents}
       onSubmit={handleSubmit}
       typingDelay={{ min: 600, max: 1200 }}
+      favicon={(layoutConfig as LayoutConfig).favicon}
     />
   )
 }
@@ -160,6 +162,10 @@ function AdminLayoutWrapper({
 
   const headerConfig = (layoutConfig as LayoutConfig).header
   const footerConfig = (layoutConfig as LayoutConfig).footer
+
+  React.useEffect(() => {
+    setDocumentFavicon((layoutConfig as LayoutConfig).favicon)
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col bg-background">

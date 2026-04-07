@@ -78,3 +78,5 @@ export {
   extractFilterableQuestions,
   getQuestionLabelMap,
 } from './lib/configUtils'
+
+export { setDocumentFavicon } from './lib/documentFavicon'
