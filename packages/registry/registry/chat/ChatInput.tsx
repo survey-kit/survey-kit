@@ -127,7 +127,7 @@ export function ChatInput({
     return (
       <form
         onSubmit={handleTextSubmit}
-        className={`flex items-center gap-2 p-3 bg-white border-t border-[var(--ons-color-grey-15)] ${className}`}
+        className={`flex items-center gap-2 p-3 ${className}`}
       >
         <Input
           type="text"
@@ -166,7 +166,7 @@ export function ChatInput({
   if (type === 'radio') {
     return (
       <div
-        className={`p-3 bg-white border-t border-[var(--ons-color-grey-15)] ${className}`}
+        className={`p-3 ${className}`}
         role="radiogroup"
         aria-label="Select an option"
       >
@@ -206,7 +206,7 @@ export function ChatInput({
 
     return (
       <div
-        className={`p-3 bg-white border-t border-[var(--ons-color-grey-15)] ${className}`}
+        className={`p-3 ${className}`}
         role="group"
         aria-label="Select options"
       >
@@ -293,9 +293,7 @@ export function ChatInput({
     }
 
     return (
-      <div
-        className={`p-4 bg-white border-t border-[var(--ons-color-grey-15)] space-y-3 ${className}`}
-      >
+      <div className={`p-4 space-y-3 ${className}`}>
         <EmojiSlider {...sliderProps} />
         <div className="flex gap-2">
           <Button

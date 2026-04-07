@@ -139,7 +139,9 @@ export function ChatContainer({
       {/* Footer (input area) */}
       {footer && (
         <footer className="flex-shrink-0 sticky bottom-0 w-full z-10">
-          {footer}
+          <div className="px-2 pb-1 sm:p-0 bg-white border-t border-[var(--ons-color-grey-15)]">
+            {footer}
+          </div>
         </footer>
       )}
 
