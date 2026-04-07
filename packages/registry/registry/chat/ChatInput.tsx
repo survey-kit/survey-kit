@@ -88,7 +88,12 @@ export function ChatInput({
 
   const handleTextSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (textValue.trim() || !required) {
+    const trimmed = textValue.trim()
+    if (onSkip && !required && !trimmed) {
+      onSkip()
+      return
+    }
+    if (trimmed || !required) {
       onSubmit()
     }
   }
@@ -96,7 +101,12 @@ export function ChatInput({
   const handleTextKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      if (textValue.trim() || !required) {
+      const trimmed = textValue.trim()
+      if (onSkip && !required && !trimmed) {
+        onSkip()
+        return
+      }
+      if (trimmed || !required) {
         onSubmit()
       }
     }
@@ -139,23 +149,25 @@ export function ChatInput({
           className="flex-1 text-base sm:text-sm"
           aria-label="Your answer"
         />
-        <Button
-          type="submit"
-          disabled={disabled || (required && !textValue.trim())}
-          aria-label="Send answer"
-          className="shadow-none"
-        >
-          Send
-        </Button>
-        {onSkip && !required && (
+        {onSkip && !required && !textValue.trim() ? (
           <Button
             type="button"
             variant="secondary"
-            className="shadow-none"
+            className="shadow-none w-14"
             onClick={onSkip}
             disabled={disabled}
+            aria-label="Skip question"
           >
             Skip
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            disabled={disabled || (required && !textValue.trim())}
+            aria-label="Send answer"
+            className="shadow-none w-14"
+          >
+            Send
           </Button>
         )}
       </form>
