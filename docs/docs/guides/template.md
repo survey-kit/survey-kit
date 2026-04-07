@@ -30,7 +30,6 @@ Opens at `http://localhost:5173`
 | File                       | Description                                                                                                                                     |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `surveys/survey-1.json`    | Multi-stage technology inventory survey                                                                                                         |
-| `surveys/survey-2.json`    | Optional feedback survey                                                                                                                        |
 | `surveys/chat-survey.json` | Chat-style technology preferences; submissions use this file’s `id` (e.g. `chat-demo`) when `VITE_API_URL` is set, same idea as the form survey |
 
 ### Routes
@@ -39,10 +38,9 @@ Opens at `http://localhost:5173`
 | ------------------ | ----------------------------------- |
 | `/`                | Landing page                        |
 | `/survey-1/*`      | Form-based multi-stage survey       |
-| `/survey-2/*`      | Form-based feedback survey          |
 | `/chat-survey`     | Chat-style survey demo              |
 | `/complete-1`      | Completion page for survey 1        |
-| `/complete-2`      | Completion page for survey 2        |
+| `/complete-2`      | Completion page for chat survey     |
 | `/admin/login`     | Administrator sign-in (Cognito)     |
 | `/admin/dashboard` | Analytics dashboard (authenticated) |
 
@@ -54,6 +52,7 @@ Opens at `http://localhost:5173`
 | `sections/sections.config.json`    | Intro and completion page content                    |
 | `cookies/cookies.config.json`      | Cookie consent categories                            |
 | `dashboards/dashboard.config.json` | Admin chart layout and optional `surveyFilter` scope |
+| `consents/consents.config.json`    | Consent categories                                   |
 
 ---
 
@@ -111,9 +110,17 @@ packages/template/
 │   ├── surveys/             # Survey JSON configs
 │   ├── layouts/             # Layout configuration
 │   ├── sections/            # Section page configs
-│   └── cookies/             # Cookie consent config
-├── package.json
-└── vite.config.ts
+│   ├── cookies/             # Cookie consent config
+│   └── consents/            # Consent categories config
+│   ├── dashboards/          # Admin chart layout and optional `surveyFilter` scope
+│   ├── services/            # API services
+├── tests/                   # Unit tests
+|   ├── helpers/             # Test helpers
+|   ├── unit/                # Unit tests
+|   ├── App.test.tsx         # App test
+|   ├── chat-survey.test.tsx # Chat survey test
+|   ├── survey-1.test.tsx    # Survey 1 test
+|   └── setup.ts             # Test utils
 ```
 
 ---
@@ -129,4 +136,4 @@ The template is designed to be forked and customised:
 5. Modify routes in `App.tsx`
 6. Deploy to your platform
 
-The template works with Vercel, Netlify, or any static hosting.
+The template works with Vercel, Netlify or any static hosting.
