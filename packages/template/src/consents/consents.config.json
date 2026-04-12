@@ -23,7 +23,7 @@
   "rejectedTitle": "You cannot continue",
   "rejectedDescription": "You have declined consent required for this application. You cannot proceed without your agreement.",
   "rejectedLinkText": "Leave this site",
-  "rejectedLinkHref": "https://ons.gov.uk",
+  "rejectedLinkHref": "https://survey-kit.com",
   "noticeBlocks": [
     {
       "description": "This information isn't actually collected, this is just an example."
