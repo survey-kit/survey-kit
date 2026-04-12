@@ -1130,7 +1130,7 @@ export function LayoutRenderer({
                         item.disabled
                           ? lockedComplete
                             ? 'cursor-not-allowed'
-                            : 'cursor-not-allowed opacity-50'
+                            : 'cursor-not-allowed opacity-65'
                           : 'cursor-pointer',
                         item.active && !item.disabled
                           ? 'border-ocean-blue border-1 bg-ocean-blue/10'
