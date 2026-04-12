@@ -12,8 +12,10 @@ import { describe, it, expect } from 'vitest'
 import type { SurveyQuestion, SurveyConfig } from '@survey-kit/core'
 import surveyConfig from '../../src/surveys/survey-1.json'
 
-// Import validation functions via the @core alias (see vite.config.ts)
-import { validateQuestion, isValidForNavigation } from '@core/lib/validation'
+import {
+  validateQuestion,
+  isValidForNavigation,
+} from '../../../core/src/lib/validation'
 
 const config = surveyConfig as unknown as SurveyConfig
 
