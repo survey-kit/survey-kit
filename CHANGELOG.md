@@ -1,5 +1,7 @@
 # Project Log
 
+To see the monthly sprints and their tickets, please see the [sk-kanban.md](sk-kanban.md) file.
+
 ## Week 1 (w/c 13/10/25):
 
 - Initial setup of GitHub repository ([#1](https://github.com/survey-kit/survey-kit/pull/1))

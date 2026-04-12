@@ -4,6 +4,7 @@ Mobile-first, accessible survey framework for engaging experiences.
 
 ## Important links
 
+- [Getting Started](./GET_STARTED.md) – prerequisites, file listing, and install guide
 - [Survey-Kit Website](https://survey-kit.com)
 - Examples:
   - [Template (Vercel)](https://template.survey-kit.com) using [Vercel](https://vercel.com)
