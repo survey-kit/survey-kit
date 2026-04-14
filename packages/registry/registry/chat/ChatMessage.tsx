@@ -117,7 +117,7 @@ export function ChatMessage({
         >
           <div className="flex items-center gap-2">
             {isEditing && (
-              <span className="text-xs bg-white/20 px-2 py-0.5 rounded">
+              <span className="text-xs bg-white/10 px-2 py-0.5 rounded">
                 Editing...
               </span>
             )}
