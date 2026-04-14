@@ -87,7 +87,9 @@ describe('App Router Integration', () => {
     render(<Root />)
 
     await waitFor(() => {
-      expect(screen.getByText(/Get started/i)).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Default Survey/i })
+      ).toBeInTheDocument()
     })
   })
 
@@ -95,7 +97,9 @@ describe('App Router Integration', () => {
     setAppTestInitialRoute(templateRoutes.home)
     render(<Root />)
 
-    const startBtn = await screen.findByRole('button', { name: /Get started/i })
+    const startBtn = await screen.findByRole('button', {
+      name: /Default Survey/i,
+    })
     await userEvent.click(startBtn)
 
     await waitFor(() => {
