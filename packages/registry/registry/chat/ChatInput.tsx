@@ -182,7 +182,10 @@ export function ChatInput({
         role="radiogroup"
         aria-label="Select an option"
       >
-        <div className="flex flex-col gap-2">
+        <div
+          className="max-h-[min(45vh,20rem)] overflow-y-auto overscroll-y-contain flex flex-col gap-2 p-1"
+          role="presentation"
+        >
           {options.map((option) => {
             const isSelected = value === option.value
             return (
@@ -222,7 +225,10 @@ export function ChatInput({
         role="group"
         aria-label="Select options"
       >
-        <div className="flex flex-col gap-2">
+        <div
+          className="max-h-[min(45vh,20rem)] overflow-y-auto overscroll-y-contain flex flex-col gap-2 p-1"
+          role="presentation"
+        >
           {options.map((option) => {
             const isSelected = currentValues.includes(option.value)
             return (
