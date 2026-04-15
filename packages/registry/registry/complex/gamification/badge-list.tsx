@@ -62,7 +62,7 @@ export const BadgeCard = React.forwardRef<HTMLDivElement, BadgeCardProps>(
               aria-live="polite"
             >
               {statusLabel}
-              {!unlocked ? ' — complete more surveys to unlock.' : ''}
+              {!unlocked ? ' - complete more surveys to unlock.' : ''}
             </p>
           </div>
         </div>
