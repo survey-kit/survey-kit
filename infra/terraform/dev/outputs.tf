@@ -57,3 +57,13 @@ output "cognito_user_pool_client_id" {
   description = "ID of the Cognito User Pool Client for Admins"
   value       = aws_cognito_user_pool_client.admin_client.id
 }
+
+output "cognito_respondent_user_pool_id" {
+  description = "ID of the Cognito User Pool for survey respondents"
+  value       = aws_cognito_user_pool.respondent_pool.id
+}
+
+output "cognito_respondent_user_pool_client_id" {
+  description = "ID of the Cognito User Pool Client for survey respondents (SPA)"
+  value       = aws_cognito_user_pool_client.respondent_client.id
+}
