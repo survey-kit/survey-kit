@@ -5,7 +5,9 @@
     "organization": "Survey Kit",
     "logo": {
       "small": "/branding_kit/favicon.png",
-      "large": "/branding_kit/landscape_white.png"
+      "large": "/branding_kit/landscape_white.png",
+      "href": "/",
+      "linkLabel": "Home"
     }
   },
   "main": {

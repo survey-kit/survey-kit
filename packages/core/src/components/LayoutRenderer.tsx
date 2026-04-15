@@ -859,6 +859,11 @@ export function LayoutRenderer({
           size="lg"
           logoSmall={layoutConfig.header.logo?.small}
           logoLarge={layoutConfig.header.logo?.large}
+          logoHref={layoutConfig.header.logo?.href}
+          logoLinkLabel={
+            layoutConfig.header.logo?.linkLabel ??
+            layoutConfig.header.organization
+          }
           logo={
             !layoutConfig.header.logo &&
             (layoutConfig.header.organization || layoutConfig.header.title) ? (

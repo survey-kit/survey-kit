@@ -191,6 +191,10 @@ function AdminLayoutWrapper({
           size="lg"
           logoSmall={headerConfig.logo?.small}
           logoLarge={headerConfig.logo?.large}
+          logoHref={headerConfig.logo?.href}
+          logoLinkLabel={
+            headerConfig.logo?.linkLabel ?? headerConfig.organization
+          }
           actions={headerActions || []}
         />
       )}
@@ -318,6 +322,11 @@ function SectionPageWrapper({ sectionId }: { sectionId: string }) {
             size="lg"
             logoSmall={(layoutConfig as LayoutConfig).header?.logo?.small}
             logoLarge={(layoutConfig as LayoutConfig).header?.logo?.large}
+            logoHref={(layoutConfig as LayoutConfig).header?.logo?.href}
+            logoLinkLabel={
+              (layoutConfig as LayoutConfig).header?.logo?.linkLabel ??
+              (layoutConfig as LayoutConfig).header?.organization
+            }
             actions={[]}
           />
         )}
