@@ -25,6 +25,11 @@
           "label": "Admin Dashboard",
           "to": "/admin/dashboard",
           "variant": "outline"
+        },
+        {
+          "label": "Respondent Login",
+          "to": "/participant/login",
+          "variant": "outline"
         }
       ]
     },
