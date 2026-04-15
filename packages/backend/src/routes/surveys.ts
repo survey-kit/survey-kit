@@ -66,11 +66,13 @@ router.post<
 
     if (!participantSub) {
       const response = await createResponse(surveyId, answers, metadata ?? {})
+      const anonymousResponseId =
+        response.anonymousResponseId ?? response.responseId
       res.status(201).json({
         success: true,
         data: {
           responseId: response.responseId,
-          anonymousResponseId: response.anonymousResponseId,
+          anonymousResponseId,
           createdAt: response.createdAt,
         },
       })
@@ -88,11 +90,13 @@ router.post<
 
     await transactSurveyResponseAndProfile(response, profile)
 
+    const anonymousResponseId =
+      response.anonymousResponseId ?? response.responseId
     res.status(201).json({
       success: true,
       data: {
         responseId: response.responseId,
-        anonymousResponseId: response.anonymousResponseId,
+        anonymousResponseId,
         createdAt: response.createdAt,
         profile: toParticipantProfileDto(profile),
       },
