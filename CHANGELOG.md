@@ -261,3 +261,12 @@ All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
 - **Template**: `ChatSurveyPage` takes `completionRoute` from the route (same pattern as `SurveyPage`); default view shows chat and admin shortcuts; section page styles adjusted for different viewports.
 - **Docs**: Chat and template guides updated for post-submit navigation via `completionRoute`.
 - **Tooling**: `make prepare` for Husky hooks; package version bumps; Vercel deployment fix.
+
+## Week 25 (w/c 13/04/26)
+
+[Pull Request #37](https://github.com/survey-kit/survey-kit/pull/37):
+
+- **Registry – chat**: Capped, scrollable radio and checkbox option lists in **`ChatInput`** so long lists no longer squeeze the messages pane. `ChatContainer` adds `min-h-0` on the scrollable messages region for correct flex behaviour on small screens.
+- **Registry – chat**: On short viewports (`max-height: 600px`), a **View options** control shows the question first; choices appear after the user taps it ( `useSyncExternalStore` + `matchMedia` ). Skip actions stay available when the question is optional.
+- **Registry – chat**: `ChatMessage` text colour adjusted for better contrast.
+- **Chore**: Registry package version bump.

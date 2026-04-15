@@ -159,7 +159,10 @@ const {
   nextPage,
   prevPage,
   submitSurvey,
-} = useSurvey({ config, onSubmit })
+} = useSurvey({
+  config,
+  onSubmit,
+})
 ```
 
 ### Components

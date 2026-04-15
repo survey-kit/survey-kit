@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useSyncExternalStore } from 'react'
 import { Button } from '../primitives/button/button'
 import { Input } from '../primitives/input/input'
 import { Checkbox } from '../primitives/checkbox/checkbox'
@@ -31,6 +31,23 @@ export interface ChatInputOption {
 /**
  * Props for the ChatInput component.
  */
+/** Short viewports: landscape phones, small heights, or devtools device frames where choices crowd the question. */
+const COMPACT_CHOICE_VIEWPORT_MQ = '(max-height: 600px)'
+
+function subscribeToCompactChoiceViewport(cb: () => void) {
+  const mq = window.matchMedia(COMPACT_CHOICE_VIEWPORT_MQ)
+  mq.addEventListener('change', cb)
+  return () => mq.removeEventListener('change', cb)
+}
+
+function getCompactChoiceViewportSnapshot() {
+  return window.matchMedia(COMPACT_CHOICE_VIEWPORT_MQ).matches
+}
+
+function getCompactChoiceViewportServerSnapshot() {
+  return false
+}
+
 export interface ChatInputProps {
   type: 'text' | 'radio' | 'checkbox' | 'emoji-slider'
   value: unknown
@@ -71,6 +88,37 @@ export function ChatInput({
   const [textValue, setTextValue] = useState(
     typeof value === 'string' ? value : ''
   )
+
+  const isVeryCompactViewport = useSyncExternalStore(
+    subscribeToCompactChoiceViewport,
+    getCompactChoiceViewportSnapshot,
+    getCompactChoiceViewportServerSnapshot
+  )
+
+  const [choiceOptionsRevealed, setChoiceOptionsRevealed] = useState(false)
+  const choiceListId = React.useId()
+
+  const optionsKey = useMemo(
+    () => options.map((o) => o.value).join('|'),
+    [options]
+  )
+
+  useEffect(() => {
+    setChoiceOptionsRevealed(false)
+  }, [optionsKey, type])
+
+  const hasChoiceSelection =
+    type === 'radio'
+      ? value !== null && value !== undefined && value !== ''
+      : type === 'checkbox'
+        ? Array.isArray(value) && value.length > 0
+        : false
+
+  const showCompactChoiceGate =
+    (type === 'radio' || type === 'checkbox') &&
+    isVeryCompactViewport &&
+    !choiceOptionsRevealed &&
+    !hasChoiceSelection
 
   // Sync textValue when value prop changes (e.g., when entering edit mode)
   useEffect(() => {
@@ -182,31 +230,64 @@ export function ChatInput({
         role="radiogroup"
         aria-label="Select an option"
       >
-        <div className="flex flex-col gap-2">
-          {options.map((option) => {
-            const isSelected = value === option.value
-            return (
-              <Checkbox
-                key={option.value}
-                variant="singular"
-                label={option.label}
-                checked={isSelected}
-                onChange={() => handleRadioSelect(option.value)}
+        {showCompactChoiceGate ? (
+          <div className="flex flex-col gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full"
+              disabled={disabled}
+              aria-expanded={false}
+              aria-controls={choiceListId}
+              onClick={() => setChoiceOptionsRevealed(true)}
+            >
+              View options
+            </Button>
+            {onSkip && !required && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={onSkip}
                 disabled={disabled}
-              />
-            )
-          })}
-        </div>
-        {onSkip && !required && (
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onSkip}
-            disabled={disabled}
-            className="mt-2 w-full"
-          >
-            Skip this question
-          </Button>
+                className="w-full"
+              >
+                Skip this question
+              </Button>
+            )}
+          </div>
+        ) : (
+          <>
+            <div
+              id={choiceListId}
+              className="max-h-[min(45vh,20rem)] overflow-y-auto overscroll-y-contain flex flex-col gap-2 p-1"
+              role="presentation"
+            >
+              {options.map((option) => {
+                const isSelected = value === option.value
+                return (
+                  <Checkbox
+                    key={option.value}
+                    variant="singular"
+                    label={option.label}
+                    checked={isSelected}
+                    onChange={() => handleRadioSelect(option.value)}
+                    disabled={disabled}
+                  />
+                )
+              })}
+            </div>
+            {onSkip && !required && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={onSkip}
+                disabled={disabled}
+                className="mt-2 w-full"
+              >
+                Skip this question
+              </Button>
+            )}
+          </>
         )}
       </div>
     )
@@ -222,41 +303,74 @@ export function ChatInput({
         role="group"
         aria-label="Select options"
       >
-        <div className="flex flex-col gap-2">
-          {options.map((option) => {
-            const isSelected = currentValues.includes(option.value)
-            return (
-              <Checkbox
-                key={option.value}
-                variant="multiple"
-                label={option.label}
-                checked={isSelected}
-                onChange={() => handleCheckboxToggle(option.value)}
-                disabled={disabled}
-              />
-            )
-          })}
-        </div>
-        <div className="flex gap-2 mt-3">
-          <Button
-            type="button"
-            onClick={onSubmit}
-            disabled={disabled || !isCheckboxValid()}
-            className="flex-1"
-          >
-            Confirm ({currentValues.length} selected)
-          </Button>
-          {onSkip && !required && (
+        {showCompactChoiceGate ? (
+          <div className="flex flex-col gap-2">
             <Button
               type="button"
-              variant="ghost"
-              onClick={onSkip}
+              variant="secondary"
+              className="w-full"
               disabled={disabled}
+              aria-expanded={false}
+              aria-controls={choiceListId}
+              onClick={() => setChoiceOptionsRevealed(true)}
             >
-              Skip
+              View options
             </Button>
-          )}
-        </div>
+            {onSkip && !required && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={onSkip}
+                disabled={disabled}
+                className="w-full"
+              >
+                Skip
+              </Button>
+            )}
+          </div>
+        ) : (
+          <>
+            <div
+              id={choiceListId}
+              className="max-h-[min(45vh,20rem)] overflow-y-auto overscroll-y-contain flex flex-col gap-2 p-1"
+              role="presentation"
+            >
+              {options.map((option) => {
+                const isSelected = currentValues.includes(option.value)
+                return (
+                  <Checkbox
+                    key={option.value}
+                    variant="multiple"
+                    label={option.label}
+                    checked={isSelected}
+                    onChange={() => handleCheckboxToggle(option.value)}
+                    disabled={disabled}
+                  />
+                )
+              })}
+            </div>
+            <div className="flex gap-2 mt-3">
+              <Button
+                type="button"
+                onClick={onSubmit}
+                disabled={disabled || !isCheckboxValid()}
+                className="flex-1"
+              >
+                Confirm ({currentValues.length} selected)
+              </Button>
+              {onSkip && !required && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={onSkip}
+                  disabled={disabled}
+                >
+                  Skip
+                </Button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     )
   }
