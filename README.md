@@ -28,7 +28,7 @@ Survey-Kit boosts survey participation with:
 
 - **`packages/registry`** – Pre-built, accessible React components (Button, Input, Card, Layout etc.), customisable with Tailwind CSS and Radix UI
 - **`packages/core`** – Survey renderer, state hooks, schema types, and validation
-- **`packages/template`** – Example Vite + React app (surveys, admin dashboard, Cognito)
+- **`packages/template`** – Example Vite + React app (surveys, admin dashboard, optional respondent login / badges demo, Cognito)
 - **`packages/backend`** – Express-style API for responses and admin analytics (DynamoDB; deployed as Lambda). Not an npm workspace root package: install with `npm install` inside this folder when working on the full stack
 
 Source for published docs lives under [`docs/docs/`](./docs/docs/) (Markdown). Terraform and related notes are under [`infra/`](./infra/).
@@ -38,7 +38,7 @@ Source for published docs lives under [`docs/docs/`](./docs/docs/) (Markdown). T
 - Full TypeScript support
 - Mobile optimised, responsive design
 - **Admin Dashboard** – Integrated analytics with dynamic cross-tabulation filtering
-- **Secure Authentication** – Built-in support for AWS Cognito administrative login
+- **Secure Authentication** – AWS Cognito for admins; optional second pool for survey respondents (gamification)
 - **Infrastructure as Code** – Terraform modules for serverless AWS deployment (S3, CloudFront, Lambda, DynamoDB, Cognito)
 - Built-in validation and conditional logic
 - Progress tracking and answer persistence
@@ -116,7 +116,7 @@ Core and registry packages do not define a root-level test script today; behavio
 
 ## Backend API
 
-The [`packages/backend`](./packages/backend) service implements submission storage, listing, and **`GET /api/admin/analytics`** (optional `surveyId`, question filters) used by the template admin dashboard. See [**`packages/backend/README.md`**](./packages/backend/README.md) for endpoints and env vars, and [**`docs/docs/backend.md`**](./docs/docs/backend.md) for a concise HTTP reference aligned with the template’s `VITE_API_URL`.
+The [`packages/backend`](./packages/backend) service implements submission storage, listing, **`GET /api/admin/analytics`**, and optional **`GET /api/participant/profile`** (respondent JWT). See [**`packages/backend/README.md`**](./packages/backend/README.md), [**`docs/docs/backend.md`**](./docs/docs/backend.md), and [**`docs/docs/guides/gamification.md`**](./docs/docs/guides/gamification.md).
 
 ## Infrastructure
 

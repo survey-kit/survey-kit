@@ -199,14 +199,17 @@ survey-kit/
 │   │   ├── src/
 │   │   │   ├── surveys/
 │   │   │   │   ├── survey-1.json
-│   │   │   │   └── chat-survey.json
+│   │   │   │   ├── chat-survey.json
+│   │   │   │   └── survey-types-demo.json
 │   │   │   ├── layouts/
 │   │   │   │   ├── layout.config.json
 │   │   │   │   └── SurveyLayout.tsx
 │   │   │   ├── sections/
 │   │   │   │   ├── sections.config.json
 │   │   │   │   ├── AdminDashboard.tsx
-│   │   │   │   └── AdminLogin.tsx
+│   │   │   │   ├── AdminLogin.tsx
+│   │   │   │   ├── ParticipantLogin.tsx
+│   │   │   │   └── ParticipantProfile.tsx
 │   │   │   ├── dashboards/
 │   │   │   │   └── dashboard.config.json
 │   │   │   ├── consents/
@@ -215,8 +218,10 @@ survey-kit/
 │   │   │   │   └── cookies.config.json
 │   │   │   ├── services/
 │   │   │   │   ├── api.ts
+│   │   │   │   ├── apiConfig.ts
 │   │   │   │   ├── analytics.ts
-│   │   │   │   └── auth.ts
+│   │   │   │   ├── auth.ts
+│   │   │   │   └── respondentAuth.ts
 │   │   │   ├── App.tsx
 │   │   │   ├── main.tsx
 │   │   │   └── index.css
@@ -231,14 +236,17 @@ survey-kit/
 │       ├── src/
 │       │   ├── routes/
 │       │   │   ├── surveys.ts
-│       │   │   └── admin.ts
+│       │   │   ├── admin.ts
+│       │   │   └── participant.ts
 │       │   ├── services/
 │       │   │   ├── dynamodb.ts
-│       │   │   └── analytics.ts
+│       │   │   ├── analytics.ts
+│       │   │   └── participant.ts
 │       │   ├── middleware/
 │       │   │   └── auth.ts
 │       │   ├── types/
-│       │   │   └── survey.ts
+│       │   │   ├── survey.ts
+│       │   │   └── participant.ts
 │       │   ├── app.ts
 │       │   ├── server.ts
 │       │   └── index.ts

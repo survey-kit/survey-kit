@@ -8,7 +8,7 @@ The registry package provides pre-built, accessible React components for buildin
 
 - **Primitives** – Button, Input, Heading, Card, Checkbox
 - **Layout** – Header, Footer, Sidebar, Wrapper, Stage Tabs, Main Content
-- **Complex** – Progress Bar, Score Card, Blocked Page, Emoji Slider, Panel, Filter Sidebar, Cookie Consent
+- **Complex** – Progress Bar, Score Card, Blocked Page, Emoji Slider, Panel, Filter Sidebar, Cookie Consent, BadgeList / ParticipantSummary (gamification UI)
 - **Chat** – ChatContainer, ChatBubble, ChatMessage, ChatInput, TypingIndicator, ChatReviewScreen
 - **Dashboard** – TrendLineChart, DropoffBarChart, ResponseList, ResponseDetailPanel for administrative analytics and response viewing
 - **Sections** – SectionPage for intro/completion screens
