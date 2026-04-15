@@ -19,6 +19,11 @@ import type { ParticipantProfileDto } from '../types/participant.js'
 
 const router = Router()
 
+/** Health check */
+router.get('/health', (_req, res) => {
+  res.json({ ok: true, scope: 'surveys' })
+})
+
 /**
  * POST /api/surveys/:surveyId/responses
  * Submit a new survey response (optional Bearer: respondent Cognito Id token)

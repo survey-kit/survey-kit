@@ -7,6 +7,12 @@ import {
 } from '../services/participant.js'
 const router = Router()
 
+/** Health check */
+router.get('/health', (_req, res) => {
+  res.json({ ok: true, scope: 'participant' })
+})
+
+/** Get participant profile */
 router.get(
   '/profile',
   authenticateRespondent,
