@@ -115,3 +115,5 @@ Ensure the following environment variables are configured:
 ## Deployment
 
 Infrastructure configuration is managed via Terraform. Refer to `infra/terraform/dev/backend.tf` for details.
+
+The Lambda **Dockerfile** builds the bundle in a multi-stage image (`npm ci` + `esbuild` from `src`). You do **not** need to run `npm run build` on the host before `docker build`; that avoids shipping an outdated `dist/` directory.
