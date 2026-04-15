@@ -270,3 +270,12 @@ All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
 - **Registry – chat**: On short viewports (`max-height: 600px`), a **View options** control shows the question first; choices appear after the user taps it ( `useSyncExternalStore` + `matchMedia` ). Skip actions stay available when the question is optional.
 - **Registry – chat**: `ChatMessage` text colour adjusted for better contrast.
 - **Chore**: Registry package version bump.
+
+[Pull Request #38](https://github.com/survey-kit/survey-kit/pull/38):
+
+- **Infrastructure**: Second Cognito user pool for self-sign-up **respondents**; Lambda env `COGNITO_RESPONDENT_USER_POOL_ID`, DynamoDB IAM for transactional writes; `cognito_user_pool_id` tfvar removed (admin pool wired from resource).
+- **Backend**: `GET /api/participant/profile`, optional respondent `Bearer` on `POST …/responses`, `PARTICIPANT#` profile items (points, UTC-day streaks, badges at 1/3/5 completions); survey rows keep `anonymousResponseId` only (no Cognito PII on `SURVEY#` items). Multi-stage **Dockerfile** builds with esbuild inside the image (avoids stale host `dist/`). `GET /api/participant/health` for deploy checks.
+- **Core**: Gamification types and helpers (`computeBadgeStates`, `streakAriaLabel`, etc.).
+- **Registry**: `BadgeList`, `BadgeCard`, `ParticipantSummary` for accessible badge UI.
+- **Template**: Respondent login/profile routes, `survey-types-demo.json` + `/survey-demo`, `respondentAuth` + `apiConfig` for API origin normalisation; optional header **logo link** via `layout.config.json` (`logo.href` / `linkLabel`).
+- **Docs**: *Respondents & gamification* guide, backend/infrastructure/core/template updates; root and package READMEs aligned.
