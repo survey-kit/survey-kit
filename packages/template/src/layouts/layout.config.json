@@ -4,7 +4,7 @@
     "enabled": true,
     "organization": "Survey Kit",
     "logo": {
-      "small": "/branding_kit/favicon.png",
+      "small": "/branding_kit/icon.png",
       "large": "/branding_kit/landscape_white.png",
       "href": "/",
       "linkLabel": "Home"
@@ -20,7 +20,7 @@
   "footer": {
     "enabled": true,
     "logo": {
-      "small": "/branding_kit/favicon.png",
+      "small": "/branding_kit/icon.png",
       "large": "/branding_kit/landscape_black.png"
     },
     "links": [
