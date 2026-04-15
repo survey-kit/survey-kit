@@ -47,6 +47,7 @@ nav:
       - Configuration: guides/configuration.md
       - Rendering Modes: guides/rendering-modes.md
       - Connecting a Backend: backend.md
+      - Respondents & gamification: guides/gamification.md
       - Full Template Demo: guides/template.md
       - Infrastructure Guide: guides/infrastructure.md
   - Packages:

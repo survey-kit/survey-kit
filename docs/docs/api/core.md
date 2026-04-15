@@ -385,6 +385,23 @@ interface DashboardFilterConfig {
 
 ---
 
+## Gamification helpers
+
+Types and pure functions for respondent badges and streak copy (aligned with the backend; change both if you alter rules). See [Respondents & gamification](../guides/gamification.md).
+
+```typescript
+import {
+  DEFAULT_BADGE_DEFINITIONS,
+  computeBadgeStates,
+  computeNextStreak,
+  streakAriaLabel,
+  toProfileSummary,
+  utcTodayString,
+} from '@survey-kit/core'
+```
+
+---
+
 ## Utilities
 
 ### Conditional Logic

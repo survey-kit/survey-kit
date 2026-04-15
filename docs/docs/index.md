@@ -33,6 +33,7 @@ Survey-Kit boosts survey participation with:
 - [Quick Start](getting-started/quickstart.md)
 - [Core API](api/core.md)
 - [Registry Components](api/registry.md)
+- [Respondents & gamification](guides/gamification.md)
 
 ## Resources
 
