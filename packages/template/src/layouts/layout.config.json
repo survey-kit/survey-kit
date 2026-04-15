@@ -2,7 +2,7 @@
   "favicon": "/branding_kit/favicon.png",
   "header": {
     "enabled": true,
-    "organization": "Office for National Statistics",
+    "organization": "Survey Kit",
     "logo": {
       "small": "/branding_kit/favicon.png",
       "large": "/branding_kit/landscape_white.png"
