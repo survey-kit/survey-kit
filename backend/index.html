@@ -16,7 +16,7 @@
         <link rel="prev" href="../guides/rendering-modes/">
       
       
-        <link rel="next" href="../guides/template/">
+        <link rel="next" href="../guides/gamification/">
       
       
         
@@ -752,6 +752,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#participant-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Participant profile
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -783,6 +794,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/gamification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Respondents & gamification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1262,6 +1301,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#participant-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Participant profile
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1339,7 +1389,7 @@
 <h2 id="api-endpoints">API Endpoints<a class="headerlink" href="#api-endpoints" title="Permanent link">&para;</a></h2>
 <h3 id="submit-response">Submit Response<a class="headerlink" href="#submit-response" title="Permanent link">&para;</a></h3>
 <p><code>POST /api/surveys/{surveyId}/responses</code></p>
-<p>Submits a survey response.</p>
+<p>Submits a survey response. Optionally send <code>Authorization: Bearer &lt;respondent Id token&gt;</code> to record completion for <a href="../guides/gamification/">badges and streaks</a> without storing identity on the response row.</p>
 <p><strong>Request Body:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;answers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1353,15 +1403,17 @@
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
 </code></pre></div>
-<p><strong>Response:</strong></p>
+<p><strong>Response (anonymous):</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">&quot;responseId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-05T10:00:00Z&quot;</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">&quot;anonymousResponseId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-05T10:00:00Z&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">}</span>
 </code></pre></div>
+<p>When a valid respondent token is supplied, the same shape applies and <code>data</code> may also include a <code>profile</code> object (points, badges, streak).</p>
 <h3 id="list-responses">List Responses<a class="headerlink" href="#list-responses" title="Permanent link">&para;</a></h3>
 <p><code>GET /api/surveys/{surveyId}/responses</code></p>
 <p>Retrieves all raw responses for a specific survey (administrative use only).</p>
@@ -1376,6 +1428,9 @@
 To view analytics for respondents who answered "In House" for the question with ID <code>developed</code>:</p>
 <p><code>GET /api/admin/analytics?surveyId=survey-1&amp;developed=in_house</code></p>
 <p>The backend handles both simple values and object-based answer structures (e.g., <code>{ value: "..." }</code>) when applying these filters.</p>
+<h3 id="participant-profile">Participant profile<a class="headerlink" href="#participant-profile" title="Permanent link">&para;</a></h3>
+<p><code>GET /api/participant/profile</code></p>
+<p>Returns gamification state for the authenticated respondent. Requires <code>Authorization: Bearer &lt;respondent Id token&gt;</code>. See <a href="../guides/gamification/">Respondents &amp; gamification</a>.</p>
 <h2 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h2>
 <p>Ensure the following environment variables are configured:</p>
 <table>
@@ -1396,7 +1451,11 @@ To view analytics for respondents who answered "In House" for the question with 
 </tr>
 <tr>
 <td style="text-align: left;"><code>COGNITO_USER_POOL_ID</code></td>
-<td style="text-align: left;">AWS Cognito User Pool ID used for login. (e.g. <code>eu-west-2_XXXXXXXXX</code>)</td>
+<td style="text-align: left;">Cognito User Pool ID for <strong>admin</strong> JWT verification.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>COGNITO_RESPONDENT_USER_POOL_ID</code></td>
+<td style="text-align: left;">Cognito User Pool ID for <strong>respondent</strong> JWT verification (gamification).</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>AWS_PROFILE</code></td>
@@ -1414,6 +1473,7 @@ To view analytics for respondents who answered "In House" for the question with 
 </table>
 <h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h2>
 <p>Infrastructure configuration is managed via Terraform. Refer to <code>infra/terraform/dev/backend.tf</code> for details.</p>
+<p>The Lambda <strong>Dockerfile</strong> builds the bundle in a multi-stage image (<code>npm ci</code> + <code>esbuild</code> from <code>src</code>). You do <strong>not</strong> need to run <code>npm run build</code> on the host before <code>docker build</code>; that avoids shipping an outdated <code>dist/</code> directory.</p>
 
 
 

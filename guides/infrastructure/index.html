@@ -654,6 +654,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../gamification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Respondents & gamification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../template/" class="md-nav__link">
         
   
@@ -1420,27 +1448,31 @@
 <p>Infrastructure is managed using <strong>Terraform</strong>, located in the <code>infra/terraform</code> directory.</p>
 <hr />
 <h2 id="authentication-cognito">Authentication (Cognito)<a class="headerlink" href="#authentication-cognito" title="Permanent link">&para;</a></h2>
-<p>Administrative access to the dashboard is secured via AWS Cognito. This provides a secure, scalable way to manage admin users without storing credentials directly in the database.</p>
+<p>The template uses <strong>two</strong> Cognito user pools:</p>
+<ol>
+<li><strong>Admin</strong> — dashboard access (<code>/admin/*</code>); users are created by administrators only.</li>
+<li><strong>Respondent</strong> — optional self sign-up for <a href="../gamification/">gamification</a> (badges, streaks); used by <code>/participant/*</code> and authenticated survey submits.</li>
+</ol>
 <h3 id="integration">Integration<a class="headerlink" href="#integration" title="Permanent link">&para;</a></h3>
-<p>The authentication logic is implemented in <code>packages/template/src/services/auth.ts</code>, which uses the AWS SDK to interact with the Cognito User Pool.</p>
 <ul>
-<li><strong>Login</strong>: Authenticates users and stores the JWT in <code>localStorage</code>.</li>
-<li><strong>Validation</strong>: The backend verifies the JWT in the <code>Authorization</code> header for protected admin routes.</li>
-<li><strong>Logout</strong>: Clears the authentication state and local storage.</li>
+<li><strong>Admin</strong>: <code>packages/template/src/services/auth.ts</code> — JWT stored separately from respondent tokens.</li>
+<li><strong>Respondent</strong>: <code>packages/template/src/services/respondentAuth.ts</code>.</li>
+<li><strong>Backend</strong>: Admin routes verify <code>COGNITO_USER_POOL_ID</code>; respondent routes and optional <code>POST …/responses</code> bearer tokens verify <code>COGNITO_RESPONDENT_USER_POOL_ID</code>.</li>
 </ul>
 <h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
-<p>To configure Cognito, you need the following environment variables:</p>
+<p>Frontend (Vite):</p>
 <ul>
-<li><code>VITE_COGNITO_CLIENT_ID</code>: The application client ID from your Cognito User Pool.</li>
-<li><code>VITE_AWS_REGION</code>: The region where your User Pool is deployed.</li>
+<li><code>VITE_COGNITO_CLIENT_ID</code> — admin app client.</li>
+<li><code>VITE_COGNITO_RESPONDENT_CLIENT_ID</code> — respondent app client.</li>
+<li><code>VITE_AWS_REGION</code> — region of the pools.</li>
 </ul>
 <hr />
 <h2 id="data-storage-dynamodb">Data Storage (DynamoDB)<a class="headerlink" href="#data-storage-dynamodb" title="Permanent link">&para;</a></h2>
 <p>Survey responses are stored in a DynamoDB table. The table uses a Single-Table Design pattern for efficiency.</p>
 <h3 id="schema">Schema<a class="headerlink" href="#schema" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Partition Key (PK)</strong>: <code>SURVEY#{surveyId}</code></li>
-<li><strong>Sort Key (SK)</strong>: <code>RESPONSE#{timestamp}#{uuid}</code></li>
+<li><strong>Partition Key (PK)</strong>: <code>SURVEY#{surveyId}</code> (and <code>PARTICIPANT#{sub}</code> for respondent profiles — see <a href="../gamification/">gamification</a>)</li>
+<li><strong>Sort Key (SK)</strong>: <code>RESPONSE#{timestamp}#{uuid}</code> (and <code>PROFILE</code> for participant aggregates)</li>
 </ul>
 <p>This structure allows for efficient querying of all responses for a given survey while maintaining chronological order.</p>
 <h3 id="filtering-performance">Filtering Performance<a class="headerlink" href="#filtering-performance" title="Permanent link">&para;</a></h3>
@@ -1449,14 +1481,16 @@
 <h2 id="environment-configuration">Environment Configuration<a class="headerlink" href="#environment-configuration" title="Permanent link">&para;</a></h2>
 <p>Both the frontend (Vite) and backend (Express) require environment variables to connect to these services.</p>
 <h3 id="frontend-env">Frontend (.env)<a class="headerlink" href="#frontend-env" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>VITE_COGNITO_CLIENT_ID=eu-west-2_XXXXXXXXX
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>VITE_AWS_REGION=eu-west-2
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>VITE_API_URL=https://api.yourdomain.com
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>VITE_COGNITO_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>VITE_COGNITO_RESPONDENT_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>VITE_AWS_REGION=eu-west-2
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>VITE_API_URL=https://api.yourdomain.com
 </code></pre></div>
 <h3 id="backend-env">Backend (.env)<a class="headerlink" href="#backend-env" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>DYNAMODB_TABLE_NAME=survey-responses
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>COGNITO_USER_POOL_ID=eu-west-2_XXXXXXXXX
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>AWS_REGION=eu-west-2
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>COGNITO_RESPONDENT_USER_POOL_ID=eu-west-2_YYYYYYYYY
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>AWS_REGION=eu-west-2
 </code></pre></div>
 <hr />
 <h2 id="deployment-with-terraform">Deployment with Terraform<a class="headerlink" href="#deployment-with-terraform" title="Permanent link">&para;</a></h2>

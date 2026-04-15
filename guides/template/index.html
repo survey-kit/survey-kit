@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://docs.survey-kit.com/guides/template/">
       
       
-        <link rel="prev" href="../../backend/">
+        <link rel="prev" href="../gamification/">
       
       
         <link rel="next" href="../infrastructure/">
@@ -634,6 +634,34 @@
     
   
     Connecting a Backend
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gamification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Respondents & gamification
   
 
     
@@ -1426,7 +1454,11 @@ Survey-Kit's capabilities.</p>
 </tr>
 <tr>
 <td><code>surveys/chat-survey.json</code></td>
-<td>Chat-style technology preferences; submissions use this file’s <code>id</code> (e.g. <code>chat-demo</code>) when <code>VITE_API_URL</code> is set, same idea as the form survey</td>
+<td>Chat-style survey; submissions use this file’s <code>id</code> (<code>chat-survey</code>) when <code>VITE_API_URL</code> is set</td>
+</tr>
+<tr>
+<td><code>surveys/survey-types-demo.json</code></td>
+<td>Short form showcasing question types; used with respondent auth (<code>/survey-demo</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -1450,6 +1482,18 @@ Survey-Kit's capabilities.</p>
 <tr>
 <td><code>/chat-survey</code></td>
 <td>Chat-style survey demo</td>
+</tr>
+<tr>
+<td><code>/survey-demo/*</code></td>
+<td>Types demo (respondent sign-in required)</td>
+</tr>
+<tr>
+<td><code>/participant/login</code></td>
+<td>Respondent sign-up / sign-in (Cognito)</td>
+</tr>
+<tr>
+<td><code>/participant/profile</code></td>
+<td>Badges and streak summary (authenticated)</td>
 </tr>
 <tr>
 <td><code>/complete-1</code></td>
