@@ -16,8 +16,8 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@survey-kit/core": "*",
-    "@survey-kit/registry": "*",
+    "@survey-kit/core": "0.1.28",
+    "@survey-kit/registry": "0.1.22",
     "@tailwindcss/postcss": "^4.1.16",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
