@@ -14,7 +14,7 @@ The core package provides the essential logic and components for building survey
 - **Conditional logic** – Show/hide questions and pages based on answers
 - **Navigation** – Configurable navigation rules (sequential or free-form)
 - **Dynamic Filtering** – Utilities to extract filterable dimensions from survey configurations
-- **Gamification helpers** – Types and pure functions for respondent badges / streak copy (optional; see docs *Respondents & gamification*)
+- **Gamification helpers** – Types and pure functions for respondent badges / streak copy (optional; see docs _Respondents & gamification_)
 
 ## Features
 
