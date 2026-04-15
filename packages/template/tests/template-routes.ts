@@ -12,4 +12,7 @@ export const templateRoutes = {
   signOut: '/sign-out',
   adminLogin: '/admin/login',
   adminDashboard: '/admin/dashboard',
+  participantLogin: '/participant/login',
+  participantProfile: '/participant/profile',
+  surveyDemo: '/survey-demo',
 } as const
