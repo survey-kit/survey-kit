@@ -56,6 +56,7 @@ import {
   type SectionsConfig,
 } from '@survey-kit/core'
 import surveyConfig1 from './surveys/survey-1.json'
+import surveyTypesDemo from './surveys/survey-types-demo.json'
 import chatSurveyConfig from './surveys/chat-survey.json'
 import layoutConfig from './layouts/layout.config.json'
 import sectionsConfig from './sections/sections.config.json'
@@ -63,7 +64,10 @@ import cookieConfig from './cookies/cookies.config.json'
 import privacyConfig from './consents/consents.config.json'
 import { AdminLogin } from './sections/AdminLogin'
 import { AdminDashboard } from './sections/AdminDashboard'
+import { ParticipantLogin } from './sections/ParticipantLogin'
+import { ParticipantProfile } from './sections/ParticipantProfile'
 import { getAuthToken, removeAuthToken } from './services/auth'
+import { getRespondentToken } from './services/respondentAuth'
 
 const components = {
   Button,
@@ -144,6 +148,14 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function ParticipantRoute({ children }: { children: React.ReactNode }) {
+  const token = getRespondentToken()
+  if (!token) {
+    return <Navigate to="/participant/login" replace />
+  }
+  return <>{children}</>
+}
+
 // Wrapper for Admin views to share the same Header/Footer as Survey pages
 function AdminLayoutWrapper({
   children,
@@ -200,20 +212,31 @@ interface SurveyPageProps {
   config: SurveyConfig
   surveyId: string
   completionRoute: string
+  /** Send respondent Id token on submit for server-side badges (no PII on response row) */
+  attachRespondentBearer?: boolean
 }
 
-function SurveyPage({ config, surveyId, completionRoute }: SurveyPageProps) {
+function SurveyPage({
+  config,
+  surveyId,
+  completionRoute,
+  attachRespondentBearer = false,
+}: SurveyPageProps) {
   const navigate = useNavigate()
   const cookieContext = useCookieConsentContext()
   const consentContext = useConsentContext()
   const sessionStartRef = React.useRef(initSession())
 
   const handleSurveySubmit = async (answers: Record<string, unknown>) => {
+    const bearerToken = attachRespondentBearer
+      ? getRespondentToken()
+      : undefined
     const result = await submitSurveyResponse({
       surveyId,
       answers,
       sessionStartTime: sessionStartRef.current,
       hasAnalyticsConsent: cookieContext.hasConsent('analytics'),
+      bearerToken: bearerToken ?? undefined,
     })
 
     if (!result.success) {
@@ -478,6 +501,38 @@ function App() {
                 <Route
                   path="/chat-survey"
                   element={<ChatSurveyPage completionRoute="/complete-2" />}
+                />
+
+                <Route
+                  path="/participant/login"
+                  element={
+                    <AdminLayoutWrapper>
+                      <ParticipantLogin />
+                    </AdminLayoutWrapper>
+                  }
+                />
+                <Route
+                  path="/participant/profile"
+                  element={
+                    <AdminLayoutWrapper>
+                      <ParticipantRoute>
+                        <ParticipantProfile />
+                      </ParticipantRoute>
+                    </AdminLayoutWrapper>
+                  }
+                />
+                <Route
+                  path="/survey-demo/*"
+                  element={
+                    <ParticipantRoute>
+                      <SurveyPage
+                        config={surveyTypesDemo as unknown as SurveyConfig}
+                        surveyId={(surveyTypesDemo as { id: string }).id}
+                        completionRoute="/participant/profile"
+                        attachRespondentBearer
+                      />
+                    </ParticipantRoute>
+                  }
                 />
               </Routes>
             </>

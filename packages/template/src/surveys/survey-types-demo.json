@@ -1,0 +1,153 @@
+{
+  "id": "survey-types-demo",
+  "title": "Question types (minimal demo)",
+  "description": "Short survey showcasing each supported question type for authenticated respondents.",
+  "showQuestionNumbers": true,
+  "navigation": {
+    "stageOrder": "sequential",
+    "groupOrder": "sequential",
+    "pageOrder": "sequential"
+  },
+  "progress": {
+    "showOverall": true,
+    "showPerStage": false,
+    "showPerGroup": false,
+    "showPerPage": false,
+    "location": ["header"]
+  },
+  "stages": [
+    {
+      "id": "stage-demo",
+      "title": "Demo",
+      "description": "One page per group to keep the flow short",
+      "icon": "Layers",
+      "groups": [
+        {
+          "id": "group-text",
+          "title": "Text inputs",
+          "pages": [
+            {
+              "id": "page-text-types",
+              "title": "Text and textarea",
+              "questions": [
+                {
+                  "id": "demo_short_text",
+                  "type": "text",
+                  "label": "Short text",
+                  "placeholder": "A few words",
+                  "required": true,
+                  "requiredToNavigate": true
+                },
+                {
+                  "id": "demo_long_text",
+                  "type": "textarea",
+                  "label": "Longer answer",
+                  "placeholder": "Optional detail",
+                  "required": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-choice",
+          "title": "Choices",
+          "pages": [
+            {
+              "id": "page-choice-types",
+              "title": "Radio, checkbox, select",
+              "questions": [
+                {
+                  "id": "demo_radio",
+                  "type": "radio",
+                  "label": "Pick one option",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "value": "a", "label": "Option A" },
+                    { "value": "b", "label": "Option B" },
+                    { "value": "c", "label": "Option C" }
+                  ]
+                },
+                {
+                  "id": "demo_checkbox",
+                  "type": "checkbox",
+                  "label": "Pick any that apply",
+                  "required": false,
+                  "options": [
+                    { "value": "x", "label": "Choice X" },
+                    { "value": "y", "label": "Choice Y" }
+                  ]
+                },
+                {
+                  "id": "demo_select",
+                  "type": "select",
+                  "label": "Dropdown",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "options": [
+                    { "label": "North", "value": "north" },
+                    { "label": "South", "value": "south" },
+                    { "label": "East", "value": "east" },
+                    { "label": "West", "value": "west" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "group-slider",
+          "title": "Emoji slider",
+          "pages": [
+            {
+              "id": "page-emoji",
+              "title": "Mood",
+              "questions": [
+                {
+                  "id": "demo_mood",
+                  "type": "emoji-slider",
+                  "label": "How do you feel about this demo?",
+                  "required": true,
+                  "requiredToNavigate": true,
+                  "emojiSlider": {
+                    "type": "scale",
+                    "scale": 5,
+                    "showLabels": true,
+                    "emojis": [
+                      {
+                        "value": 1,
+                        "emoji": "\uD83D\uDE21",
+                        "label": "Not great"
+                      },
+                      {
+                        "value": 2,
+                        "emoji": "\uD83D\uDE15",
+                        "label": "Below average"
+                      },
+                      {
+                        "value": 3,
+                        "emoji": "\uD83D\uDE10",
+                        "label": "Okay"
+                      },
+                      {
+                        "value": 4,
+                        "emoji": "\uD83D\uDE42",
+                        "label": "Good"
+                      },
+                      {
+                        "value": 5,
+                        "emoji": "\uD83D\uDE04",
+                        "label": "Great"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
