@@ -23,6 +23,7 @@ export * from '../registry/complex/emoji-slider/scale-emoji-slider'
 export * from '../registry/complex/cookie-consent'
 export * from '../registry/complex/consent-gate'
 export * from '../registry/complex/filter-sidebar/filter-sidebar'
+export * from '../registry/complex/gamification/badge-list'
 
 // Sections - flexible page components
 export * from '../registry/sections/section-page/section-page'
