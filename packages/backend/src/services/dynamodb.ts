@@ -12,9 +12,48 @@ import { v4 as uuidv4 } from 'uuid'
 import type { SurveyResponse, ResponseMetadata } from '../types/survey.js'
 
 const client = new DynamoDBClient({})
-const docClient = DynamoDBDocumentClient.from(client)
+export const docClient = DynamoDBDocumentClient.from(client)
 
-const TABLE_NAME = process.env.DYNAMODB_TABLE_NAME || 'survey-responses'
+export const TABLE_NAME = process.env.DYNAMODB_TABLE_NAME || 'survey-responses'
+
+/**
+ * Build a survey response item (does not persist)
+ */
+export function buildSurveyResponse(
+  surveyId: string,
+  answers: Record<string, unknown>,
+  metadata: Partial<ResponseMetadata> = {}
+): SurveyResponse {
+  const overrideTime = (metadata as any).createdAtOverride
+  const timestamp = overrideTime
+    ? new Date(overrideTime).toISOString()
+    : new Date().toISOString()
+  const responseId = uuidv4()
+
+  const response: SurveyResponse = {
+    pk: `SURVEY#${surveyId}`,
+    sk: `RESPONSE#${timestamp}#${responseId}`,
+    surveyId,
+    responseId,
+    anonymousResponseId: responseId,
+    answers,
+    metadata: {
+      gdprConsent: metadata.gdprConsent ?? false,
+    },
+    createdAt: timestamp,
+  }
+
+  if (metadata.gdprConsent) {
+    if (metadata.userAgent !== undefined)
+      response.metadata.userAgent = metadata.userAgent
+    if (metadata.completionTime !== undefined)
+      response.metadata.completionTime = metadata.completionTime
+    if (metadata.sessionId !== undefined)
+      response.metadata.sessionId = metadata.sessionId
+  }
+
+  return response
+}
 
 /**
  * Create a new survey response in DynamoDB
@@ -24,27 +63,7 @@ export async function createResponse(
   answers: Record<string, unknown>,
   metadata: Partial<ResponseMetadata> = {}
 ): Promise<SurveyResponse> {
-  const overrideTime = (metadata as any).createdAtOverride
-  const timestamp = overrideTime ? new Date(overrideTime).toISOString() : new Date().toISOString()
-  const responseId = uuidv4()
-
-  const response: SurveyResponse = {
-    pk: `SURVEY#${surveyId}`,
-    sk: `RESPONSE#${timestamp}#${responseId}`,
-    surveyId,
-    responseId,
-    answers,
-    metadata: {
-      gdprConsent: metadata.gdprConsent ?? false,
-    },
-    createdAt: timestamp,
-  }
-
-  if (metadata.gdprConsent) {
-    if (metadata.userAgent !== undefined) response.metadata.userAgent = metadata.userAgent;
-    if (metadata.completionTime !== undefined) response.metadata.completionTime = metadata.completionTime;
-    if (metadata.sessionId !== undefined) response.metadata.sessionId = metadata.sessionId;
-  }
+  const response = buildSurveyResponse(surveyId, answers, metadata)
 
   await docClient.send(
     new PutCommand({

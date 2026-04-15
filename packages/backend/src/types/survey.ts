@@ -16,6 +16,7 @@ export interface SurveyResponse {
   sk: string // RESPONSE#{timestamp}#{uuid}
   surveyId: string
   responseId: string
+  anonymousResponseId?: string // Server-only anonymous id (optional)
   answers: Record<string, unknown>
   metadata: ResponseMetadata
   createdAt: string

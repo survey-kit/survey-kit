@@ -169,6 +169,8 @@ To deploy updates:
 2. Sync to S3: `aws s3 sync ../../../packages/template/dist/ s3://YOUR_BUCKET_NAME --profile your-profile-name`
 3. CloudFront will automatically serve the updated content (may take a few minutes to propagate)
 
+**Lambda API:** build and push the container from `packages/backend` (see that package’s `README.md`); bump `lambda_image_tag` in `vars/dev/terraform.tfvars` and run `terraform apply`. The backend image compiles inside Docker, so you do not rely on a pre-built host `dist/`.
+
 ## Cleanup
 
 To destroy the infrastructure:

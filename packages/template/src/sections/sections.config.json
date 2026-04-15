@@ -5,7 +5,7 @@
       "path": "/",
       "title": "Survey Kit Demo",
       "subtitle": "Explore question types, validation and navigation",
-      "body": "Try the Default Survey or the Chat Survey, or view the Admin Dashboard.",
+      "body": "Try the Default Survey or the Chat Survey, or view the Admin Dashboard or login as a respondent and try the demo survey to earn badges.",
       "layout": {
         "header": true,
         "footer": true
@@ -19,6 +19,11 @@
         {
           "label": "Chat Survey",
           "to": "/chat-survey",
+          "variant": "default"
+        },
+        {
+          "label": "Respondent Login",
+          "to": "/participant/login",
           "variant": "secondary"
         },
         {

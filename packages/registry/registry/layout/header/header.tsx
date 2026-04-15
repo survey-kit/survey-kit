@@ -29,6 +29,8 @@ export interface HeaderProps
   logo?: React.ReactNode
   logoSmall?: string // Path to small logo image
   logoLarge?: string // Path to large logo image
+  logoHref?: string // When set with a rendered logo, wraps the logo in `<a href={logoHref}>…</a>`
+  logoLinkLabel?: string // aria-label for the logo link (use when images are decorative)
   actions?: React.ReactNode
 }
 
@@ -41,6 +43,8 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
       logo,
       logoSmall,
       logoLarge,
+      logoHref,
+      logoLinkLabel,
       actions,
       children,
       ...props
@@ -76,6 +80,26 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
       return null
     }
 
+    const logoNode = renderLogo()
+    const logoWithOptionalLink =
+      logoNode && logoHref ? (
+        <a
+          href={logoHref}
+          className={cn(
+            'inline-flex items-center shrink-0 rounded-sm',
+            'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+            variant === 'primary'
+              ? 'focus-visible:outline-white'
+              : 'focus-visible:outline-ocean-blue'
+          )}
+          aria-label={logoLinkLabel ?? 'Home'}
+        >
+          {logoNode}
+        </a>
+      ) : (
+        logoNode
+      )
+
     return (
       <header
         ref={ref}
@@ -86,7 +110,7 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
       >
         <div className="w-full mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            {renderLogo()}
+            {logoWithOptionalLink}
             {children}
           </div>
           {actions && (

@@ -46,6 +46,12 @@ export type {
   SectionLayout,
 } from './types/section'
 
+export type {
+  ParticipantBadgeDefinition,
+  ParticipantBadgeState,
+  ParticipantProfileSummary,
+} from './types/gamification'
+
 // Export components
 export { SurveyRenderer } from './components/SurveyRenderer'
 export { LayoutRenderer } from './components/LayoutRenderer'
@@ -80,3 +86,12 @@ export {
 } from './lib/configUtils'
 
 export { setDocumentFavicon } from './lib/documentFavicon'
+
+export {
+  DEFAULT_BADGE_DEFINITIONS,
+  computeBadgeStates,
+  computeNextStreak,
+  streakAriaLabel,
+  toProfileSummary,
+  utcTodayString,
+} from './lib/gamification'

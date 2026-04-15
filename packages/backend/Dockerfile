@@ -1,17 +1,22 @@
-# Use AWS Lambda Node.js 20 base image (arm64 - matches M-series Mac, no cross-build needed)
+# Multi-stage: compile in the image so the bundle always matches src (avoids stale host dist/).
+
+FROM public.ecr.aws/lambda/nodejs:20 AS builder
+WORKDIR /build
+
+COPY package*.json ./
+RUN npm ci
+
+COPY tsconfig.json esbuild.config.js ./
+COPY src ./src
+RUN node esbuild.config.js
+
 FROM public.ecr.aws/lambda/nodejs:20
 
-# Copy package files
 COPY package*.json ./
-
-# Install production dependencies only
 RUN npm ci --omit=dev
 
-# Copy built application
-COPY dist/ ./
+COPY --from=builder /build/dist/ ./
 
-# Override package.json so Node loads index.js as CommonJS (package has type:module)
 COPY package.lambda.json ./package.json
 
-# Set the handler
 CMD ["index.handler"]

@@ -6,6 +6,8 @@
 export interface LogoConfig {
   small?: string // Path to small logo (relative to /public)
   large?: string // Path to large logo (relative to /public)
+  href?: string // href link (optional)
+  linkLabel?: string // href linkLabel (optional)
 }
 
 export interface HeaderConfig {

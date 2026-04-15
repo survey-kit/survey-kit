@@ -95,6 +95,8 @@ data "aws_iam_policy_document" "dynamodb_access" {
       "dynamodb:PutItem",
       "dynamodb:GetItem",
       "dynamodb:Query",
+      "dynamodb:UpdateItem",
+      "dynamodb:TransactWriteItems",
     ]
     resources = [
       aws_dynamodb_table.survey_responses.arn
@@ -122,7 +124,8 @@ resource "aws_lambda_function" "api" {
     variables = {
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.survey_responses.name
       ALLOWED_ORIGINS     = length(var.allowed_origins) > 0 ? join(",", var.allowed_origins) : "https://${var.domain_name}"
-      COGNITO_USER_POOL_ID = var.cognito_user_pool_id
+      COGNITO_USER_POOL_ID            = aws_cognito_user_pool.admin_pool.id
+      COGNITO_RESPONDENT_USER_POOL_ID = aws_cognito_user_pool.respondent_pool.id
     }
   }
 

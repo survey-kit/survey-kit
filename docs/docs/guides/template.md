@@ -27,22 +27,26 @@ Opens at `http://localhost:5173`
 
 ### Example Surveys
 
-| File                       | Description                                                                                                                                     |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `surveys/survey-1.json`    | Multi-stage technology inventory survey                                                                                                         |
-| `surveys/chat-survey.json` | Chat-style technology preferences; submissions use this file’s `id` (e.g. `chat-demo`) when `VITE_API_URL` is set, same idea as the form survey |
+| File                             | Description                                                                                    |
+| -------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `surveys/survey-1.json`          | Multi-stage technology inventory survey                                                        |
+| `surveys/chat-survey.json`       | Chat-style survey; submissions use this file’s `id` (`chat-survey`) when `VITE_API_URL` is set |
+| `surveys/survey-types-demo.json` | Short form showcasing question types; used with respondent auth (`/survey-demo`)               |
 
 ### Routes
 
-| Path               | Description                         |
-| ------------------ | ----------------------------------- |
-| `/`                | Landing page                        |
-| `/survey-1/*`      | Form-based multi-stage survey       |
-| `/chat-survey`     | Chat-style survey demo              |
-| `/complete-1`      | Completion page for survey 1        |
-| `/complete-2`      | Completion page for chat survey     |
-| `/admin/login`     | Administrator sign-in (Cognito)     |
-| `/admin/dashboard` | Analytics dashboard (authenticated) |
+| Path                   | Description                               |
+| ---------------------- | ----------------------------------------- |
+| `/`                    | Landing page                              |
+| `/survey-1/*`          | Form-based multi-stage survey             |
+| `/chat-survey`         | Chat-style survey demo                    |
+| `/survey-demo/*`       | Types demo (respondent sign-in required)  |
+| `/participant/login`   | Respondent sign-up / sign-in (Cognito)    |
+| `/participant/profile` | Badges and streak summary (authenticated) |
+| `/complete-1`          | Completion page for survey 1              |
+| `/complete-2`          | Completion page for chat survey           |
+| `/admin/login`         | Administrator sign-in (Cognito)           |
+| `/admin/dashboard`     | Analytics dashboard (authenticated)       |
 
 ### Configuration Files
 

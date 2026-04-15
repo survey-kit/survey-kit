@@ -54,6 +54,27 @@ beforeAll(() => {
       writable: true,
     })
   }
+
+  // jsdom has no matchMedia; ChatInput uses useSyncExternalStore + matchMedia for compact viewports
+  if (typeof globalThis.window !== 'undefined') {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: (query: string) => {
+        const mql = {
+          matches: false,
+          media: query,
+          onchange: null as ((this: MediaQueryList, ev: MediaQueryListEvent) => void) | null,
+          addListener: () => {},
+          removeListener: () => {},
+          addEventListener: () => {},
+          removeEventListener: () => {},
+          dispatchEvent: () => true,
+        }
+        return mql
+      },
+    })
+  }
 })
 
 // Automatically clean up after each test

@@ -5,7 +5,12 @@ import { aggregateAnalytics } from '../services/analytics.js'
 
 const router = Router()
 
-// Live Analytics Endpoint from DynamoDB
+/** Health check */
+router.get('/health', (_req, res) => {
+  res.json({ ok: true, scope: 'admin' })
+})
+
+/** Admin analytics endpoint from DynamoDB */
 router.get('/analytics', authenticateAdmin, async (req, res) => {
   try {
     const { surveyId = 'survey-1', ...filters } = req.query as Record<

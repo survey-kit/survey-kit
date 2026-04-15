@@ -70,8 +70,3 @@ variable "lambda_image_tag" {
   type        = string
   default     = "latest"
 }
-
-variable "cognito_user_pool_id" {
-  description = "AWS Cognito User Pool ID for admins"
-  type        = string
-}

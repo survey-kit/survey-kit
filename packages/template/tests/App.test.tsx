@@ -20,6 +20,11 @@ import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom/vitest'
 import Root from '../src/App'
 import { fetchAdminAnalytics } from '../src/services/analytics'
+import {
+  fetchParticipantProfile,
+  submitSurveyResponse,
+} from '../src/services/api'
+import type { ParticipantProfileApi } from '../src/services/api'
 import { templateRoutes } from './template-routes'
 import {
   getAppTestInitialRoute,
@@ -27,9 +32,18 @@ import {
   setAppTestInitialRoute,
 } from './helpers/app-memory-route'
 
+const mockParticipantProfile: ParticipantProfileApi = {
+  completedCount: 0,
+  points: 0,
+  currentStreak: 0,
+  lastCompletionUtcDay: null,
+  badges: [],
+}
+
 vi.mock('../src/services/api', () => ({
   initSession: vi.fn().mockReturnValue(Date.now()),
   submitSurveyResponse: vi.fn().mockResolvedValue({ success: true }),
+  fetchParticipantProfile: vi.fn(),
 }))
 
 vi.mock('../src/services/analytics', () => ({
@@ -70,12 +84,19 @@ vi.mock('react-router-dom', async (importOriginal) => {
 describe('App Router Integration', () => {
   beforeEach(() => {
     window.localStorage.removeItem('adminToken')
+    window.localStorage.removeItem('respondentIdToken')
     window.localStorage.setItem(
       'survey_kit_consent_privacy',
       JSON.stringify({ status: 'accepted', timestamp: Date.now() })
     )
     setAppTestInitialRoute(templateRoutes.home)
     vi.mocked(fetchAdminAnalytics).mockReset()
+    vi.mocked(fetchParticipantProfile).mockReset()
+    vi.mocked(fetchParticipantProfile).mockResolvedValue({
+      success: true,
+      data: mockParticipantProfile,
+    })
+    vi.mocked(submitSurveyResponse).mockResolvedValue({ success: true })
   })
 
   afterEach(() => {
@@ -154,6 +175,97 @@ describe('App Router Integration', () => {
     expect(
       screen.getByRole('heading', { name: /Survey Admin Dashboard/i })
     ).toBeInTheDocument()
+  })
+
+  it('redirects to admin login when dashboard is opened without a token', async () => {
+    setAppTestInitialRoute(templateRoutes.adminDashboard)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: /^Admin Login$/i })
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('logs out from the admin dashboard and returns to admin login', async () => {
+    const user = userEvent.setup()
+    window.localStorage.setItem('adminToken', 'test-token')
+    vi.mocked(fetchAdminAnalytics).mockResolvedValue({
+      success: true,
+      data: {},
+    })
+
+    setAppTestInitialRoute(templateRoutes.adminDashboard)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(screen.queryByText('Loading dashboard...')).not.toBeInTheDocument()
+    })
+
+    await user.click(screen.getByRole('button', { name: /^Log Out$/i }))
+
+    await waitFor(() => {
+      expect(window.localStorage.getItem('adminToken')).toBeNull()
+      expect(
+        screen.getByRole('heading', { name: /^Admin Login$/i })
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('shows the participant login page', async () => {
+    setAppTestInitialRoute(templateRoutes.participantLogin)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: /Participant account/i })
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('redirects participant profile to login when no respondent token', async () => {
+    setAppTestInitialRoute(templateRoutes.participantProfile)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: /Participant account/i })
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('redirects survey demo to login when no respondent token', async () => {
+    setAppTestInitialRoute(templateRoutes.surveyDemo)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: /Participant account/i })
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('shows participant profile when a respondent token is present', async () => {
+    window.localStorage.setItem('respondentIdToken', 'test-respondent-jwt')
+    setAppTestInitialRoute(templateRoutes.participantProfile)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: /Your progress/i })
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('renders the types demo survey when a respondent token is present', async () => {
+    window.localStorage.setItem('respondentIdToken', 'test-respondent-jwt')
+    setAppTestInitialRoute(templateRoutes.surveyDemo)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/Short text/i)).toBeInTheDocument()
+    })
   })
 
   describe('privacy consent gate', () => {
