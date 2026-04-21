@@ -64,7 +64,9 @@ beforeAll(() => {
         const mql = {
           matches: false,
           media: query,
-          onchange: null as ((this: MediaQueryList, ev: MediaQueryListEvent) => void) | null,
+          onchange: null as
+            | ((this: MediaQueryList, ev: MediaQueryListEvent) => void)
+            | null,
           addListener: () => {},
           removeListener: () => {},
           addEventListener: () => {},
