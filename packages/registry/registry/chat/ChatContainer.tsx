@@ -70,7 +70,7 @@ export function ChatContainer({
   )
 
   return (
-    <div
+    <main
       className={`
         flex flex-col h-screen
         bg-white
@@ -184,7 +184,7 @@ export function ChatContainer({
           </div>
         </>
       )}
-    </div>
+    </main>
   )
 }
 
