@@ -67,7 +67,10 @@ export function ParticipantProfile() {
         <Button
           type="button"
           variant="outline"
-          onClick={() => navigate('/participant/login')}
+          onClick={() => {
+            removeRespondentToken()
+            navigate('/participant/login')
+          }}
         >
           Back to login
         </Button>

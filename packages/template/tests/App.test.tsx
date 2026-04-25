@@ -258,6 +258,30 @@ describe('App Router Integration', () => {
     })
   })
 
+  it('clears token and shows login when profile returns 401 and user taps Back to login', async () => {
+    const user = userEvent.setup()
+    vi.mocked(fetchParticipantProfile).mockResolvedValue({
+      success: false,
+      error: 'HTTP 401',
+    })
+    window.localStorage.setItem('respondentIdToken', 'expired-jwt')
+    setAppTestInitialRoute(templateRoutes.participantProfile)
+    render(<Root />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/HTTP 401/i)).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByRole('button', { name: /Back to login/i }))
+
+    await waitFor(() => {
+      expect(window.localStorage.getItem('respondentIdToken')).toBeNull()
+      expect(
+        screen.getByRole('heading', { name: /Participant account/i })
+      ).toBeInTheDocument()
+    })
+  })
+
   it('renders the types demo survey when a respondent token is present', async () => {
     window.localStorage.setItem('respondentIdToken', 'test-respondent-jwt')
     setAppTestInitialRoute(templateRoutes.surveyDemo)

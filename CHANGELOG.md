@@ -279,3 +279,7 @@ All admin stuff: ([#31](https://github.com/survey-kit/survey-kit/pull/31))
 - **Registry**: `BadgeList`, `BadgeCard`, `ParticipantSummary` for accessible badge UI.
 - **Template**: Respondent login/profile routes, `survey-types-demo.json` + `/survey-demo`, `respondentAuth` + `apiConfig` for API origin normalisation; optional header **logo link** via `layout.config.json` (`logo.href` / `linkLabel`).
 - **Docs**: *Respondents & gamification* guide, backend/infrastructure/core/template updates; root and package READMEs aligned.
+
+## Week 26 (w/c 20/04/26)
+
+- Fix respondent page login loop.
